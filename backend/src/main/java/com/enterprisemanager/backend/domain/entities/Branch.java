@@ -19,7 +19,7 @@ public class Branch {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 20, nullable = true)
+    @Column(length = 20, nullable = false)
     @NotNull(message = "Por favor agregue información")
     private String name;
 
@@ -32,4 +32,8 @@ public class Branch {
     @OneToMany(mappedBy = "branches")
     @JsonIgnore
     private Set<ServiceBranch> serviceBranches;
+
+//    @OneToMany(mappedBy = "branches")
+//    @JsonIgnore
+//    private Set<Person> people;
 }

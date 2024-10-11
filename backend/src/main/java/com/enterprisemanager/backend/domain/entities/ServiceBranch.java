@@ -24,5 +24,5 @@ public class ServiceBranch {
     private Branch branches;
 
     @Column(columnDefinition = "DECIMAL(16,2)",nullable = false)
-    private Double serviceValue;
+    private Float serviceValue;
 }

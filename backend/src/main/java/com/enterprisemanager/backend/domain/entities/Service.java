@@ -29,4 +29,20 @@ public class Service {
     @OneToMany(mappedBy = "services")
     @JsonIgnore
     private Set<ServiceBranch> serviceBranches;
+
+//    @OneToMany(mappedBy = "services")
+//    @JsonIgnore
+//    private Set<SupplyService> supplyServices;
+
+//    @OneToMany(mappedBy = "services")
+//    @JsonIgnore
+//    private Set<OrderDetail> orderDetails;
+
+//    @OneToMany(mappedBy = "services")
+//    @JsonIgnore
+//    private Set<WorkOrderDetail> workOrderDetails;
+
+//    @OneToMany(mappedBy = "services")
+//    @JsonIgnore
+//    private Set<ServiceApproval> serviceApprovals;
 }
