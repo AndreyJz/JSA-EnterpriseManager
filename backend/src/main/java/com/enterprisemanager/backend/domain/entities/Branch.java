@@ -33,7 +33,7 @@ public class Branch {
     @JsonIgnore
     private Set<ServiceBranch> serviceBranches;
 
-//    @OneToMany(mappedBy = "branches")
-//    @JsonIgnore
-//    private Set<Person> people;
+    @OneToMany(mappedBy = "branches")
+    @JsonIgnore
+    private Set<Person> people;
 }

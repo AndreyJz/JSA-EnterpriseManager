@@ -30,9 +30,9 @@ public class Service {
     @JsonIgnore
     private Set<ServiceBranch> serviceBranches;
 
-//    @OneToMany(mappedBy = "services")
-//    @JsonIgnore
-//    private Set<SupplyService> supplyServices;
+    @OneToMany(mappedBy = "services")
+    @JsonIgnore
+    private Set<SupplyService> supplyServices;
 
 //    @OneToMany(mappedBy = "services")
 //    @JsonIgnore
