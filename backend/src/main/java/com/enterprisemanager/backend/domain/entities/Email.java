@@ -8,15 +8,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Data;
 @Entity
 @Table(name = "email")
+@Data
 public class Email {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 45, nullable = true)
-    private int number;
+    private String mail;
 
     @ManyToOne
     @JoinColumn(nullable = false)
