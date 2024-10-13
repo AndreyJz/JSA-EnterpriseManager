@@ -17,8 +17,8 @@ public class SupplyService {
     private SupplyServiceId id;
 
     @ManyToOne
-    @JoinColumn(name = "service_id",insertable=false, updatable=false)
-    private Service services;
+//    @JoinColumn(name = "service_id",insertable=false, updatable=false)
+    private ServiceBranch serviceBranches;
 
     @ManyToOne
     @JoinColumn(name = "supply_id", insertable=false, updatable=false)
