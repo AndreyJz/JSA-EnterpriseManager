@@ -2,8 +2,6 @@ package com.enterprisemanager.backend.domain.entities;
 
 import java.util.List;
 
-import org.hibernate.annotations.ManyToAny;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -27,11 +25,11 @@ public class ServiceOrder {
     @Column(columnDefinition = "timestamp")
     private String orderDate;
 
-     @ManyToOne
-     private Person customer;
-    
-     @ManyToOne
-     private Person employee;
+    @ManyToOne
+    private Person customer;
+
+    @ManyToOne
+    private Person employee;
     
     @ManyToOne
     private OrderStatus orderStatus;
