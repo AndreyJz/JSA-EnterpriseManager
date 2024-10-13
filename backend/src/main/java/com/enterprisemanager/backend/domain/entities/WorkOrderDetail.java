@@ -21,9 +21,9 @@ public class WorkOrderDetail {
     @ManyToOne
     private WorkOrder workOrder;
     
-    @ManyToOne
-    @JoinColumn(name = "employee_id")
-    private Person person;
+     @ManyToOne
+     @JoinColumn(name = "employee_id")
+     private Person person;
     
     @Column(columnDefinition = "datetime")
     private String date;
@@ -31,6 +31,8 @@ public class WorkOrderDetail {
     @ManyToOne
     private WorkOrderDetailStatus workOrderDetailStatus;
     
-    @ManyToOne
-    private ServiceBranch serviceBranch;
+      @ManyToOne
+      private ServiceBranch serviceBranches;
+
+
 }

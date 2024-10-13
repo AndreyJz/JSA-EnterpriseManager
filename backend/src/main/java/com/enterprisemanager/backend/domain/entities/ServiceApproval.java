@@ -22,8 +22,8 @@ public class ServiceApproval {
     @ManyToOne
     private WorkOrder workOrder;
     
-    // @ManyToOne
-    // private Service service
+     @ManyToOne
+     private ServiceBranch serviceBranches;
 
     @Column(length = 200, nullable = true)
     private String report;
