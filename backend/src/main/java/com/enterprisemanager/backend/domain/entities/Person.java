@@ -45,17 +45,17 @@ public class Person {
     @JsonIgnore
     private List<PersonSupply> personSupply;
 
-    // @OneToMany(mappedBy = "customer")
-    // @JsonIgnore
-    // private List<ServiceOrder> customer;
+    @OneToMany(mappedBy = "customer")
+    @JsonIgnore
+    private List<ServiceOrder> customer;
 
-    // @OneToMany(mappedBy = "employee")
-    // @JsonIgnore
-    // private List<ServiceOrder> employee;
+    @OneToMany(mappedBy = "employee")
+    @JsonIgnore
+    private List<ServiceOrder> employee;
 
-    // @OneToMany(mappedBy = "person")
-    // @JsonIgnore
-    // private List<WorkOrderDetail> workOrderDetail;
+    @OneToMany(mappedBy = "person")
+    @JsonIgnore
+    private List<WorkOrderDetail> workOrderDetail;
 
     @ManyToOne
     @JoinColumn(nullable = false)

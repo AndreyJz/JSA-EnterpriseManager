@@ -27,11 +27,11 @@ public class ServiceOrder {
     @Column(columnDefinition = "timestamp")
     private String orderDate;
 
-    // @ManyToOne
-    // private Person customer;   
+    @ManyToOne
+    private Person customer;   
     
-    // @ManyToOne
-    // private Person employee;
+    @ManyToOne
+    private Person employee;
     
     @ManyToOne
     private OrderStatus orderStatus;

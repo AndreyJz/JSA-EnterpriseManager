@@ -25,4 +25,6 @@ public class ServiceBranch {
 
     @Column(columnDefinition = "DECIMAL(16,2)",nullable = false)
     private Float serviceValue;
+
+    
 }

@@ -26,4 +26,6 @@ public class SupplyService {
 
     @Column(nullable = false)
     private int quantity;
+
+    
 }
