@@ -35,10 +35,10 @@ public class SupplyServiceController {
         return supplyServiceService.findAll();
     }
 
-    @GetMapping("/{saleid}/{productid}")
+    @GetMapping("/{branchid}/{supplyid}/{serviceid}")
 
-    public ResponseEntity<?> view(@PathVariable Long saleid, @PathVariable Long productid){
-        SupplyServiceId supplyServiceId = new SupplyServiceId(saleid, productid);
+    public ResponseEntity<?> view(@PathVariable Long branchid, @PathVariable Long supplyid, @PathVariable Long serviceid){
+        SupplyServiceId supplyServiceId = new SupplyServiceId(branchid, supplyid, serviceid);
         Optional<SupplyService> supplyServiceOptional = supplyServiceService.findById(supplyServiceId);
         if(supplyServiceOptional.isPresent()){
             return ResponseEntity.ok(supplyServiceOptional.orElseThrow());
@@ -55,12 +55,12 @@ public class SupplyServiceController {
     }
 
         
-    @PutMapping("/{saleid}/{productid}")
-    public ResponseEntity<?> update(@Valid @RequestBody SupplyService supplyService,@PathVariable Long saleid, @PathVariable Long productid, BindingResult result) {
+    @PutMapping("/{branchid}/{supplyid}/{serviceid}")
+    public ResponseEntity<?> update(@Valid @RequestBody SupplyService supplyService,@PathVariable Long branchid, @PathVariable Long supplyid, @PathVariable Long serviceid, BindingResult result) {
         if (result.hasFieldErrors()) {
             return validation(result);
             }
-        SupplyServiceId supplyServiceId = new SupplyServiceId(saleid, productid);
+        SupplyServiceId supplyServiceId = new SupplyServiceId(branchid, supplyid, serviceid);
         Optional<SupplyService> supplyServiceOptional = supplyServiceService.update(supplyServiceId, supplyService);
         if (supplyServiceOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.CREATED).body(supplyServiceOptional.orElseThrow());
@@ -68,9 +68,9 @@ public class SupplyServiceController {
         return ResponseEntity.notFound().build();
     }
     
-    @DeleteMapping("/{saleid}/{productid}")
-    public ResponseEntity<?> delete(@PathVariable Long saleid, @PathVariable Long productid) {
-        SupplyServiceId supplyServiceId = new SupplyServiceId(saleid, productid);
+    @DeleteMapping("/{branchid}/{supplyid}/{serviceid}")
+    public ResponseEntity<?> delete(@PathVariable Long branchid, @PathVariable Long supplyid, @PathVariable Long serviceid) {
+        SupplyServiceId supplyServiceId = new SupplyServiceId(branchid, supplyid, serviceid);
         Optional<SupplyService> supplyServiceOptional = supplyServiceService.delete(supplyServiceId);
         if (supplyServiceOptional.isPresent()) {
             return ResponseEntity.ok(supplyServiceOptional.orElseThrow());

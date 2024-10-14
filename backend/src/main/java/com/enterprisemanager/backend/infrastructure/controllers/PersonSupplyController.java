@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.enterprisemanager.backend.application.services.IPersonSupplyService;
 import com.enterprisemanager.backend.domain.entities.PersonSupply;
@@ -22,7 +24,8 @@ import com.enterprisemanager.backend.domain.entities.PersonSupplyId;
 
 import jakarta.validation.Valid;
 
-
+@RestController
+@RequestMapping("/personSupply")
 public class PersonSupplyController {
     @Autowired
     private IPersonSupplyService personSupplyService;
