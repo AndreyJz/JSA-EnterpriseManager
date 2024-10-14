@@ -11,6 +11,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Entity
@@ -22,15 +24,22 @@ public class Person {
     private String id;
 
     @Column(length = 45, nullable = false)
+    @NotEmpty(message = "El nombre no puede ser nulo")
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]*$", message = "El campo solo puede contener letras y espacios, no caracteres especiales")
         private String name;
 
     @Column(length = 45, nullable = false)
+    @NotEmpty(message = "El apellido no puede ser nula")
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]*$", message = "El campo solo puede contener letras y espacios, no caracteres especiales")
         private String lastname;
 
-    @Column(length = 45, nullable = false)
+    @Column(columnDefinition = "datetime", nullable = false)
+    @NotEmpty(message = "la fecha de registro no puede ser nula")
         private String date;
 
     @Column(length = 45, nullable = false)
+    @NotEmpty(message = "la contraseña no puede ser nula")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,}$", message = "La contraseña debe contener al menos una mayúscula, un número y un carácter especial, con una longitud mínima de 8 caracteres.")
         private String password;
 
     @OneToMany(mappedBy = "person")

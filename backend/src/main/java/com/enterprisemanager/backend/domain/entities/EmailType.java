@@ -10,6 +10,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Entity
@@ -22,6 +24,8 @@ public class EmailType {
     private Long id;
 
     @Column(length = 45, nullable = true)
+    @NotEmpty(message = "El nombre no puede ser nulo")
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]*$", message = "El campo solo puede contener letras y espacios, no caracteres especiales")
     private String name;
 
     @OneToMany(mappedBy = "emailType")

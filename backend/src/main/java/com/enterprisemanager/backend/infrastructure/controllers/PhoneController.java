@@ -3,12 +3,17 @@ package com.enterprisemanager.backend.infrastructure.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.enterprisemanager.backend.application.services.IPhoneService;
 import com.enterprisemanager.backend.domain.entities.Phone;
 
+import jakarta.validation.Valid;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -32,12 +37,18 @@ public class PhoneController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create (@RequestBody Phone phone){
+    public ResponseEntity<?> create (@Valid @RequestBody Phone phone, BindingResult result){
+        if (result.hasFieldErrors()) {
+            return validation(result);
+            }
         return ResponseEntity.status(HttpStatus.CREATED).body(phoneService.save(phone));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody Phone phone, @PathVariable Long id) {
+    public ResponseEntity<?> update(@Valid @RequestBody Phone phone, @PathVariable Long id, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validation(result);
+            }
         Optional<Phone> phoneOptional = phoneService.update(id, phone);
         if (phoneOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.CREATED).body(phoneOptional.orElseThrow());
@@ -53,4 +64,14 @@ public class PhoneController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    private ResponseEntity<?> validation(BindingResult result) {
+        Map<String, String> errors = new HashMap<>();
+        result.getFieldErrors().forEach(err -> {
+        errors.put(err.getField(), "El campo " + err.getField() + " " +
+
+        err.getDefaultMessage());
+        });
+        return ResponseEntity.badRequest().body(errors);
+        }
 }
