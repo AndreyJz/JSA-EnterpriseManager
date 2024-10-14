@@ -23,7 +23,7 @@ public class ServiceApproval {
     private WorkOrder workOrder;
     
      @ManyToOne
-     private ServiceBranch serviceBranches;
+     private ServiceBranch serviceBranch;
 
     @Column(length = 200, nullable = true)
     private String report;

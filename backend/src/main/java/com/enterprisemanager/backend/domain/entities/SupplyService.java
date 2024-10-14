@@ -26,7 +26,7 @@ public class SupplyService {
         @JoinColumn(name = "service_branches_branch_id", referencedColumnName = "branch_id", insertable = false, updatable = false),
         @JoinColumn(name = "service_branches_service_id", referencedColumnName = "service_id", insertable = false, updatable = false)
     })
-    private ServiceBranch serviceBranches;
+    private ServiceBranch serviceBranch;
     
     @ManyToOne
     @JoinColumn(name = "supply_id", insertable = false, updatable = false)

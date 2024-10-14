@@ -10,7 +10,7 @@ public class OrderDetail {
     private Long id;
 
     @ManyToOne
-    private ServiceBranch serviceBranches;
+    private ServiceBranch serviceBranch;
 
     @ManyToOne
     private ServiceOrder serviceOrder;

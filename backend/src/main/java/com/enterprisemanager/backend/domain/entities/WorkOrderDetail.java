@@ -32,7 +32,7 @@ public class WorkOrderDetail {
     private WorkOrderDetailStatus workOrderDetailStatus;
     
       @ManyToOne
-      private ServiceBranch serviceBranches;
+      private ServiceBranch serviceBranch;
 
 
 }

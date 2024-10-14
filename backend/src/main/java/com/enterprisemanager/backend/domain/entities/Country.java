@@ -3,6 +3,7 @@ package com.enterprisemanager.backend.domain.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,10 +21,11 @@ public class Country {
     private Long id;
 
     @Column(nullable = false)
-    @NotNull(message = "Por favor agregue información")
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]*$", message = "El campo solo puede contener letras y espacios, no caracteres especiales")
+    @NotNull(message = "You have to add a name")
     private String name;
 
-    @OneToMany(mappedBy = "countries")
+    @OneToMany(mappedBy = "country")
     @JsonIgnore
-    private Set<Region> regions;
+    private Set<Region> region;
 }
