@@ -2,7 +2,6 @@ package com.enterprisemanager.backend.infrastructure.repositories.region;
 
 import com.enterprisemanager.backend.application.services.IRegionService;
 import com.enterprisemanager.backend.domain.entities.Region;
-import com.enterprisemanager.backend.infrastructure.repositories.region.RegionRepository;
 import com.enterprisemanager.backend.infrastructure.utils.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

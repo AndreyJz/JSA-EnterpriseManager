@@ -18,56 +18,56 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.enterprisemanager.backend.application.services.IEmailTypeService;
-import com.enterprisemanager.backend.domain.entities.EmailType;
+import com.enterprisemanager.backend.application.services.IWorkOrderDetailService;
+import com.enterprisemanager.backend.domain.entities.WorkOrderDetail;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/emailType")
-public class EmailTypeController {
+@RequestMapping("/workOrderDetail")
+public class WorkOrderDetailController {
     @Autowired
-    private IEmailTypeService emailTypeService;
+    private IWorkOrderDetailService workOrderDetailService;
 
     @GetMapping
-    public List<EmailType> list() {
-        return emailTypeService.findAll();
+    public List<WorkOrderDetail> list() {
+        return workOrderDetailService.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> view(@PathVariable Long id){
-        Optional<EmailType> emailTypeOptional = emailTypeService.findById(id);
-        if(emailTypeOptional.isPresent()){
-            return ResponseEntity.ok(emailTypeOptional.orElseThrow());
+        Optional<WorkOrderDetail> workOrderDetailOptional = workOrderDetailService.findById(id);
+        if(workOrderDetailOptional.isPresent()){
+            return ResponseEntity.ok(workOrderDetailOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> create (@Valid @RequestBody EmailType emailType, BindingResult result){
+    public ResponseEntity<?> create (@Valid @RequestBody WorkOrderDetail workOrderDetail, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
             }
-        return ResponseEntity.status(HttpStatus.CREATED).body(emailTypeService.save(emailType));
+        return ResponseEntity.status(HttpStatus.CREATED).body(workOrderDetailService.save(workOrderDetail));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody EmailType emailType, @PathVariable Long id, BindingResult result) {
+    public ResponseEntity<?> update(@Valid @RequestBody WorkOrderDetail workOrderDetail, @PathVariable Long id, BindingResult result) {
         if (result.hasFieldErrors()) {
             return validation(result);
-            }
-        Optional<EmailType> emailTypeOptional = emailTypeService.update(id, emailType);
-        if (emailTypeOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(emailTypeOptional.orElseThrow());
+        }
+        Optional<WorkOrderDetail> workOrderDetailOptional = workOrderDetailService.update(id, workOrderDetail);
+        if (workOrderDetailOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(workOrderDetailOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        Optional<EmailType> emailTypeOptional = emailTypeService.delete(id);
-        if (emailTypeOptional.isPresent()) {
-            return ResponseEntity.ok(emailTypeOptional.orElseThrow());
+        Optional<WorkOrderDetail> workOrderDetailOptional = workOrderDetailService.delete(id);
+        if (workOrderDetailOptional.isPresent()) {
+            return ResponseEntity.ok(workOrderDetailOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }

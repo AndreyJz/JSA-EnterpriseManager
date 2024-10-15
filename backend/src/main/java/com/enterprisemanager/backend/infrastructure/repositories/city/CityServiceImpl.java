@@ -2,7 +2,6 @@ package com.enterprisemanager.backend.infrastructure.repositories.city;
 
 import com.enterprisemanager.backend.application.services.ICityService;
 import com.enterprisemanager.backend.domain.entities.City;
-import com.enterprisemanager.backend.infrastructure.repositories.city.CityRepository;
 import com.enterprisemanager.backend.infrastructure.utils.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

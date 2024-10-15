@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity
@@ -22,6 +23,7 @@ public class ApprovalStatus {
     private Long id;
 
     @Column(length = 45, nullable = true)
+    @NotNull(message = "You have to add a name")
     private String name;
 
     @OneToMany(mappedBy = "approvalStatus")

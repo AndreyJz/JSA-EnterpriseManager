@@ -18,56 +18,56 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.enterprisemanager.backend.application.services.IEmailTypeService;
-import com.enterprisemanager.backend.domain.entities.EmailType;
+import com.enterprisemanager.backend.application.services.IApprovalStatusService;
+import com.enterprisemanager.backend.domain.entities.ApprovalStatus;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/emailType")
-public class EmailTypeController {
+@RequestMapping("/approvalStatus")
+public class ApprovalStatusController {
     @Autowired
-    private IEmailTypeService emailTypeService;
+    private IApprovalStatusService approvalStatusService;
 
     @GetMapping
-    public List<EmailType> list() {
-        return emailTypeService.findAll();
+    public List<ApprovalStatus> list() {
+        return approvalStatusService.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> view(@PathVariable Long id){
-        Optional<EmailType> emailTypeOptional = emailTypeService.findById(id);
-        if(emailTypeOptional.isPresent()){
-            return ResponseEntity.ok(emailTypeOptional.orElseThrow());
+        Optional<ApprovalStatus> approvalStatusOptional = approvalStatusService.findById(id);
+        if(approvalStatusOptional.isPresent()){
+            return ResponseEntity.ok(approvalStatusOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> create (@Valid @RequestBody EmailType emailType, BindingResult result){
+    public ResponseEntity<?> create (@Valid @RequestBody ApprovalStatus approvalStatus, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
             }
-        return ResponseEntity.status(HttpStatus.CREATED).body(emailTypeService.save(emailType));
+        return ResponseEntity.status(HttpStatus.CREATED).body(approvalStatusService.save(approvalStatus));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody EmailType emailType, @PathVariable Long id, BindingResult result) {
+    public ResponseEntity<?> update(@Valid @RequestBody ApprovalStatus approvalStatus, @PathVariable Long id, BindingResult result) {
         if (result.hasFieldErrors()) {
             return validation(result);
-            }
-        Optional<EmailType> emailTypeOptional = emailTypeService.update(id, emailType);
-        if (emailTypeOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(emailTypeOptional.orElseThrow());
+        }
+        Optional<ApprovalStatus> approvalStatusOptional = approvalStatusService.update(id, approvalStatus);
+        if (approvalStatusOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(approvalStatusOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        Optional<EmailType> emailTypeOptional = emailTypeService.delete(id);
-        if (emailTypeOptional.isPresent()) {
-            return ResponseEntity.ok(emailTypeOptional.orElseThrow());
+        Optional<ApprovalStatus> approvalStatusOptional = approvalStatusService.delete(id);
+        if (approvalStatusOptional.isPresent()) {
+            return ResponseEntity.ok(approvalStatusOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
