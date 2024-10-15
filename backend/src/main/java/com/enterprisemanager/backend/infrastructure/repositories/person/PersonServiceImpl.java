@@ -44,7 +44,7 @@ public class PersonServiceImpl implements IPersonService{
             personDb.setDate(person.getDate());
             personDb.setPassword(person.getPassword());
             personDb.setPersonType(person.getPersonType());
-            personDb.setBranches(person.getBranches());
+            personDb.setBranch(person.getBranch());
             return Optional.of(personRepository.save(personDb));
         }
         return Optional.empty();

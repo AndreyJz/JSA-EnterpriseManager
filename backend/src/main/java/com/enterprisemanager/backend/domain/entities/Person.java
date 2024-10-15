@@ -72,6 +72,6 @@ public class Person {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Branch branches;
+    private Branch branch;
 
 }

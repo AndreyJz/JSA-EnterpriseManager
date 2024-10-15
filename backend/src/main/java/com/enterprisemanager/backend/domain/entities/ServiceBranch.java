@@ -3,6 +3,7 @@ package com.enterprisemanager.backend.domain.entities;
 import com.enterprisemanager.backend.domain.dtos.ServiceBranchPk;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,28 +21,31 @@ public class ServiceBranch {
 
     @ManyToOne
     @JoinColumn(name = "service_id", insertable = false, updatable = false)
-    private Service services;
+    @NotNull(message = "You have to add a Service Id")
+    private Service service;
 
     @ManyToOne
     @JoinColumn(name = "branch_id", insertable = false, updatable = false)
-    private Branch branches;
+    @NotNull(message = "You have to add a Branch Id")
+    private Branch branch;
 
     @Column(columnDefinition = "DECIMAL(16,2)",nullable = false)
+    @NotNull(message = "You have to add a Service Value")
     private Float serviceValue;
 
-    @OneToMany(mappedBy = "serviceBranches")
+    @OneToMany(mappedBy = "serviceBranch")
     @JsonIgnore
-    private Set<SupplyService> supplyServices;
+    private Set<SupplyService> supplyService;
 
-    @OneToMany(mappedBy = "serviceBranches")
+    @OneToMany(mappedBy = "serviceBranch")
     @JsonIgnore
-    private Set<OrderDetail> orderDetails;
+    private Set<OrderDetail> orderDetail;
 
-    @OneToMany(mappedBy = "serviceBranches")
+    @OneToMany(mappedBy = "serviceBranch")
     @JsonIgnore
-    private Set<WorkOrderDetail> workOrderDetails;
+    private Set<WorkOrderDetail> workOrderDetail;
 
-    @OneToMany(mappedBy = "serviceBranches")
+    @OneToMany(mappedBy = "serviceBranch")
     @JsonIgnore
-    private Set<ServiceApproval> serviceApprovals;
+    private Set<ServiceApproval> serviceApproval;
 }

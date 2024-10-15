@@ -1,6 +1,9 @@
 package com.enterprisemanager.backend.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,11 +22,15 @@ public class Company {
     private Long id;
 
     @Column(length = 50, nullable = true)
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]*$", message = "El campo solo puede contener letras y espacios, no caracteres especiales")
+    @NotNull(message = "You have to add a name")
     private String name;
 
     @ManyToOne
-    private CompanyType companyTypes;
+    @NotNull(message = "You have to add a Company Type")
+    private CompanyType companyType;
 
-    @OneToMany(mappedBy = "companies")
-    private List<Branch> branches;
+    @OneToMany(mappedBy = "company")
+    @JsonIgnore
+    private List<Branch> branch;
 }

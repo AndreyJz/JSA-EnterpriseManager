@@ -3,6 +3,7 @@ package com.enterprisemanager.backend.domain.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,13 +21,14 @@ public class Service {
     private Long id;
 
     @Column(nullable = false)
-    @NotNull(message = "Por favor agregue información")
+    @NotNull(message = "You have to add a name")
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]*$", message = "El campo solo puede contener letras y espacios, no caracteres especiales")
     private String name;
 
-    @Column(nullable = false)
-    private Boolean requiresI;
+    @Column(nullable = true)
+    private Boolean requiresSupply;
 
-    @OneToMany(mappedBy = "services")
+    @OneToMany(mappedBy = "service")
     @JsonIgnore
-    private Set<ServiceBranch> serviceBranches;
+    private Set<ServiceBranch> serviceBranch;
 }

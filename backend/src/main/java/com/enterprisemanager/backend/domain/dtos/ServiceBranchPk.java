@@ -15,5 +15,5 @@ public class ServiceBranchPk {
     private Long branchId;
 
     @Column(name = "service_id")
-    private Long productId;
+    private Long serviceId;
 }

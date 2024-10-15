@@ -2,6 +2,7 @@ package com.enterprisemanager.backend.infrastructure.repositories.country;
 
 import com.enterprisemanager.backend.application.services.ICountryService;
 import com.enterprisemanager.backend.domain.entities.Country;
+import com.enterprisemanager.backend.infrastructure.utils.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +25,10 @@ public class CountryServiceImpl implements ICountryService {
     @Override
     @Transactional(readOnly = true)
     public Optional<Country> findById(Long id) {
-        return countryRepository.findById(id);
+        return Optional.ofNullable(countryRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Country with id: " + id + " not found :c")));
     }
+
 
     @Override
     @Transactional(readOnly = true)
@@ -38,7 +41,7 @@ public class CountryServiceImpl implements ICountryService {
         Optional<Country> countryOptional = countryRepository.findById(id);
         if (countryOptional.isPresent()) {
             Country countryToUpdate = countryRepository.save(country);
-            countryToUpdate.setName(countryToUpdate.getName());
+            countryToUpdate.setName(country.getName());
             return countryRepository.save(countryToUpdate);
         }
         return null;

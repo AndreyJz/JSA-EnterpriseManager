@@ -31,8 +31,8 @@ public class WorkOrderDetail {
     @ManyToOne
     private WorkOrderDetailStatus workOrderDetailStatus;
     
-    @ManyToOne
-    private ServiceBranch serviceBranches;
+      @ManyToOne
+      private ServiceBranch serviceBranch;
 
 
 }

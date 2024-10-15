@@ -1,7 +1,7 @@
 package com.enterprisemanager.backend.infrastructure.controllers;
 
-import com.enterprisemanager.backend.application.services.ICountryService;
-import com.enterprisemanager.backend.domain.entities.Country;
+import com.enterprisemanager.backend.application.services.ICompanyService;
+import com.enterprisemanager.backend.domain.entities.Company;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,51 +15,51 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/country")
-public class CountryController {
+@RequestMapping("api/company")
+public class CompanyController {
     @Autowired
-    private ICountryService countryService;
+    private ICompanyService companyService;
 
     @GetMapping
-    public List<Country> getAll() { return countryService.findAll(); }
+    public List<Company> getAll() { return companyService.findAll(); }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        Optional<Country> countryOptional = countryService.findById(id);
-        if (countryOptional.isPresent()) {
-            return ResponseEntity.ok(countryOptional.orElseThrow());
+        Optional<Company> companyOptional = companyService.findById(id);
+        if (companyOptional.isPresent()) {
+            return ResponseEntity.ok(companyOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody Country country, BindingResult result) {
+    public ResponseEntity<?> save(@Valid @RequestBody Company company, BindingResult result) {
         if (result.hasFieldErrors()) {
             return validation(result);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(countryService.save(country));
+        return ResponseEntity.status(HttpStatus.CREATED).body(companyService.save(company));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Country country, BindingResult result) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Company company, BindingResult result) {
         if (result.hasFieldErrors()) {
             return validation(result);
         }
-        Optional<Country> countryOptional = countryService.findById(id);
-        if (countryOptional.isPresent()) {
-            country.setId(id);
-//            country.setName(countryOptional.get().getName());
-            return ResponseEntity.ok(countryService.update(id,country));
+        Optional<Company> companyOptional = companyService.findById(id);
+        if (companyOptional.isPresent()) {
+            company.setId(id);
+//            company.setName(companyOptional.get().getName());
+            return ResponseEntity.ok(companyService.update(id,company));
         }
         return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        Optional<Country> countryOptional = countryService.findById(id);
-        if (countryOptional.isPresent()) {
-            countryService.delete(id);
-            return ResponseEntity.ok(countryOptional.orElseThrow());
+        Optional<Company> companyOptional = companyService.findById(id);
+        if (companyOptional.isPresent()) {
+            companyService.delete(id);
+            return ResponseEntity.ok(companyOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }

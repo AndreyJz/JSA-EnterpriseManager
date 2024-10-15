@@ -1,7 +1,7 @@
 package com.enterprisemanager.backend.infrastructure.controllers;
 
-import com.enterprisemanager.backend.application.services.ICountryService;
-import com.enterprisemanager.backend.domain.entities.Country;
+import com.enterprisemanager.backend.application.services.ICityService;
+import com.enterprisemanager.backend.domain.entities.City;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,51 +15,51 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/country")
-public class CountryController {
+@RequestMapping("api/city")
+public class CityController {
     @Autowired
-    private ICountryService countryService;
+    private ICityService cityService;
 
     @GetMapping
-    public List<Country> getAll() { return countryService.findAll(); }
+    public List<City> getAll() { return cityService.findAll(); }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        Optional<Country> countryOptional = countryService.findById(id);
-        if (countryOptional.isPresent()) {
-            return ResponseEntity.ok(countryOptional.orElseThrow());
+        Optional<City> cityOptional = cityService.findById(id);
+        if (cityOptional.isPresent()) {
+            return ResponseEntity.ok(cityOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody Country country, BindingResult result) {
+    public ResponseEntity<?> save(@Valid @RequestBody City city, BindingResult result) {
         if (result.hasFieldErrors()) {
             return validation(result);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(countryService.save(country));
+        return ResponseEntity.status(HttpStatus.CREATED).body(cityService.save(city));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Country country, BindingResult result) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody City city, BindingResult result) {
         if (result.hasFieldErrors()) {
             return validation(result);
         }
-        Optional<Country> countryOptional = countryService.findById(id);
-        if (countryOptional.isPresent()) {
-            country.setId(id);
-//            country.setName(countryOptional.get().getName());
-            return ResponseEntity.ok(countryService.update(id,country));
+        Optional<City> cityOptional = cityService.findById(id);
+        if (cityOptional.isPresent()) {
+            city.setId(id);
+//            city.setName(cityOptional.get().getName());
+            return ResponseEntity.ok(cityService.update(id,city));
         }
         return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        Optional<Country> countryOptional = countryService.findById(id);
-        if (countryOptional.isPresent()) {
-            countryService.delete(id);
-            return ResponseEntity.ok(countryOptional.orElseThrow());
+        Optional<City> cityOptional = cityService.findById(id);
+        if (cityOptional.isPresent()) {
+            cityService.delete(id);
+            return ResponseEntity.ok(cityOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }

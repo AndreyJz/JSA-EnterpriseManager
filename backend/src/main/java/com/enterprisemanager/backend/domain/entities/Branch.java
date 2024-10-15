@@ -3,10 +3,12 @@ package com.enterprisemanager.backend.domain.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -20,20 +22,31 @@ public class Branch {
     private Long id;
 
     @Column(length = 20, nullable = false)
-    @NotNull(message = "Por favor agregue información")
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]*$", message = "El campo solo puede contener letras y espacios, no caracteres especiales")
+    @NotNull(message = "You have to add a name")
     private String name;
 
-    @ManyToOne
-    private City cities;
+    @Column(length = 20, nullable = false)
+    @NotNull(message = "You have to add a nit")
+    private String nit;
+
+    @Column(length = 20, nullable = false)
+//    @NotNull(message = "You have to add a date")
+    private LocalDateTime creationDate;
 
     @ManyToOne
-    private Company companies;
+    @NotNull(message = "You have to add a city")
+    private City city;
 
-    @OneToMany(mappedBy = "branches")
-    @JsonIgnore
-    private Set<ServiceBranch> serviceBranches;
+    @ManyToOne
+    @NotNull(message = "You have to add a company")
+    private Company company;
 
-    @OneToMany(mappedBy = "branches")
+    @OneToMany(mappedBy = "branch")
     @JsonIgnore
-    private Set<Person> people;
+    private Set<ServiceBranch> serviceBranch;
+
+    @OneToMany(mappedBy = "branch")
+    @JsonIgnore
+    private Set<Person> person;
 }
