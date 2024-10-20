@@ -4,11 +4,11 @@ import styled from 'styled-components';
 
 const SidebarContainer = styled.nav`
   top: 0;
-  padding: 0;
-  width: 5em;
+  padding-bottom: 3em;
+  width: 3.3em;
   height: 100vh;
   position: fixed;
-  background-color: hsl(256, 12%, 12%);
+  background-color: #111111;
   transition: width 0.35s cubic-bezier(0.175, 0.685, 0.32, 1);
   overflow-y: auto;
   overflow-x: hidden;
@@ -25,15 +25,16 @@ const SidebarList = styled.ul`
 `;
 
 const SidebarItem = styled.li`
-  padding: 0 0.5em;
+  padding: 0 0.1em;
   width: 100%;
   cursor: pointer;
+  
 `;
 
 const SidebarLink = styled(Link)`
   display: flex;
   align-items: center;
-  padding: 1em 0;
+  padding: 2em 0em 0em 0.3em;
   width: 100%;
   color: hsl(0, 0%, 50%);
   text-decoration: none;
@@ -46,7 +47,7 @@ const SidebarLink = styled(Link)`
 `;
 
 const IconWrapper = styled.div`
-  width: calc(5rem - 1em - 8px);
+  width: clamp(2em,2vw,5em);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,19 +57,21 @@ const LinkText = styled.span`
   margin-left: 1em;
   opacity: 0;
   transition: opacity 0.35s cubic-bezier(0.175, 0.685, 0.32, 1);
+  display:none;
 
   ${SidebarContainer}:hover & {
     opacity: 1;
+    display:block;
   }
 `;
 
 const entities = [
-  'approval_status', 'branches', 'cities', 'companies', 'company_types',
-  'countries', 'email', 'email_type', 'order_details', 'order_status',
-  'person', 'person_supply', 'person_type', 'phone', 'phone_type',
-  'regions', 'service_approval', 'service_branches', 'service_order',
-  'services', 'supply', 'supply_service', 'work_order_detail',
-  'work_order_detail_status', 'work_orders'
+  'ApprovalStatus', 'Branches', 'Cities', 'Companies', 'CompanyTypes',
+  'Countries', 'Email', 'EmailType', 'OrderDetails', 'OrderStatus',
+  'Person', 'PersonSupply', 'PersonType', 'Phone', 'PhoneType',
+  'Regions', 'ServiceApproval', 'ServiceBranches', 'ServiceOrder',
+  'Services', 'Supply', 'SupplyService', 'WorkOrderDetail',
+  'WorkDetailStatus', 'WorkOrders'
 ];
 
 const Sidebar: React.FC = () => {

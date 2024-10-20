@@ -39,17 +39,19 @@ public class HttpSecurityConfig {
     }
 
     private static void buildRequestMatchers(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authReqConfig) {
-        authReqConfig.requestMatchers(HttpMethod.POST, "/customers").permitAll();
-        authReqConfig.requestMatchers(HttpMethod.POST, "/auth/authenticate").permitAll();
-        authReqConfig.requestMatchers(HttpMethod.GET, "/auth/validate-token").permitAll();
-        authReqConfig.requestMatchers(HttpMethod.GET, "/api/person/**").permitAll();
-        authReqConfig.requestMatchers(HttpMethod.GET, "/api/service").permitAll();
-        authReqConfig.requestMatchers(HttpMethod.GET, "/api/country").permitAll();
-        authReqConfig.requestMatchers(HttpMethod.GET, "/api/region").permitAll();
-        authReqConfig.requestMatchers(HttpMethod.GET, "/api/city").permitAll();
-        authReqConfig.requestMatchers(HttpMethod.GET, "/api/branch").permitAll();
-        authReqConfig.requestMatchers(HttpMethod.GET, "/api/company").permitAll();
+        // authReqConfig.requestMatchers(HttpMethod.POST, "/customers").permitAll();
+        // authReqConfig.requestMatchers(HttpMethod.POST, "/auth/authenticate").permitAll();
+        // authReqConfig.requestMatchers(HttpMethod.GET, "/auth/validate-token").permitAll();
+        // authReqConfig.requestMatchers(HttpMethod.GET, "/api/person/**").permitAll();
+        // authReqConfig.requestMatchers(HttpMethod.GET, "/api/service").permitAll();
+        // authReqConfig.requestMatchers(HttpMethod.GET, "/api/country").permitAll();
+        // authReqConfig.requestMatchers(HttpMethod.GET, "/api/region").permitAll();
+        // authReqConfig.requestMatchers(HttpMethod.GET, "/api/city").permitAll();
+        // authReqConfig.requestMatchers(HttpMethod.GET, "/api/branch").permitAll();
+        // authReqConfig.requestMatchers(HttpMethod.GET, "/api/company").permitAll();
+        // authReqConfig.requestMatchers(HttpMethod.GET, "/api/serviceApproval").permitAll();
+        authReqConfig.anyRequest().permitAll();
 
-        authReqConfig.anyRequest().authenticated();
+        // authReqConfig.anyRequest().authenticated();
     }
 }

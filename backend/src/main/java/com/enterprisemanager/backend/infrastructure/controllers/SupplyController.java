@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/supply")
+@RequestMapping("/api/supply")
 public class SupplyController {
     @Autowired
     private ISupplyService supplyService;
