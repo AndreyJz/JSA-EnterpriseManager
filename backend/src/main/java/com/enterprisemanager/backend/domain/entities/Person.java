@@ -1,24 +1,27 @@
 package com.enterprisemanager.backend.domain.entities;
 
+import java.util.Collection;
+//import java.util.HashSet;
 import java.util.List;
+//import java.util.Set;
+import java.util.stream.Collectors;
 
+import com.enterprisemanager.backend.infrastructure.utils.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+//import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "person")
 @Data
-public class Person {
+public class Person implements UserDetails {
 
     @Id
     private String id;
@@ -37,10 +40,29 @@ public class Person {
     @NotEmpty(message = "la fecha de registro no puede ser nula")
         private String date;
 
-    @Column(length = 45, nullable = false)
+    @Column(nullable = false)
+    private String username;
+
+    @Column(length = 500, nullable = false)
     @NotEmpty(message = "la contraseña no puede ser nula")
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,}$", message = "La contraseña debe contener al menos una mayúscula, un número y un carácter especial, con una longitud mínima de 8 caracteres.")
         private String password;
+
+//    @ManyToMany
+//    @JoinTable(
+//            name = "people_roles",
+//            joinColumns = @JoinColumn(name="person_id"),
+//            inverseJoinColumns = @JoinColumn(name="role_id"),
+//            uniqueConstraints = { @UniqueConstraint(columnNames = {"person_id",
+//                    "role_id"})}
+//    )
+//    private Set<Role> roles;
+//
+//    @Transient
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//    private boolean admin = true;
+//
+//    private boolean enabled;
 
     @OneToMany(mappedBy = "person")
     @JsonIgnore
@@ -74,4 +96,42 @@ public class Person {
     @JoinColumn(nullable = false)
     private Branch branch;
 
+//    public Person() {
+//        roles = new HashSet<>();
+//    }
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(role == null) return null;
+
+        if(role.getPermissions() == null) return null;
+
+        return role.getPermissions().stream()
+                .map(each -> each.name())
+                .map(each -> new SimpleGrantedAuthority(each))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
