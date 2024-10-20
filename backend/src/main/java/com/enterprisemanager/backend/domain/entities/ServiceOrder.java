@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity
@@ -26,12 +27,15 @@ public class ServiceOrder {
     private String orderDate;
 
     @ManyToOne
+    @NotNull(message = "You have to add a Customer")
     private Person customer;
 
     @ManyToOne
+    @NotNull(message = "You have to add an Employee")
     private Person employee;
     
     @ManyToOne
+    @NotNull(message = "You have to add a Order Status")
     private OrderStatus orderStatus;
 
     @OneToMany(mappedBy = "serviceOrder")

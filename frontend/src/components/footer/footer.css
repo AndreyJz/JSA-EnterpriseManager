@@ -1,0 +1,103 @@
+    .footer {
+        background-color: #222;
+        color: #ccc;
+        padding: 20px 0;
+    }
+    
+    .footer-container {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .footer-section {
+        flex: 1;
+        margin: 0 10px;
+    }
+    
+    .footer-section h4 {
+        color: #fff;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+    
+    .footer-section p,
+    .footer-section ul,
+    .footer-section li {
+        color: #ccc;
+    }
+    
+    .footer-section ul {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .footer-section ul li {
+        margin-bottom: 8px;
+    }
+    
+    .footer-section ul li a {
+        color: #ccc;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+    
+    .footer-section ul li a:hover {
+        color: #fff;
+    }
+    
+    .footer-section .social-icons {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .footer-section .social-icons a {
+        color: #ccc;
+        font-size: 24px;
+        transition: color 0.3s;
+    }
+    
+    .footer-section .social-icons a:hover {
+        color: #fff;
+    }
+    
+    .footer-bottom {
+        text-align: center;
+        padding-top: 10px;
+        border-top: 1px solid #555;
+        margin-top: 20px;
+    }
+    .quick-links{
+        padding-left: 5%;
+    }
+    
+    .footer-bottom p {
+        color: #ccc;
+        margin: 0;
+    }
+    @media (max-width:600px) {
+
+        .footer-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap :40px;
+        }
+        .footer-section{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .description{
+            align-self: center;
+            text-align: center;
+        }
+    }
