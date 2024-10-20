@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/city")
+@RequestMapping("/api/city")
 public class CityController {
     @Autowired
     private ICityService cityService;

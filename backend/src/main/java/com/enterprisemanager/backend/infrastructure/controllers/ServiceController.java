@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/service")
+@RequestMapping("/api/service")
 public class ServiceController {
     @Autowired
     private IServiceService serviceService;

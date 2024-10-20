@@ -40,6 +40,7 @@ const companiesData = [
   { name: "GlobalIT", logo: "https://source.unsplash.com/random/200x200?global" },
 ];
 
+
 function Home() {
   const { addToCart } = useCart();
 
