@@ -66,19 +66,19 @@ const LinkText = styled.span`
 `;
 
 const entities = [
-  'ApprovalStatus', 'Branches', 'Cities', 'Companies', 'CompanyTypes',
-  'Countries', 'Email', 'EmailType', 'OrderDetails', 'OrderStatus',
-  'Person', 'PersonSupply', 'PersonType', 'Phone', 'PhoneType',
-  'Regions', 'ServiceApproval', 'ServiceBranches', 'ServiceOrder',
-  'Services', 'Supply', 'SupplyService', 'WorkOrderDetail',
-  'WorkDetailStatus', 'WorkOrders'
+  'Approval Status', 'Branches', 'Cities', 'Companies', 'Company Type',
+  'Countries', 'Email', 'Email Type', 'Order Details', 'Order Status',
+  'Person', 'Person Supply', 'Person Type', 'Phone', 'Phone Type',
+  'Regions', 'Service Approval', 'Service Branches', 'Service Order',
+  'Services', 'Supply', 'Supply Service','Work Orders', 'Work Order Detail',
+  'Work Detail Status'
 ];
 
 const Sidebar: React.FC = () => {
   return (
     <SidebarContainer>
       <SidebarList>
-        {entities.map((entity) => (
+        {entities.map((entity) => ( 
           <SidebarItem key={entity}>
             <SidebarLink to={`/${entity}`}>
               <IconWrapper>

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Service from './Service';
 import Carousel from './Carousel';
 import { useCart } from '../context/CartContext';
+import axios from 'axios';
 
 const servicesData = [
   {
@@ -40,8 +41,37 @@ const companiesData = [
   { name: "GlobalIT", logo: "https://source.unsplash.com/random/200x200?global" },
 ];
 
+
 function Home() {
   const { addToCart } = useCart();
+  const [data, setData] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const getData = async () => {
+    try {
+      const response = await axios.get<any[]>("http://localhost:8081/api/serviceBranch");
+      console.log("Datos recibidos:", response.data);
+      setData(response.data);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.error("Error con Axios:", err.message);
+        setError("Error al obtener datos del servidor.");
+      } else {
+        console.error("Error inesperado:", err);
+        setError("Ocurrió un error inesperado.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
 
   return (
     <div className="bg-gray-100">
@@ -67,7 +97,7 @@ function Home() {
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">Featured Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {servicesData.map((service) => (
+            {data.map((service) => (
               <Service key={service.id} serviceData={service} onAddToCart={() => addToCart(service)} />
             ))}
           </div>

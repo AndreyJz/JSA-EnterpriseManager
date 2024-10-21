@@ -25,8 +25,7 @@ import com.enterprisemanager.backend.domain.entities.ApprovalStatus;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/approvalStatus")
-@CrossOrigin(origins = "http://localhost:5174")
+@RequestMapping("/api/Approval Status")
 public class ApprovalStatusController {
     @Autowired
     private IApprovalStatusService approvalStatusService;

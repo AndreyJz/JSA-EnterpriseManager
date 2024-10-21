@@ -19,6 +19,7 @@ const EntityCard = styled(Link)`
   font-size: 18px;
   border-radius: 4px;
   transition: background-color 0.3s;
+  overflow-x:hidden;
 
   &:hover {
     background-color: #1565c0;
@@ -248,7 +249,9 @@ const entityFields: { [key: string]: EntityField[] } = {
 const EntityList: React.FC = () => {
   const { entity } = useParams<{ entity: string }>();
   const [searchTerm, setSearchTerm] = useState('');
-  const [entities, setEntities] = useState<{ id: number; name: string }[]>([]);
+  const [entities, setEntities] = useState<{
+    [x: string]: any; id: number; name: string
+  }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -258,7 +261,7 @@ const EntityList: React.FC = () => {
     if (entity) {
       setIsLoading(true);
       setError(null);
-      
+
       fetch(`http://localhost:8081/api/${entity}`)
         .then((response) => {
           if (!response.ok) {
@@ -267,7 +270,8 @@ const EntityList: React.FC = () => {
           return response.json();
         })
         .then((data) => {
-          setEntities(data);
+          console.log('Fetched Data:', data);  // Verifica qué datos llegan
+          setEntities(data);  // Asegúrate de que los datos se asignan correctamente
           setIsLoading(false);
         })
         .catch((error) => {
@@ -277,9 +281,24 @@ const EntityList: React.FC = () => {
     }
   }, [entity]);
 
-  const filteredEntities = entities.filter(item =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredEntities = entities.filter(item => {
+    if (entity === "Order Details" || entity === "Person") {
+      return item.id?.toString().toLowerCase().includes(searchTerm.toLowerCase());
+    } else if (entity === "Email") {
+      return item.mail?.toLowerCase().includes(searchTerm.toLowerCase());
+    } else if (entity === "Company Type") {
+      return item.description?.toLowerCase().includes(searchTerm.toLowerCase());
+    } else if (entity === "Person Supply") {
+      // Asegúrate de que item.person y item.supply existen
+      return item.person?.id?.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+             item.supply?.barcode?.toLowerCase().includes(searchTerm.toLowerCase());
+    } else if (entity === "Service Approval") {
+      return item.workOrder?.id?.toString().toLowerCase().includes(searchTerm.toLowerCase());
+    } else if (entity === "Phone") {
+      return item.number?.toLowerCase().includes(searchTerm.toLowerCase());
+    }
+    return item.name?.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   const handleAddEntity = () => {
     // Aquí se enviaría una solicitud para agregar una nueva entidad
@@ -303,29 +322,75 @@ const EntityList: React.FC = () => {
 
   return (
     <div>
-      <h2>{entity?.replace('_', ' ')}</h2>
+      <h2>{entity}</h2>
       <SearchBar
         type="text"
         placeholder="Search..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      
+
       {isLoading && <p>Loading...</p>}
       {error && <p>{error}</p>}
-      
+
       {!isLoading && !error && (
-        <EntityGrid>
-          {filteredEntities.map((item) => (
-            <EntityCard key={item.id} to={`/${entity}/${item.id}`}>
-              {item.name}
-            </EntityCard>
-          ))}
-        </EntityGrid>
-      )}
+    <EntityGrid>
+      {filteredEntities.map((item) => {
+        let content;
+        let key; 
+        if (entity === "Company Type") {
+          content = item.description;
+          key = item.id; 
+        }
+        else if (entity === "Email") {
+          content = item.mail;
+          key = item.id; 
+        }
+        else if (entity === "Order Details"  || entity === "Person") {
+
+          content = item.id;
+          key = item.id;
+        }
+        else if (entity === "Person Supply") {
+          content = (
+            <>
+              Person: {item.person?.id} <br />
+              Supply: {item.supply?.barcode}
+            </>
+          );
+          key = `${item.person?.id}/${item.supply?.id}`;
+        }
+        else if (entity === "Service Approval") {
+          content = (
+            <>
+              Id: {item.id} <br />
+              WorkOrder: {item.workOrder.id} 
+            
+            </>
+          );
+          key = item.id;
+        }
+        else if (entity === "Phone" ) {
+
+          content = item.number;
+          key = item.id;
+        }
+        else {
+          content = item.name;
+          key = item.id; 
+        }
+
+        return (
+          <EntityCard key={key} to={`/${entity}/${key}`}>
+            {content}
+          </EntityCard>
+        );
+      })}
+    </EntityGrid>
+  )}
 
       <AddButton onClick={() => setIsModalOpen(true)}>+</AddButton>
-      
+
       {isModalOpen && (
         <Modal onClick={closeModal}>
           <ModalContent>

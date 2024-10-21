@@ -28,8 +28,8 @@ public class PersonServiceImpl implements IPersonService{
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Transactional(readOnly = true)
     @Override
+    @Transactional(readOnly = true)
     public List<Person> findAll() {
         return (List<Person>) personRepository.findAll();
     }
