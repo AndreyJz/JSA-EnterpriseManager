@@ -19,7 +19,7 @@ import com.enterprisemanager.backend.domain.entities.Person;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthenticationController {
 
     @Autowired

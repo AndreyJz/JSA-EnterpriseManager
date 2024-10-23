@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/company")
+@RequestMapping("/api/Companies")
 public class CompanyController {
     @Autowired
     private ICompanyService companyService;

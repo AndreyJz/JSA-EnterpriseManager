@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/country")
+@RequestMapping("/api/Countries")
 public class CountryController {
     @Autowired
     private ICountryService countryService;

@@ -24,7 +24,7 @@ import com.enterprisemanager.backend.domain.entities.ServiceOrder;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/serviceOrder")
+@RequestMapping("/api/Service Order")
 public class ServiceOrderController {
     @Autowired
     private IServiceOrderService serviceOrderService;

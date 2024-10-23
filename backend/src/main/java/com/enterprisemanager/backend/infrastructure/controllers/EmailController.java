@@ -24,7 +24,7 @@ import jakarta.validation.Valid;
 
 
 @RestController
-@RequestMapping("/email")
+@RequestMapping("/api/Email")
 public class EmailController {
     @Autowired
     private IEmailService emailService;

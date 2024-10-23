@@ -24,7 +24,7 @@ import com.enterprisemanager.backend.domain.entities.OrderStatus;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/orderStatus")
+@RequestMapping("/api/Order Status")
 public class OrderStatusController {
     @Autowired
     private IOrderStatusService orderStatusService;
