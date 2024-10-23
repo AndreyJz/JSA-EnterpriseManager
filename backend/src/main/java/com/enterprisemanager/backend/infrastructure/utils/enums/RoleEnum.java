@@ -3,9 +3,9 @@ package com.enterprisemanager.backend.infrastructure.utils.enums;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.enterprisemanager.backend.infrastructure.utils.enums.RolePermission.*;
+import static com.enterprisemanager.backend.infrastructure.utils.enums.RoleEnumPermission.*;
 
-public enum Role {
+public enum RoleEnum {
     ROLE_ADMINISTRATOR(Arrays.asList(
             READ_ALL_SUPPLIES,
             READ_ONE_SUPPLY,
@@ -204,17 +204,17 @@ public enum Role {
 
             READ_MY_PROFILE
     ));
-    private List<RolePermission> permissions;
+    private List<RoleEnumPermission> permissions;
 
-    Role(List<RolePermission> permissions) {
+    RoleEnum(List<RoleEnumPermission> permissions) {
         this.permissions = permissions;
     }
 
-    public List<RolePermission> getPermissions() {
+    public List<RoleEnumPermission> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(List<RolePermission> permissions) {
+    public void setPermissions(List<RoleEnumPermission> permissions) {
         this.permissions = permissions;
     }
 }

@@ -13,6 +13,6 @@ public interface IPersonService {
     Optional<Person> update(String id, Person person);
     Optional<Person> delete(String id);
     boolean existsByUsername(String username);
-    Person registrOneCustomer(UserDto newUser);
+    Person registrOneCustomer(Person newUser);
     Optional<Person> findOneByUsername(String username);
 }
