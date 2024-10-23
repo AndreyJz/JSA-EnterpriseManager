@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const EntityGrid = styled.div`
   display: grid;
@@ -262,46 +263,56 @@ const EntityList: React.FC = () => {
       setIsLoading(true);
       setError(null);
 
-      fetch(`http://localhost:8081/api/${entity}`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Failed to fetch data');
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log('Fetched Data:', data);  // Verifica qué datos llegan
-          setEntities(data);  // Asegúrate de que los datos se asignan correctamente
+      axios.get(`http://localhost:8081/api/${entity}`).then((response) => {
+          console.log('Fetched Data:', response.data);  
+          setEntities(response.data);  
           setIsLoading(false);
         })
         .catch((error) => {
-          setError(error.message);
+          setError(error.message || 'Failed to fetch data');
           setIsLoading(false);
         });
     }
   }, [entity]);
 
-  const filteredEntities = entities.filter(item => {
-    if (entity === "Order Details" || entity === "Person") {
-      return item.id?.toString().toLowerCase().includes(searchTerm.toLowerCase());
-    } else if (entity === "Email") {
-      return item.mail?.toLowerCase().includes(searchTerm.toLowerCase());
-    } else if (entity === "Company Type") {
-      return item.description?.toLowerCase().includes(searchTerm.toLowerCase());
-    } else if (entity === "Person Supply") {
-      // Asegúrate de que item.person y item.supply existen
-      return item.person?.id?.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
-             item.supply?.barcode?.toLowerCase().includes(searchTerm.toLowerCase());
-    } else if (entity === "Service Approval") {
-      return item.workOrder?.id?.toString().toLowerCase().includes(searchTerm.toLowerCase());
-    } else if (entity === "Phone") {
-      return item.number?.toLowerCase().includes(searchTerm.toLowerCase());
+const filteredEntities = entities.filter(item => {
+  switch (entity) {
+    case "Order Details":
+    case "Person": {
+      return item.id.toString().toLowerCase().includes(searchTerm.toLowerCase());
     }
-    return item.name?.toLowerCase().includes(searchTerm.toLowerCase());
-  });
+
+    case "Email":
+      return item.mail?.toLowerCase().includes(searchTerm.toLowerCase());
+
+    case "Company Type":
+      return item.description?.toLowerCase().includes(searchTerm.toLowerCase());
+
+    case "Person Supply":
+      return (
+        
+        item.person?.id?.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.supply?.barcode?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+    case "Service Branches":
+      return (
+        item.branch?.id?.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.service?.id?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+    case "Service Approval":
+      return item.workOrder?.id?.toString().toLowerCase().includes(searchTerm.toLowerCase());
+
+    case "Phone":
+      return item.number?.toLowerCase().includes(searchTerm.toLowerCase());
+
+    default:
+      return item.name?.toLowerCase().includes(searchTerm.toLowerCase());
+  }
+});
 
   const handleAddEntity = () => {
-    // Aquí se enviaría una solicitud para agregar una nueva entidad
     console.log(`Adding new ${entity}:`, newEntityData);
     setNewEntityData({});
     setIsModalOpen(false);
@@ -358,7 +369,16 @@ const EntityList: React.FC = () => {
               Supply: {item.supply?.barcode}
             </>
           );
-          key = `${item.person?.id}/${item.supply?.id}`;
+          key = `${item.person?.id}-${item.supply?.id}`;
+        }
+        else if (entity === "Service Branches") {
+          content = (
+            <>
+              Branch: {item.branch?.id} <br />
+              Service: {item.service?.id}
+            </>
+          );
+          key = `${item.branch?.id}-${item.service?.id}`;
         }
         else if (entity === "Service Approval") {
           content = (
@@ -371,8 +391,12 @@ const EntityList: React.FC = () => {
           key = item.id;
         }
         else if (entity === "Phone" ) {
-
-          content = item.number;
+          content = (
+            <>
+              Person: {item.person.id} <br />
+              {item.number} 
+            </>
+          );
           key = item.id;
         }
         else {

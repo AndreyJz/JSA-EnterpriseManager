@@ -40,7 +40,6 @@ const Button = styled.button`
 const EntityDetails: React.FC = () => {
   const { entity, id } = useParams<{ entity: string; id: string }>();
 
-  // This is a mock function. In a real application, you would fetch data from your API.
   const getEntityDetails = (entityName: string, entityId: string) => {
     return {
       id: entityId,
