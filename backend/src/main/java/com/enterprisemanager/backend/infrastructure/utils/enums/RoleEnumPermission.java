@@ -1,6 +1,6 @@
 package com.enterprisemanager.backend.infrastructure.utils.enums;
 
-public enum RolePermission {
+public enum RoleEnumPermission {
     READ_ALL_SUPPLIES,
     READ_ONE_SUPPLY,
     CREATE_ONE_SUPPLY,

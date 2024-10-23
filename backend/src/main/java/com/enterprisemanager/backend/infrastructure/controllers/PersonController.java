@@ -22,7 +22,7 @@ import java.util.Optional;
 
 //@CrossOrigin(originPatterns = "*")
 @RestController
-@RequestMapping("/api/person")
+@RequestMapping("api/person")
 public class PersonController {
     @Autowired
     private IPersonService personService;
@@ -49,12 +49,13 @@ public class PersonController {
     public ResponseEntity<?> create(@Valid @RequestBody Person person, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
-            }
+        }
+        RegisterUser registeredUser = authenticationService.registerOneCustomer(person);
         return ResponseEntity.status(HttpStatus.CREATED).body(personService.save(person));
     }
 
     @PostMapping("/customer")
-    public ResponseEntity<?> registerOne(@RequestBody @Valid UserDto newUser, BindingResult result){
+    public ResponseEntity<?> registerOne(@RequestBody @Valid Person newUser, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
         }

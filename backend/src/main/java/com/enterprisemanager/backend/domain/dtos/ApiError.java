@@ -8,6 +8,8 @@ public class ApiError implements Serializable {
     private String message;
     private int httpCode;
     private LocalDateTime time;
+    private String url;
+    private String method;
 
     public String getBackedMessage() {
         return backedMessage;
@@ -40,4 +42,21 @@ public class ApiError implements Serializable {
     public void setTime(LocalDateTime time) {
         this.time = time;
     }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
 }

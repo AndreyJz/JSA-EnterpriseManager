@@ -1,5 +1,7 @@
 package com.enterprisemanager.backend.infrastructure.controllers;
 
+import com.enterprisemanager.backend.domain.dtos.auth.LogoutResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +38,12 @@ public class AuthenticationController {
         AuthenticationResponse rsp = authenticationService.login(authenticationRequest);
         return ResponseEntity.ok(rsp);
 
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<LogoutResponse> logout(HttpServletRequest request){
+        authenticationService.logout(request);
+        return ResponseEntity.ok(new LogoutResponse("La sesión se cerro exitosamente"));
     }
 
     @GetMapping("/profile")
