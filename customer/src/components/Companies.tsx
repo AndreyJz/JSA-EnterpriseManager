@@ -1,25 +1,48 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import Company from './Company';
+import axios from 'axios';
 
-const companiesData = [
-  { name: "TechCorp", logo: "https://source.unsplash.com/random/200x200?tech" },
-  { name: "DataSystems", logo: "https://source.unsplash.com/random/200x200?data" },
-  { name: "SecureNet", logo: "https://source.unsplash.com/random/200x200?security" },
-  { name: "CloudWave", logo: "https://source.unsplash.com/random/200x200?cloud" },
-  { name: "InnovateTech", logo: "https://source.unsplash.com/random/200x200?innovation" },
-  { name: "GlobalIT", logo: "https://source.unsplash.com/random/200x200?global" },
-];
+
 
 function Companies() {
+  const [companiesData, setCompanies] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+
+  const getCompanies = async () => {
+    try {
+      const responseCompany = await axios.get<any[]>("http://localhost:8081/api/company");
+      console.log("Datos recibidos:", responseCompany.data);
+      setCompanies(responseCompany.data);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.error("Error con Axios:", err.message);
+        setError("Error al obtener datos del servidor.");
+      } else {
+        console.error("Error inesperado:", err);
+        setError("Ocurrió un error inesperado.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getCompanies();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
+
   return (
     <div className="bg-gray-100 py-16">
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold text-center mb-12">Our Partner Companies</h1>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {companiesData.map((company, index) => (
-            <div key={index} className="bg-white p-6 rounded-lg shadow-md text-center">
-              <img src={company.logo} alt={company.name} className="w-32 h-32 mx-auto mb-4 rounded-full" />
-              <h3 className="text-xl font-semibold">{company.name}</h3>
-            </div>
+            <Company key={index} companyData={company} />
           ))}
         </div>
       </div>

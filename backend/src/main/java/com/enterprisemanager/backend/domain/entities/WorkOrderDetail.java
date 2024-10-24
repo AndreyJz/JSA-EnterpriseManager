@@ -23,9 +23,9 @@ public class WorkOrderDetail {
     @NotNull(message = "You have to add a Work order")
     private WorkOrder workOrder;
     
-     @ManyToOne
-     @JoinColumn(name = "employee_id")
-     private Person person;
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Person person;
     
     @Column(columnDefinition = "datetime")
     private String date;

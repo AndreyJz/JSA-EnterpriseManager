@@ -5,48 +5,18 @@ import Carousel from './Carousel';
 import { useCart } from '../context/CartContext';
 import axios from 'axios';
 
-const servicesData = [
-  {
-    id: 1,
-    title: "Enterprise Server Solution",
-    price: 4999,
-    description: "High-performance server solution for large enterprises.",
-  },
-  {
-    id: 2,
-    title: "Business Analytics Software",
-    price: 1999,
-    description: "Tools to analyze and manage your business data.",
-  },
-  {
-    id: 3,
-    title: "Corporate Security Package",
-    price: 2999,
-    description: "Comprehensive security solutions for businesses.",
-  },
-  {
-    id: 4,
-    title: "Cloud Integration Services",
-    price: 3499,
-    description: "Seamless cloud integration for your enterprise.",
-  }
-];
-
-const companiesData = [
-  { name: "TechCorp", logo: "https://source.unsplash.com/random/200x200?tech" },
-  { name: "DataSystems", logo: "https://source.unsplash.com/random/200x200?data" },
-  { name: "SecureNet", logo: "https://source.unsplash.com/random/200x200?security" },
-  { name: "CloudWave", logo: "https://source.unsplash.com/random/200x200?cloud" },
-  { name: "InnovateTech", logo: "https://source.unsplash.com/random/200x200?innovation" },
-  { name: "GlobalIT", logo: "https://source.unsplash.com/random/200x200?global" },
-];
-
 
 function Home() {
   const { addToCart } = useCart();
-  const [data, setData] = useState<any[]>([]);
+  const [servicedata, setData] = useState<any[]>([]);
+  const [companiesData, setCompanies] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [loading1, setLoading1] = useState<boolean>(true);
+  const [error1, setError1] = useState<string | null>(null);
+  const [showAlert, setShowAlert] = useState<boolean>(false); // Estado para la alerta
+
+
   const getData = async () => {
     try {
       const response = await axios.get<any[]>("http://localhost:8081/api/serviceBranch");
@@ -62,24 +32,52 @@ function Home() {
       }
     } finally {
       setLoading(false);
+      
+    }
+  };
+  const getCompanies = async () => {
+    try {
+      const responseCompany = await axios.get<any[]>("http://localhost:8081/api/company");
+      console.log("Datos recibidos:", responseCompany.data);
+      setCompanies(responseCompany.data);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.error("Error con Axios:", err.message);
+        setError1("Error al obtener datos del servidor.");
+      } else {
+        console.error("Error inesperado:", err);
+        setError1("Ocurrió un error inesperado.");
+      }
+    } finally {
+      setLoading1(false);
     }
   };
 
   useEffect(() => {
     getData();
+    getCompanies();
   }, []);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
+  if (loading1) return <p>Loading...</p>;
+  if (error1) return <p>{error1}</p>;
 
 
+  const handleAddToCart = (service: any) => {
+    addToCart(service); 
+    setShowAlert(true);  // Mostrar la alerta
+    setTimeout(() => setShowAlert(false), 1000); // Ocultar después de 1 segundos
+  };
+
+  
   return (
     <div className="bg-gray-100">
-      <section className="hero text-black py-20">
+      <section className="hero text-black py-20 px-20">
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
-          <div className="md:w-1/2 mb-8 md:mb-0">
-            <h1 className="text-4xl font-bold mb-4">Empower Your Business with Our Enterprise Solutions</h1>
-            <p className="text-xl mb-6">
+          <div className="md:w-4/5 mb-8 md:mb-0">
+            <h1 className="text-5xl font-bold mb-4">Empower Your Business with Our Enterprise Solutions</h1>
+            <p className="text-2xl mb-6">
               Streamline operations, boost productivity, and drive growth with our cutting-edge JSA products and services.
             </p>
             <div className="space-x-4">
@@ -87,8 +85,8 @@ function Home() {
               <Link to="/about" className="border-2 border-black px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition duration-300">About Us</Link>
             </div>
           </div>
-          <div className="md:w-1/2">
-            <img src="../../src/images/testhome.png" alt="Enterprise Solutions" className="rounded-lg" />
+          <div className=" md:w-full flex justify-center items-center">
+            <img src="../../src/images/testhome.png" alt="Enterprise Solutions" className="rounded-lg md:w-2/3" />
           </div>
         </div>
       </section>
@@ -97,8 +95,12 @@ function Home() {
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">Featured Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {data.map((service) => (
-              <Service key={service.id} serviceData={service} onAddToCart={() => addToCart(service)} />
+            {servicedata.map((service) => (
+              <Service
+              key={`${service.id.branchId}-${service.id.serviceId}`}
+              serviceData={service}
+              onAddToCart={() => handleAddToCart(service)} // Usar la función que maneja la alerta
+            />
             ))}
           </div>
         </div>
@@ -110,6 +112,13 @@ function Home() {
           <Carousel items={companiesData} />
         </div>
       </section>
+
+      {showAlert && (
+          <div className="fixed bottom-3 right-0 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded">
+            Item added successfully!
+          </div>
+        )}
+
     </div>
   );
 }

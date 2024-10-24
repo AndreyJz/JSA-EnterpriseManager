@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import emailjs from 'emailjs-com'; // Importa EmailJS
 
 function ContactUs() {
   const [formData, setFormData] = useState({
@@ -6,7 +7,10 @@ function ContactUs() {
     email: '',
     message: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<string | null>(null);
 
+  // Manejar el cambio de los campos del formulario
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
@@ -15,11 +19,35 @@ function ContactUs() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Función para enviar el formulario a través de EmailJS
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the form data to your server
-    console.log('Form submitted:', formData);
-    // Reset form or show success message
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        message: formData.message,
+      };
+
+      // Reemplaza estos valores con tus propios IDs de EmailJS
+      const serviceID = 'jsa-service';
+      const templateID = 'template_9r4tp4c';
+      const userID = '_v9O1hjhH9KbGtI-1';
+
+      // Envía el correo utilizando EmailJS
+      await emailjs.send(serviceID, templateID, templateParams, userID);
+
+      setSubmitStatus('success');
+      setFormData({ name: '', email: '', message: '' }); // Limpiar el formulario después de enviar
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -66,11 +94,20 @@ function ContactUs() {
             </div>
             <button
               type="submit"
-              className="w-full bg-black text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300"
+              className="w-full bg-black text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300 disabled:opacity-50"
+              disabled={isSubmitting}
             >
-              Send Message
+              {isSubmitting ? 'Sending...' : 'Send Message'}
             </button>
           </form>
+
+          {/* Mostrar el mensaje de éxito o error */}
+          {submitStatus === 'success' && (
+            <p className="mt-4 text-green-600 text-center">Message sent successfully!</p>
+          )}
+          {submitStatus === 'error' && (
+            <p className="mt-4 text-red-600 text-center">Failed to send message. Please try again.</p>
+          )}
         </div>
       </div>
     </div>
