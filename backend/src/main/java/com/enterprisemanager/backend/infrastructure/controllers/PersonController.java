@@ -22,7 +22,7 @@ import java.util.Optional;
 
 //@CrossOrigin(originPatterns = "*")
 @RestController
-@RequestMapping("api/person")
+@RequestMapping("api/Person")
 public class PersonController {
     @Autowired
     private IPersonService personService;

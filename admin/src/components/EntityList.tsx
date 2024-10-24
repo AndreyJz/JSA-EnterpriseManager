@@ -6,14 +6,14 @@ import axios from 'axios';
 const EntityGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  gap: 30px;
 `;
 
 const EntityCard = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100px;
+  height: 150px;
   background-color: #1e88e5;
   color: white;
   text-decoration: none;
@@ -21,6 +21,7 @@ const EntityCard = styled(Link)`
   border-radius: 4px;
   transition: background-color 0.3s;
   overflow-x:hidden;
+  padding: 20px;
 
   &:hover {
     background-color: #1565c0;
@@ -251,66 +252,197 @@ const EntityList: React.FC = () => {
   const { entity } = useParams<{ entity: string }>();
   const [searchTerm, setSearchTerm] = useState('');
   const [entities, setEntities] = useState<{
-    [x: string]: any; id: number; name: string
+    [x: string]: any; id?: number; name?: string
   }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newEntityData, setNewEntityData] = useState<{ [key: string]: string }>({});
 
+  // Limpiar los datos cuando cambia la entidad
+  useEffect(() => {
+    setEntities([]);
+    setSearchTerm('');
+    setError(null);
+  }, [entity]);
+
+  // Efecto separado para cargar los datos
   useEffect(() => {
     if (entity) {
       setIsLoading(true);
-      setError(null);
 
-      axios.get(`http://localhost:8081/api/${entity}`).then((response) => {
-          console.log('Fetched Data:', response.data);  
-          setEntities(response.data);  
-          setIsLoading(false);
+      axios.get(`http://localhost:8081/api/${entity}`)
+        .then((response) => {
+          console.log('Fetched Data:', response.data);
+          // Asegurarse de que los datos son válidos antes de establecerlos
+          const validData = Array.isArray(response.data) ? response.data : [];
+          setEntities(validData);
         })
         .catch((error) => {
           setError(error.message || 'Failed to fetch data');
+        })
+        .finally(() => {
           setIsLoading(false);
         });
     }
   }, [entity]);
 
-const filteredEntities = entities.filter(item => {
-  switch (entity) {
-    case "Order Details":
-    case "Person": {
-      return item.id.toString().toLowerCase().includes(searchTerm.toLowerCase());
+  // Función auxiliar para validar item
+  const isValidItem = (item: any): boolean => {
+    if (!item) return false;
+    
+    switch (entity) {
+      case "Work Order Detail":
+        return item.id !== undefined && item.id !== null;
+      case "Supply Service":
+        return item.serviceBranch?.branch && item.serviceBranch?.service && item.supply;
+      case "Service Branches":
+        return item.branch && item.service;
+      case "Person Supply":
+        return item.person && item.supply;
+      default:
+        return true;
+    }
+  };
+
+  // Función auxiliar para generar una key única
+  const generateKey = (item: any): string => {
+    if (!item) return `empty-${Date.now()}`;
+
+    try {
+      switch (entity) {
+        case "Work Order Detail":
+          return `work-order-detail-${item.id?.toString() || Date.now()}`;
+        case "Person Supply":
+          return `person-supply-${item.person?.id || 'na'}-${item.supply?.id || 'na'}`;
+        case "Service Branches":
+          return `service-branch-${item.branch?.id || 'na'}-${item.service?.id || 'na'}`;
+        case "Supply Service":
+          return `supply-service-${item.serviceBranch?.branch?.id || 'na'}-${item.serviceBranch?.service?.id || 'na'}-${item.supply?.id || 'na'}`;
+        case "Service Approval":
+          return `service-approval-${item.id || 'na'}-${item.workOrder?.id || 'na'}`;
+        case "Phone":
+          return `phone-${item.person?.id || 'na'}-${item.number || 'na'}`;
+        default:
+          if (item.id !== undefined) {
+            return `${entity?.toLowerCase().replace(/\s+/g, '-')}-${item.id}`;
+          }
+          return `${entity?.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      }
+    } catch (error) {
+      console.error('Error generating key:', error);
+      return `fallback-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    }
+  };
+
+  // Función auxiliar para generar el contenido
+  const generateContent = (item: any): React.ReactNode => {
+    if (!isValidItem(item)) {
+      return <span>Invalid Item</span>;
     }
 
-    case "Email":
-      return item.mail?.toLowerCase().includes(searchTerm.toLowerCase());
+    try {
+      switch (entity) {
+        case "Work Order Detail":
+          return (
+            <div>
+              {item.id !== undefined ? `Order Detail ID: ${item.id}` : 'Invalid Work Order Detail'}
+            </div>
+          );
+        case "Company Type":
+          return item.description || 'N/A';
+        case "Email":
+          return item.mail || 'N/A';
+        case "Work Orders":
+          return item.workOrderNum || 'N/A';
+        case "Order Details":
+        case "Person":
+        case "Service Order":
+          return `ID: ${item.id?.toString() || 'N/A'}`;
+        case "Person Supply":
+          return (
+            <>
+              Person: {item.person?.id || 'N/A'} <br />
+              Supply: {item.supply?.barcode || 'N/A'}
+            </>
+          );
+        case "Service Branches":
+          return (
+            <>
+              Branch: {item.branch?.id || 'N/A'} <br />
+              Service: {item.service?.id || 'N/A'}
+            </>
+          );
+        case "Service Approval":
+          return (
+            <>
+              Id: {item.id || 'N/A'} <br />
+              WorkOrder: {item.workOrder?.id || 'N/A'}
+            </>
+          );
+        case "Supply Service":
+          return (
+            <>
+              Branch: {item.serviceBranch?.branch?.name || 'N/A'} <br/>
+              Service: {item.serviceBranch?.service?.name || 'N/A'} <br/>
+              Supply: {item.supply?.name || 'N/A'}
+            </>
+          );
+        case "Phone":
+          return (
+            <>
+              Person: {item.person?.id || 'N/A'} <br />
+              {item.number || 'N/A'}
+            </>
+          );
+        default:
+          return item.name || 'N/A';
+      }
+    } catch (error) {
+      console.error('Error generating content:', error);
+      return <span>Error displaying content</span>;
+    }
+  };
 
-    case "Company Type":
-      return item.description?.toLowerCase().includes(searchTerm.toLowerCase());
-
-    case "Person Supply":
-      return (
-        
-        item.person?.id?.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.supply?.barcode?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-
-    case "Service Branches":
-      return (
-        item.branch?.id?.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.service?.id?.toString().toLowerCase().includes(searchTerm.toLowerCase())
-      );
-
-    case "Service Approval":
-      return item.workOrder?.id?.toString().toLowerCase().includes(searchTerm.toLowerCase());
-
-    case "Phone":
-      return item.number?.toLowerCase().includes(searchTerm.toLowerCase());
-
-    default:
-      return item.name?.toLowerCase().includes(searchTerm.toLowerCase());
-  }
-});
+  const filteredEntities = entities.filter(item => {
+    if (!isValidItem(item)) return false;
+    
+    const searchTermLower = searchTerm.toLowerCase();
+    switch (entity) {
+      case "Work Order Detail":
+        return item.id?.toString().toLowerCase().includes(searchTermLower);
+      case "Order Details":
+      case "Person":
+      case "Service Order":
+        return item.id?.toString().toLowerCase().includes(searchTermLower);
+      case "Email":
+        return item.mail?.toLowerCase().includes(searchTermLower);
+      case "Company Type":
+        return item.description?.toLowerCase().includes(searchTermLower);
+      case "Person Supply":
+        return (
+          item.person?.id?.toString().toLowerCase().includes(searchTermLower) ||
+          item.supply?.barcode?.toLowerCase().includes(searchTermLower)
+        );
+      case "Supply Service":
+        return (
+          item.serviceBranch?.service?.name?.toString().toLowerCase().includes(searchTermLower) 
+        );
+      case "Service Branches":
+        return (
+          item.branch?.id?.toString().toLowerCase().includes(searchTermLower) ||
+          item.service?.id?.toString().toLowerCase().includes(searchTermLower)
+        );
+      case "Service Approval":
+        return item.workOrder?.id?.toString().toLowerCase().includes(searchTermLower);
+      case "Phone":
+        return item.number?.toLowerCase().includes(searchTermLower);
+      case "Work Orders":
+        return item.workOrderNum?.toLowerCase().includes(searchTermLower);
+      default:
+        return item.name?.toLowerCase().includes(searchTermLower);
+    }
+  });
 
   const handleAddEntity = () => {
     console.log(`Adding new ${entity}:`, newEntityData);
@@ -345,73 +477,19 @@ const filteredEntities = entities.filter(item => {
       {error && <p>{error}</p>}
 
       {!isLoading && !error && (
-    <EntityGrid>
-      {filteredEntities.map((item) => {
-        let content;
-        let key; 
-        if (entity === "Company Type") {
-          content = item.description;
-          key = item.id; 
-        }
-        else if (entity === "Email") {
-          content = item.mail;
-          key = item.id; 
-        }
-        else if (entity === "Order Details"  || entity === "Person") {
-
-          content = item.id;
-          key = item.id;
-        }
-        else if (entity === "Person Supply") {
-          content = (
-            <>
-              Person: {item.person?.id} <br />
-              Supply: {item.supply?.barcode}
-            </>
-          );
-          key = `${item.person?.id}-${item.supply?.id}`;
-        }
-        else if (entity === "Service Branches") {
-          content = (
-            <>
-              Branch: {item.branch?.id} <br />
-              Service: {item.service?.id}
-            </>
-          );
-          key = `${item.branch?.id}-${item.service?.id}`;
-        }
-        else if (entity === "Service Approval") {
-          content = (
-            <>
-              Id: {item.id} <br />
-              WorkOrder: {item.workOrder.id} 
+        <EntityGrid>
+          {filteredEntities.map((item) => {
+            const key = generateKey(item);
+            const content = generateContent(item);
             
-            </>
-          );
-          key = item.id;
-        }
-        else if (entity === "Phone" ) {
-          content = (
-            <>
-              Person: {item.person.id} <br />
-              {item.number} 
-            </>
-          );
-          key = item.id;
-        }
-        else {
-          content = item.name;
-          key = item.id; 
-        }
-
-        return (
-          <EntityCard key={key} to={`/${entity}/${key}`}>
-            {content}
-          </EntityCard>
-        );
-      })}
-    </EntityGrid>
-  )}
+            return (
+              <EntityCard key={key} to={`/${entity}/${key}`}>
+                {content}
+              </EntityCard>
+            );
+          })}
+        </EntityGrid>
+      )}
 
       <AddButton onClick={() => setIsModalOpen(true)}>+</AddButton>
 
