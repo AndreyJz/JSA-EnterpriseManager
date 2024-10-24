@@ -47,6 +47,7 @@ public class HttpSecurityConfig {
                 .authenticationProvider(daoAuthProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests( authReqConfig -> {
+//                    authReqConfig.anyRequest().permitAll();
                     authReqConfig.anyRequest().access(authorizationManager);
                 } )
                 .exceptionHandling( exceptionConfig -> {
