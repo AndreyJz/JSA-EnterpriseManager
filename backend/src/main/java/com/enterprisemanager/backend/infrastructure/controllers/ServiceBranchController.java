@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/Service Branches")
+@RequestMapping("/api/Service_Branches")
 public class ServiceBranchController {
     @Autowired
     private IServiceBranchService serviceBranchService;

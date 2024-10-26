@@ -25,7 +25,7 @@ import com.enterprisemanager.backend.domain.entities.PersonSupplyId;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/Person Supply")
+@RequestMapping("/api/Person_Supply")
 public class PersonSupplyController {
     @Autowired
     private IPersonSupplyService personSupplyService;

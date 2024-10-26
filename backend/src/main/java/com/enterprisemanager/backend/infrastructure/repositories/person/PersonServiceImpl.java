@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.enterprisemanager.backend.application.services.IRoleService;
 import com.enterprisemanager.backend.domain.entities.Role;
-//import com.enterprisemanager.backend.infrastructure.repositories.role.RoleRepository;
+import com.enterprisemanager.backend.infrastructure.repositories.branch.BranchRepository;
 import com.enterprisemanager.backend.infrastructure.utils.exceptions.InvalidPasswordException;
 import com.enterprisemanager.backend.infrastructure.utils.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +23,8 @@ public class PersonServiceImpl implements IPersonService{
     @Autowired
     private PersonRepository personRepository;
 
-//    @Autowired
-//    private RoleRepository roleRepository;
+    @Autowired
+    private BranchRepository branchRepository;
 
     @Autowired
     private IRoleService roleService;
@@ -57,7 +57,7 @@ public class PersonServiceImpl implements IPersonService{
         user.setLastname(newUser.getLastname());
         user.setDate(LocalDateTime.now());
         user.setPersonType(newUser.getPersonType());
-        user.setBranch(newUser.getBranch());
+        user.setBranch(branchRepository.findById(4L).get());
         Role defualtRole = roleService.findDefaultRole()
                 .orElseThrow(() -> new ObjectNotFoundException("Default role not found"));
         user.setRole(defualtRole);
@@ -109,7 +109,7 @@ public class PersonServiceImpl implements IPersonService{
         user.setDate(LocalDateTime.now());
         user.setLastname(newUser.getLastname());
         user.setPersonType(newUser.getPersonType());
-        user.setBranch(newUser.getBranch());
+        user.setBranch(branchRepository.findById(4L).get());
         Role defualtRole = roleService.findDefaultRole()
                         .orElseThrow(() -> new ObjectNotFoundException("Default role not found"));
         user.setRole(defualtRole);

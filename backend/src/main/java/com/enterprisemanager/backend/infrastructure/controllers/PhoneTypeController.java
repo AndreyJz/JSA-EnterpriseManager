@@ -24,7 +24,7 @@ import jakarta.validation.Valid;
 
 
 @RestController
-@RequestMapping("/api/Phone Type")
+@RequestMapping("/api/Phone_Type")
 public class PhoneTypeController {
     @Autowired
     private IPhoneTypeService phoneTypeService;
