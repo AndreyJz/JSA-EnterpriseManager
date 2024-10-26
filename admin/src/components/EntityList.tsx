@@ -6,14 +6,14 @@ import axios from 'axios';
 const EntityGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  gap: 30px;
 `;
 
 const EntityCard = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100px;
+  height: 150px;
   background-color: #1e88e5;
   color: white;
   text-decoration: none;
@@ -21,6 +21,7 @@ const EntityCard = styled(Link)`
   border-radius: 4px;
   transition: background-color 0.3s;
   overflow-x:hidden;
+  padding: 20px;
 
   &:hover {
     background-color: #1565c0;
@@ -78,6 +79,8 @@ const Input = styled.input`
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
+  border-radius:5px;
+
 `;
 
 const Button = styled.button`
@@ -87,6 +90,7 @@ const Button = styled.button`
   border: none;
   cursor: pointer;
   width: 100%;
+  border-radius:5px;
 
   &:hover {
     background-color: #45a049;
@@ -99,12 +103,10 @@ interface EntityField {
 }
 
 const entityFields: { [key: string]: EntityField[] } = {
-  approval_status: [
-    { name: 'id', type: 'number' },
-    { name: 'name', type: 'text' },
+  "Approval Status": [
+    { name: 'Name', type: 'text' },
   ],
   branches: [
-    { name: 'id', type: 'number' },
     { name: 'name', type: 'text' },
     { name: 'nit', type: 'text' },
     { name: 'creation_date', type: 'datetime' },
@@ -150,7 +152,7 @@ const entityFields: { [key: string]: EntityField[] } = {
     { name: 'id', type: 'number' },
     { name: 'name', type: 'text' },
   ],
-  person: [
+  Person: [
     { name: 'id', type: 'text' },
     { name: 'name', type: 'text' },
     { name: 'lastname', type: 'text' },
@@ -180,10 +182,9 @@ const entityFields: { [key: string]: EntityField[] } = {
     { name: 'id', type: 'number' },
     { name: 'name', type: 'text' },
   ],
-  regions: [
-    { name: 'id', type: 'number' },
-    { name: 'name', type: 'text' },
-    { name: 'country_id', type: 'number' },
+  Regions: [
+    { name: 'Name', type: 'text' },
+    { name: 'Country', type: 'number' },
   ],
   service_approval: [
     { name: 'id', type: 'number' },
@@ -247,82 +248,384 @@ const entityFields: { [key: string]: EntityField[] } = {
   ],
 };
 
+// Helper function to transform form data to API format
+const transformFormDataToApiFormat = (entity: string, formData: { [key: string]: string }) => {
+  switch (entity) {
+    case 'Regions':
+      return {
+        name: formData.Name,
+        country: {
+          id: parseInt(formData.Country)
+        }
+      };
+    case 'Approval Status':
+      return {
+        name: formData.Name
+      };
+    case 'cities':
+      return {
+        name: formData.name,
+        region: {
+          id: parseInt(formData.region_id)
+        }
+      };
+    case 'branches':
+      return {
+        name: formData.name,
+        nit: formData.nit,
+        creationDate: formData.creation_date,
+        city: {
+          id: parseInt(formData.city_id)
+        },
+        company: {
+          id: parseInt(formData.company_id)
+        }
+      };
+    case 'companies':
+      return {
+        name: formData.name,
+        companyType: {
+          id: parseInt(formData.company_type_id)
+        }
+      };
+    case 'person':
+      return {
+        id: formData.id,
+        name: formData.name,
+        lastname: formData.lastname,
+        password: formData.password,
+        date: formData.date,
+        username: formData.username,
+        role: formData.role,
+        branch: {
+          id: parseInt(formData.branch_id)
+        },
+        personType: {
+          id: parseInt(formData.person_type_id)
+        }
+      };
+    // Add more cases for other entities as needed
+    default:
+      // For simple entities that don't need transformation
+      return formData;
+  }
+};
+
 const EntityList: React.FC = () => {
   const { entity } = useParams<{ entity: string }>();
   const [searchTerm, setSearchTerm] = useState('');
   const [entities, setEntities] = useState<{
-    [x: string]: any; id: number; name: string
+    [x: string]: any; id?: number; name?: string
   }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newEntityData, setNewEntityData] = useState<{ [key: string]: string }>({});
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
+  // Limpiar los datos cuando cambia la entidad
+  useEffect(() => {
+    setEntities([]);
+    setSearchTerm('');
+    setError(null);
+  }, [entity]);
+
+  // Efecto separado para cargar los datos
   useEffect(() => {
     if (entity) {
       setIsLoading(true);
-      setError(null);
 
-      axios.get(`http://localhost:8081/api/${entity}`).then((response) => {
-          console.log('Fetched Data:', response.data);  
-          setEntities(response.data);  
-          setIsLoading(false);
+      axios.get(`http://localhost:8081/api/${entity}`)
+        .then((response) => {
+          console.log('Fetched Data:', response.data);
+          // Asegurarse de que los datos son válidos antes de establecerlos
+          const validData = Array.isArray(response.data) ? response.data : [];
+          setEntities(validData);
         })
         .catch((error) => {
           setError(error.message || 'Failed to fetch data');
+        })
+        .finally(() => {
           setIsLoading(false);
         });
     }
   }, [entity]);
 
-const filteredEntities = entities.filter(item => {
-  switch (entity) {
-    case "Order Details":
-    case "Person": {
-      return item.id.toString().toLowerCase().includes(searchTerm.toLowerCase());
+  // Función auxiliar para validar item
+  const isValidItem = (item: any): boolean => {
+    if (!item) return false;
+    
+    switch (entity) {
+      case "Work Order Detail":
+        return item.id !== undefined && item.id !== null;
+      case "Supply Service":
+        return item.serviceBranch?.branch && item.serviceBranch?.service && item.supply;
+      case "Service Branches":
+        return item.branch && item.service;
+      case "Person Supply":
+        return item.person && item.supply;
+      default:
+        return true;
     }
-
-    case "Email":
-      return item.mail?.toLowerCase().includes(searchTerm.toLowerCase());
-
-    case "Company Type":
-      return item.description?.toLowerCase().includes(searchTerm.toLowerCase());
-
-    case "Person Supply":
-      return (
-        
-        item.person?.id?.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.supply?.barcode?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-
-    case "Service Branches":
-      return (
-        item.branch?.id?.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.service?.id?.toString().toLowerCase().includes(searchTerm.toLowerCase())
-      );
-
-    case "Service Approval":
-      return item.workOrder?.id?.toString().toLowerCase().includes(searchTerm.toLowerCase());
-
-    case "Phone":
-      return item.number?.toLowerCase().includes(searchTerm.toLowerCase());
-
-    default:
-      return item.name?.toLowerCase().includes(searchTerm.toLowerCase());
-  }
-});
-
-  const handleAddEntity = () => {
-    console.log(`Adding new ${entity}:`, newEntityData);
-    setNewEntityData({});
-    setIsModalOpen(false);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Función auxiliar para generar una key única
+  const generateKey = (item: any): string => {
+    if (!item) return `empty-${Date.now()}`;
+
+    try {
+      switch (entity) {
+        case "Work Order Detail":
+          return item.id?.toString();
+        case "Person Supply":
+          return `${item.person?.id || 'na'}-${item.supply?.id || 'na'}`;
+        case "Service Branches":
+          return `${item.branch?.id || 'na'}-${item.service?.id || 'na'}`;
+        case "Supply Service":
+          return `${item.serviceBranch?.branch?.id || 'na'}-${item.serviceBranch?.service?.id || 'na'}-${item.supply?.id || 'na'}`;
+        case "Service Approval":
+          return `${item.id || 'na'}`;
+
+        default:
+          if (item.id !== undefined) {
+            return item.id;
+          }
+          return `${entity?.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      }
+    } catch (error) {
+      console.error('Error generating key:', error);
+      return `fallback-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    }
+  };
+
+  // Función auxiliar para generar el contenido
+  const generateContent = (item: any): React.ReactNode => {
+    if (!isValidItem(item)) {
+      return <span>Invalid Item</span>;
+    }
+
+    try {
+      switch (entity) {
+        case "Work Order Detail":
+          return (
+            <div>
+              {item.id !== undefined 
+                ? (
+                    <>
+                      {`Order: ${item.workOrder.workOrderNum}`}<br />
+                      {`Detail: ${item.id}` }
+                    </>
+                  )
+                : 'Invalid Work Order Detail'}
+            </div>
+          );
+        case "Company Type":
+          return item.description || 'N/A';
+        case "Email":
+          return item.mail || 'N/A';
+        case "Work Orders":
+          return item.workOrderNum || 'N/A';
+        case "Order Details":
+        case "Person":
+        case "Service Order":
+          return `${item.id?.toString() || 'N/A'}`;
+        case "Person Supply":
+          return (
+            <>
+              Person: {item.person?.id || 'N/A'} <br />
+              Supply: {item.supply?.barcode || 'N/A'}
+            </>
+          );
+        case "Service Branches":
+          return (
+            <>
+              Branch: {item.branch?.id || 'N/A'} <br />
+              Service: {item.service?.id || 'N/A'}
+            </>
+          );
+        case "Service Approval":
+          return (
+            <>
+              Id: {item.id || 'N/A'} <br />
+              WorkOrder: {item.workOrder?.id || 'N/A'}
+            </>
+          );
+        case "Supply Service":
+          return (
+            <>
+              Branch: {item.serviceBranch?.branch?.name || 'N/A'} <br/>
+              Service: {item.serviceBranch?.service?.name || 'N/A'} <br/>
+              Supply: {item.supply?.name || 'N/A'}
+            </>
+          );
+        case "Phone":
+          return (
+            <>
+              Person: {item.person?.id || 'N/A'} <br />
+              {item.number || 'N/A'}
+            </>
+          );
+        default:
+          return item.name || 'N/A';
+      }
+    } catch (error) {
+      console.error('Error generating content:', error);
+      return <span>Error displaying content</span>;
+    }
+  };
+
+  const filteredEntities = entities.filter(item => {
+    if (!isValidItem(item)) return false;
+    
+    const searchTermLower = searchTerm.toLowerCase();
+    switch (entity) {
+      case "Work Order Detail":
+        return (
+          item.id?.toString().toLowerCase().includes(searchTermLower)||
+          item.workOrder.workOrderNum.toString().toLowerCase().includes(searchTermLower)
+        );
+      case "Order Details":
+      case "Person":
+      case "Service Order":
+        return item.id?.toString().toLowerCase().includes(searchTermLower);
+      case "Email":
+        return item.mail?.toLowerCase().includes(searchTermLower);
+      case "Company Type":
+        return item.description?.toLowerCase().includes(searchTermLower);
+      case "Person Supply":
+        return (
+          item.person?.id?.toString().toLowerCase().includes(searchTermLower) ||
+          item.supply?.barcode?.toLowerCase().includes(searchTermLower)
+        );
+      case "Supply Service":
+        return (
+          item.serviceBranch?.service?.name?.toString().toLowerCase().includes(searchTermLower) 
+        );
+      case "Service Branches":
+        return (
+          item.branch?.id?.toString().toLowerCase().includes(searchTermLower) ||
+          item.service?.id?.toString().toLowerCase().includes(searchTermLower)
+        );
+      case "Service Approval":
+        return item.workOrder?.id?.toString().toLowerCase().includes(searchTermLower);
+      case "Phone":
+        return item.number?.toLowerCase().includes(searchTermLower);
+      case "Work Orders":
+        return item.workOrderNum?.toLowerCase().includes(searchTermLower);
+      default:
+        return item.name?.toLowerCase().includes(searchTermLower);
+    }
+  });
+
+
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setNewEntityData({
       ...newEntityData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const renderInput = (field: EntityField) => {
+    switch (field.type) {
+      case 'datetime':
+        return (
+          <Input
+            key={field.name}
+            type="datetime-local"
+            name={field.name}
+            placeholder={field.name.replace(/_/g, ' ')}
+            value={newEntityData[field.name] || ''}
+            onChange={handleInputChange}
+          />
+        );
+      case 'number':
+        return (
+          <Input
+            key={field.name}
+            type="number"
+            name={field.name}
+            placeholder={field.name.replace(/_/g, ' ')}
+            value={newEntityData[field.name] || ''}
+            onChange={handleInputChange}
+          />
+        );
+      case 'boolean':
+        return (
+          <select
+            key={field.name}
+            name={field.name}
+            value={newEntityData[field.name] || ''}
+            onChange={handleInputChange}
+          >
+            <option value="">Select...</option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+        );
+      case 'select':
+        if (field.name === 'role') {
+          return (
+            <select
+              key={field.name}
+              name={field.name}
+              value={newEntityData[field.name] || ''}
+              onChange={handleInputChange}
+            >
+              <option value="">Select Role...</option>
+              <option value="ADMIN">Admin</option>
+              <option value="USER">User</option>
+              <option value="EMPLOYEE">Employee</option>
+            </select>
+          );
+        }
+        return (
+          <Input
+            key={field.name}
+            type="text"
+            name={field.name}
+            placeholder={field.name.replace(/_/g, ' ')}
+            value={newEntityData[field.name] || ''}
+            onChange={handleInputChange}
+          />
+        );
+      default:
+        return (
+          <Input
+            key={field.name}
+            type="text"
+            name={field.name}
+            placeholder={field.name.replace(/_/g, ' ')}
+            value={newEntityData[field.name] || ''}
+            onChange={handleInputChange}
+          />
+        );
+    }
+  };
+
+  const handleAddEntity = async () => {
+    try {
+      setSubmitError(null);
+      const transformedData = transformFormDataToApiFormat(entity || '', newEntityData);
+      
+      const response = await axios.post(
+        `http://localhost:8081/api/${entity}`,
+        transformedData
+      );
+
+      if (response.status === 201 || response.status === 200) {
+        // Refresh the entity list
+        const updatedResponse = await axios.get(`http://localhost:8081/api/${entity}`);
+        setEntities(updatedResponse.data);
+        
+        // Clear form and close modal
+        setNewEntityData({});
+        setIsModalOpen(false);
+      }
+    } catch (error) {
+      setSubmitError(error.response?.data?.message || 'Failed to add entity');
+      console.error('Error adding entity:', error);
+    }
   };
 
   const closeModal = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -345,96 +648,43 @@ const filteredEntities = entities.filter(item => {
       {error && <p>{error}</p>}
 
       {!isLoading && !error && (
-    <EntityGrid>
-      {filteredEntities.map((item) => {
-        let content;
-        let key; 
-        if (entity === "Company Type") {
-          content = item.description;
-          key = item.id; 
-        }
-        else if (entity === "Email") {
-          content = item.mail;
-          key = item.id; 
-        }
-        else if (entity === "Order Details"  || entity === "Person") {
-
-          content = item.id;
-          key = item.id;
-        }
-        else if (entity === "Person Supply") {
-          content = (
-            <>
-              Person: {item.person?.id} <br />
-              Supply: {item.supply?.barcode}
-            </>
-          );
-          key = `${item.person?.id}-${item.supply?.id}`;
-        }
-        else if (entity === "Service Branches") {
-          content = (
-            <>
-              Branch: {item.branch?.id} <br />
-              Service: {item.service?.id}
-            </>
-          );
-          key = `${item.branch?.id}-${item.service?.id}`;
-        }
-        else if (entity === "Service Approval") {
-          content = (
-            <>
-              Id: {item.id} <br />
-              WorkOrder: {item.workOrder.id} 
+        <EntityGrid>
+          {filteredEntities.map((item) => {
+            const key = generateKey(item);
+            const content = generateContent(item);
             
-            </>
-          );
-          key = item.id;
-        }
-        else if (entity === "Phone" ) {
-          content = (
-            <>
-              Person: {item.person.id} <br />
-              {item.number} 
-            </>
-          );
-          key = item.id;
-        }
-        else {
-          content = item.name;
-          key = item.id; 
-        }
-
-        return (
-          <EntityCard key={key} to={`/${entity}/${key}`}>
-            {content}
-          </EntityCard>
-        );
-      })}
-    </EntityGrid>
-  )}
-
-      <AddButton onClick={() => setIsModalOpen(true)}>+</AddButton>
-
-      {isModalOpen && (
-        <Modal onClick={closeModal}>
-          <ModalContent>
-            <h3>Add New {entity?.replace('_', ' ').slice(0, -1)}</h3>
-            {entityFields[entity || '']?.map((field) => (
-              <Input
-                key={field.name}
-                type={field.type}
-                name={field.name}
-                placeholder={field.name.replace('_', ' ')}
-                value={newEntityData[field.name] || ''}
-                onChange={handleInputChange}
-              />
-            ))}
-            <Button onClick={handleAddEntity}>Add {entity?.replace('_', ' ').slice(0, -1)}</Button>
-          </ModalContent>
-        </Modal>
+            return (
+              <EntityCard key={key} to={`/${entity}/${key}`}>
+                {content}
+              </EntityCard>
+            );
+          })}
+        </EntityGrid>
       )}
-    </div>
-  );
+
+<AddButton onClick={() => setIsModalOpen(true)}>+</AddButton>
+
+{isModalOpen && (
+  <Modal onClick={closeModal}>
+    <ModalContent>
+      <h3>Add New {entity}</h3>
+      {submitError && <ErrorMessage>{submitError}</ErrorMessage>}
+      {entityFields[entity || '']?.map((field) => renderInput(field))}
+      <Button onClick={handleAddEntity}>Add {entity}</Button>
+    </ModalContent>
+  </Modal>
+)}
+</div>
+);
 };
+
+const ErrorMessage = styled.div`
+color: red;
+margin: 10px 0;
+padding: 10px;
+border: 1px solid red;
+border-radius: 4px;
+background-color: rgba(255, 0, 0, 0.1);
+`;
 
 export default EntityList;
