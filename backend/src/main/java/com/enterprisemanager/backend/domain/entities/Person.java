@@ -1,12 +1,13 @@
 package com.enterprisemanager.backend.domain.entities;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 //import java.util.HashSet;
 import java.util.List;
 //import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.enterprisemanager.backend.infrastructure.utils.enums.Role;
+//import com.enterprisemanager.backend.infrastructure.utils.enums.Role;+-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 //import com.fasterxml.jackson.annotation.JsonProperty;
@@ -36,9 +37,9 @@ public class Person implements UserDetails {
     @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]*$", message = "El campo solo puede contener letras y espacios, no caracteres especiales")
         private String lastname;
 
-    @Column(columnDefinition = "datetime", nullable = false)
-    @NotEmpty(message = "la fecha de registro no puede ser nula")
-        private String date;
+    @Column(nullable = false)
+//    @NotEmpty(message = "la fecha de registro no puede ser nula")
+    private LocalDateTime date;
 
     @Column(nullable = false)
     private String username;
@@ -47,6 +48,13 @@ public class Person implements UserDetails {
     @NotEmpty(message = "la contraseña no puede ser nula")
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,}$", message = "La contraseña debe contener al menos una mayúscula, un número y un carácter especial, con una longitud mínima de 8 caracteres.")
         private String password;
+
+    private String repeatedPassword;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+//    private Role role = new Role("CUSTOMER");
+    private Role role;
 
 //    @ManyToMany
 //    @JoinTable(
@@ -93,31 +101,49 @@ public class Person implements UserDetails {
     private PersonType personType;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true)
     private Branch branch;
-
 //    public Person() {
 //        roles = new HashSet<>();
 //    }
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+//    @Enumerated(EnumType.STRING)
+//    private Role role;
 
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        if(role == null) return null;
+//
+//        if(role.getPermissions() == null) return null;
+//
+//        return role.getPermissions().stream()
+//                .map(each -> each.name())
+//                .map(each -> new SimpleGrantedAuthority(each))
+//                .collect(Collectors.toList());
+//    }
+//
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(role == null) return null;
 
         if(role.getPermissions() == null) return null;
 
-        return role.getPermissions().stream()
-                .map(each -> each.name())
+        List<SimpleGrantedAuthority> authorities = role.getPermissions().stream()
+                .map(each -> each.getOperation().getName())
                 .map(each -> new SimpleGrantedAuthority(each))
+//                .map(each -> {
+//                    String permission = each.name();
+//                    return new SimpleGrantedAuthority(permission);
+//                })
                 .collect(Collectors.toList());
+
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.role.getName()));
+        return authorities;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
+        return true;
     }
 
     @Override

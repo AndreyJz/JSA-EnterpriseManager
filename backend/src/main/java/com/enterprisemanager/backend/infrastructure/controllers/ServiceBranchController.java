@@ -16,13 +16,15 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/serviceBranch")
+@RequestMapping("/api/Service Branches")
 public class ServiceBranchController {
     @Autowired
     private IServiceBranchService serviceBranchService;
 
     @GetMapping
-    public List<ServiceBranch> getAll() { return serviceBranchService.findAll(); }
+    public List<ServiceBranch> getAll() { 
+        return serviceBranchService.findAll(); 
+    }
 
     @GetMapping("/{serviceId}/{branchId}")
     public ResponseEntity<?> getById(@PathVariable Long serviceId, @PathVariable Long branchId) {

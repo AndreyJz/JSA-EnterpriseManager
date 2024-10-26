@@ -19,8 +19,7 @@ function Home() {
 
   const getData = async () => {
     try {
-      const response = await axios.get<any[]>("http://localhost:8081/api/serviceBranch");
-      console.log("Datos recibidos:", response.data);
+      const response = await axios.get<any[]>("http://localhost:8081/api/Service Branches");
       setData(response.data);
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -37,8 +36,7 @@ function Home() {
   };
   const getCompanies = async () => {
     try {
-      const responseCompany = await axios.get<any[]>("http://localhost:8081/api/company");
-      console.log("Datos recibidos:", responseCompany.data);
+      const responseCompany = await axios.get<any[]>("http://localhost:8081/api/Companies");
       setCompanies(responseCompany.data);
     } catch (err) {
       if (axios.isAxiosError(err)) {

@@ -9,5 +9,10 @@
       "name": "jwt.expiration-in-minutes",
       "type": "java.lang.String",
       "description": "Description for jwt.expiration."
+    },
+    {
+      "name": "security.default.role",
+      "type": "java.lang.String",
+      "description": "Description for security.defualt.role."
     }
   ] }

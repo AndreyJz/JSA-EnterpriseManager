@@ -1,6 +1,7 @@
 package com.enterprisemanager.backend.infrastructure.utils.exceptions;
 
 import com.enterprisemanager.backend.domain.dtos.ApiError;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -40,14 +41,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({AccessDeniedException.class, AuthenticationException.class})
 //    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseEntity<ApiError> handleUnauthorizedException(Exception exception) {
+    public ResponseEntity<ApiError> handleUnauthorizedException(HttpServletRequest request, AccessDeniedException exception) {
         ApiError error = new ApiError();
-        error.setMessage("Usted no está autorizado para usar esta función...");
         error.setBackedMessage(exception.getLocalizedMessage());
+        error.setUrl(request.getRequestURL().toString());
+        error.setMethod(request.getMethod());
+        error.setMessage("Usted no está autorizado para usar esta función...");
         error.setTime(LocalDateTime.now());
-        error.setHttpCode(401);
+        error.setHttpCode(403);
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
 

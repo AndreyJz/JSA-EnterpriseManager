@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/phone")
+@RequestMapping("/api/Phone")
 public class PhoneController {
     @Autowired
     private IPhoneService phoneService;

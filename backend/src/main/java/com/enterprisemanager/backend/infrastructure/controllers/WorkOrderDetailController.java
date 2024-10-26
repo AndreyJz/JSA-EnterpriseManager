@@ -24,7 +24,7 @@ import com.enterprisemanager.backend.domain.entities.WorkOrderDetail;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/workOrderDetail")
+@RequestMapping("/api/Work Order Detail")
 public class WorkOrderDetailController {
     @Autowired
     private IWorkOrderDetailService workOrderDetailService;

@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/region")
+@RequestMapping("/api/Regions")
 public class RegionController {
     @Autowired
     private IRegionService regionService;

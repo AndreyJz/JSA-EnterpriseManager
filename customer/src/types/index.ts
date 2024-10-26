@@ -1,31 +1,37 @@
 export type UserInfo = {
-    id: number;
-    name: string;
-    lastname: string;
-    username: string;
-    password: string;
-	personType: number;
-  };
-  
-  export type ContactInfo = {
-    id: number;
-    value: string;
-  };
-  
-  export type ServiceStatus = {
-    id: number;
-    title: string;
-    status: 'active' | 'pending' | 'inactive';
-  };
-  
-  export type ServiceDetails = {
-    id: number;
-    description: string;
-    startDate: string;
-    endDate: string;
-  };
-  export type ServiceData ={ 
-    "id": {
+	"id": string,
+	"name": string,
+	"lastname": string,
+	"username": string,
+	"password": string,
+	"repeatedPassword": string,
+	"personType": {
+		"id": number
+	},
+	"branch": {
+		"id": number
+	}
+}
+
+export type ContactInfo = {
+	id: number;
+	value: string;
+};
+
+export type ServiceStatus = {
+	id: number;
+	title: string;
+	status: 'active' | 'pending' | 'inactive';
+};
+
+export type ServiceDetails = {
+	id: number;
+	description: string;
+	startDate: string;
+	endDate: string;
+};
+export type ServiceData ={ 
+	"id": {
 			"branchId": number,
 			"serviceId": number
 		},
@@ -61,12 +67,29 @@ export type UserInfo = {
 			}
 		},
 		"serviceValue":number
-  }
+}
 
 export type CompanyData =  {
-        "id": number,
-        "name": string,
-        "companyType": {
-            "id": number,
-            "description": string
+		"id": number,
+		"name": string,
+		"companyType": {
+			"id": number,
+			"description": string
 }}
+
+export type OptionType = {
+	"id" : number,
+	"name":string
+}
+
+export type FormDataType=  {
+	id: string;
+	name: string;
+	lastname: string;
+	username: string;
+	emails: { email: string; emailType: string }[];
+	password: string;
+	repeatedPassword: string;
+	personType: string;
+	phones: { phone: string; phoneType: string }[];
+  }
