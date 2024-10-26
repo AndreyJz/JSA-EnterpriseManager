@@ -43,6 +43,16 @@ public class ServiceApprovalController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/Employee_{id}")
+    public List<ServiceApproval> listByEmployee(@PathVariable String id){
+        return serviceApprovalService.findAllByEmployeeId(id);
+    }
+
+    @GetMapping("/Customer_{id}")
+    public List<ServiceApproval> listByCustomer(@PathVariable String id){
+        return serviceApprovalService.findAllByCustomerId(id);
+    }
+
     @PostMapping
     public ResponseEntity<?> create (@Valid @RequestBody ServiceApproval serviceApproval, BindingResult result){
         if (result.hasFieldErrors()) {

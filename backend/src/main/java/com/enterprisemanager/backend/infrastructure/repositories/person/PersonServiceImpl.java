@@ -38,6 +38,21 @@ public class PersonServiceImpl implements IPersonService{
         return (List<Person>) personRepository.findAll();
     }
 
+    @Override
+    public List<Person> findSuppliers() {
+        return personRepository.findSuppliers();
+    }
+
+    @Override
+    public List<Person> findCustomers() {
+        return personRepository.findCustomers();
+    }
+
+    @Override
+    public List<Person> findEmployees() {
+        return personRepository.findEmployees();
+    }
+
     @Transactional(readOnly = true)
     @Override
     public Optional<Person> findById(String id) {

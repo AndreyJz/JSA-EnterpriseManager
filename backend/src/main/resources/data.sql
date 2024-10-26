@@ -183,12 +183,23 @@ INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES (
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('VALIDATE-TOKEN','/validate-token', 'GET', true, 26);
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_MY_PROFILE','/profile','GET', true, 26);
 
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ALL_SUPPLIERS', '/Suppliers', 'GET', false, 12);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ALL_CUSTOMERS', '/Customers', 'GET', false, 12);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ALL_EMPLOYEES', '/Employees', 'GET', false, 12);
+
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_WORK_ORDER_DETAILS_BY_EMPLOYEE', '/Employee_[0-9]*', 'GET', false, 23);
+
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_SERVICE_APPROVALS_BY_EMPLOYEE','/Employee_[0-9]*', 'GET', false, 9);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_SERVICE_APPROVALS_BY_CUSTOMER','/Customer_[0-9]*', 'GET', false, 9);
+
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_SERVICES_WITHOUT_BRANCH','/Without_Branch', 'GET', false, 7);
+
 -- CREACIÓN DE ROLES
 INSERT INTO roles (name) VALUES ('CUSTOMER');
 INSERT INTO roles (name) VALUES ('ADMINISTRATOR');
 INSERT INTO roles (name) VALUES ('EMPLOYEE');
 INSERT INTO roles (name) VALUES ('MARKETING');
-INSERT INTO roles (name) VALUES ('SUPPLIERS');
+INSERT INTO roles (name) VALUES ('SUPPLIER');
 INSERT INTO roles (name) VALUES ('SERVICE TRACKING');
 INSERT INTO roles (name) VALUES ('HUMAN RESOURCES');
 INSERT INTO roles (name) VALUES ('STORAGE´S ADMIN');
@@ -197,7 +208,7 @@ INSERT INTO roles (name) VALUES ('STORAGE´S ADMIN');
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 59); -- UPDATE Person
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 69); -- UPDATE Email
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 79); -- UPDATE Phone
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 41); -- Service Approval Cambiar por JOIN person where id
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 135); -- Service Approval person where id
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 42);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 44);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 103); -- Service Order
@@ -329,10 +340,10 @@ INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 123);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 124);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 125);
 
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 41); -- Service Approval Cambiar por JOIN employee where id
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 134); -- Service Approval employee where id
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 42);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 44);
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 103); -- Service Order
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 101); -- Service Order
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 121); -- Approval status
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 103); -- Create Service Order
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 111); -- WorkOrderDetail Cambiar por JOIN employee where id
@@ -347,11 +358,11 @@ INSERT INTO granted_permissions (role_id, operation_id) VALUES (5, 86); -- ALL P
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (5, 87); -- ONE P_S
 -- Hipotético Person-Supply-Status
 
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (6, 31); -- Services Cambiar a LEFT JOIN branch where id null
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (6, 136); -- Services without branch
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (6, 32);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (6, 34);
 
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 56); -- ALL OF Person
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 132); -- ALL Of Employees
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 57);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 58);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 59);
@@ -359,6 +370,17 @@ INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 60);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 101); -- Service Order
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 102);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 104);
+
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 86); -- Person Supply
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 87); -- Person Supply
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 88); -- Person Supply
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 89); -- Person Supply
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 90); -- Person Supply
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 130); -- ALL Of role supplier
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 57);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 101); -- Service Order
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 102); -- Service Order
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 104); -- Service Order
 
 -- Tabla company_types
 INSERT INTO company_types (description) VALUES
@@ -444,13 +466,13 @@ INSERT INTO person (branch_id, person_type_id, lastname, name, password, date, i
 -- Insertando correos (depende de person y email_type)
 INSERT INTO email (email_type_id, mail, person_id) VALUES
                                                        (1, 'john.doe@example.com', 'P001'),
-                                                       (2, 'jjpardo@gmail.com', 'P002'),
+                                                       (2, 'jjpardo@gmail.com', 'ADMIN01'),
                                                        (3, 'charlie.brown@support.com', 'P003');
 
 -- Insertando teléfonos (depende de person y phone_type)
 INSERT INTO phone (phone_type_id, number, person_id) VALUES
                                                          (1, '123-456-7890', 'P001'),
-                                                         (2, '098-765-4321', 'P002'),
+                                                         (2, '098-765-4321', 'ADMIN01'),
                                                          (1, '555-555-5555', 'P003');
 
 -- Insertando servicios (no depende de otras tablas)
@@ -479,8 +501,8 @@ INSERT INTO supply_service (quantity, service_branches_branch_id, service_branch
 
 -- Insertando órdenes de servicio (depende de order_status, person)
 INSERT INTO service_order (order_status_id, customer_id, employee_id, order_date) VALUES
-                                                                                      (1, 'P001', 'P002', '2024-07-01 16:00:00'),  -- Orden 1: Cliente P001, Empleado P002
-                                                                                      (2, 'P002', 'P003', '2024-07-02 17:00:00'),  -- Orden 2: Cliente P002, Empleado P003
+                                                                                      (1, 'P001', 'P003', '2024-06-01 16:00:00'),  -- Orden 1: Cliente P001, Empleado P002
+                                                                                      (2, 'P001', 'P003', '2024-07-02 17:00:00'),  -- Orden 2: Cliente P002, Empleado P003
                                                                                       (3, 'P003', 'P001', '2024-07-03 18:00:00');  -- Orden 3: Cliente P003, Empleado P001
 
 -- Insertando órdenes de trabajo (depende de service_order)
@@ -492,7 +514,7 @@ INSERT INTO work_orders (service_order_id, work_order_num, assign_date) VALUES
 -- Insertando detalles de órdenes de trabajo (depende de work_orders, service_branches, work_order_detail_status, person)
 INSERT INTO work_order_detail (service_branch_branch_id, service_branch_service_id, work_order_detail_status_id, work_order_id, date, employee_id) VALUES
                                                                                                                                                        (1, 1, 1, 1, '2024-08-01 19:00:00', 'P001'),
-                                                                                                                                                       (2, 2, 2, 2, '2024-08-02 20:00:00', 'P002'),
+                                                                                                                                                       (2, 2, 2, 2, '2024-08-02 20:00:00', 'P001'),
                                                                                                                                                        (3, 3, 3, 3, '2024-08-03 21:00:00', 'P003');
 
 -- Insertando aprobaciones de servicio (depende de work_order_detail y approval_status)
@@ -504,7 +526,7 @@ INSERT INTO service_approval (approval_status_id, service_branch_branch_id, serv
 -- Tabla person_supply
 INSERT INTO person_supply (quantity, supply_id, person_id) VALUES
                                                                (10, 1, 'P001'),
-                                                               (5, 2, 'P002'),
+                                                               (5, 2, 'P003'),
                                                                (20, 3, 'P003');
 
 -- Tabla order_details

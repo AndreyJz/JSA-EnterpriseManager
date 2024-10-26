@@ -45,6 +45,21 @@ public class PersonController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/Suppliers")
+    public List<Person> suppliers() {
+        return personService.findSuppliers();
+    }
+
+    @GetMapping("/Customers")
+    public List<Person> customers() {
+        return personService.findCustomers();
+    }
+
+    @GetMapping("/Employees")
+    public List<Person> employees() {
+        return personService.findEmployees();
+    }
+
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody Person person, BindingResult result){
         if (result.hasFieldErrors()) {

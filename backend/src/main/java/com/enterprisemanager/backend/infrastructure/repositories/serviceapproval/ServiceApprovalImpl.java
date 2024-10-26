@@ -23,6 +23,16 @@ public class ServiceApprovalImpl implements IServiceApprovalService {
         return (List<ServiceApproval>) serviceApprovalRepository.findAll();
     }
 
+    @Override
+    public List<ServiceApproval> findAllByEmployeeId(String id) {
+        return (List<ServiceApproval>) serviceApprovalRepository.findAllByEmployeeId(id);
+    }
+
+    @Override
+    public List<ServiceApproval> findAllByCustomerId(String id) {
+        return (List<ServiceApproval>) serviceApprovalRepository.findAllByCustomerId(id);
+    }
+
     @Transactional(readOnly = true)
     @Override
     public Optional<ServiceApproval> findById(Long id) {
