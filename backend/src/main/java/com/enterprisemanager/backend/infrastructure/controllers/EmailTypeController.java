@@ -24,7 +24,7 @@ import com.enterprisemanager.backend.domain.entities.EmailType;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/Email Type")
+@RequestMapping("/api/Email_Type")
 public class EmailTypeController {
     @Autowired
     private IEmailTypeService emailTypeService;

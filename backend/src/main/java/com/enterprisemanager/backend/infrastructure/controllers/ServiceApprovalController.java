@@ -24,7 +24,7 @@ import com.enterprisemanager.backend.domain.entities.ServiceApproval;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/Service Approval")
+@RequestMapping("/api/Service_Approval")
 public class ServiceApprovalController {
     @Autowired
     private IServiceApprovalService serviceApprovalService;

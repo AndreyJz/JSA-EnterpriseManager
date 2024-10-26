@@ -25,7 +25,7 @@ import com.enterprisemanager.backend.domain.entities.SupplyServiceId;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/Supply Service")
+@RequestMapping("/api/Supply_Service")
 public class SupplyServiceController {
     @Autowired
     private ISupplyServiceService supplyServiceService;

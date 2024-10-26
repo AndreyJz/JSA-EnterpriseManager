@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/Company Type")
+@RequestMapping("/api/Company_Type")
 public class CompanyTypeController {
     @Autowired
     private ICompanyTypeService companyTypeService;
