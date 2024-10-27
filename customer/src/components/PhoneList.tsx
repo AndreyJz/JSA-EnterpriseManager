@@ -3,7 +3,7 @@ import { Phone, Plus, Trash2 } from 'lucide-react';
 import { ContactInfo } from '../types';
 
 interface PhoneListProps {
-userId: number;
+userId: string;
 phones: ContactInfo[];
 onPhonesUpdate: (phones: ContactInfo[]) => void;
 }
@@ -17,7 +17,7 @@ const handleAddPhone = async (e: React.FormEvent) => {
 
     try {
     // Test URL - Replace with your actual API endpoint
-    const response = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}/phones`, {
+    const response = await fetch(`http://localhost:8081/api/Phone`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ value: newPhone }),
@@ -33,7 +33,7 @@ const handleAddPhone = async (e: React.FormEvent) => {
 const handleRemovePhone = async (phoneId: number) => {
     try {
     // Test URL - Replace with your actual API endpoint
-    await fetch(`https://jsonplaceholder.typicode.com/users/${userId}/phones/${phoneId}`, {
+    await fetch(`http://localhost:8081/api/Phone/${phoneId}`, {
         method: 'DELETE',
     });
     onPhonesUpdate(phones.filter(phone => phone.id !== phoneId));

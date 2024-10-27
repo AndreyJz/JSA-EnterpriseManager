@@ -56,4 +56,9 @@ public class PhoneServiceImpl implements IPhoneService{
         });
         return phoneOptional;
     }
+
+    @Override
+    public List<Phone> findAllByCustomerId(String id) {
+        return (List<Phone>) phoneRepository.findAllByCustomerId(id);
+    }
 }

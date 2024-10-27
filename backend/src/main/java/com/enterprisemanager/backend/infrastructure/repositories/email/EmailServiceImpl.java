@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.enterprisemanager.backend.application.services.IEmailService;
 import com.enterprisemanager.backend.domain.entities.Email;
 
+
 @Service
 public class EmailServiceImpl implements IEmailService{
 
@@ -56,6 +57,11 @@ public class EmailServiceImpl implements IEmailService{
             emailRepository.delete(emailDb);
         });
         return emailOptional;
+    }
+
+    @Override
+    public List<Email> findAllByCustomerId(String id) {
+        return (List<Email>) emailRepository.findAllByCustomerId(id);
     }
 }
 

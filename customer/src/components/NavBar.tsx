@@ -9,6 +9,30 @@ function NavBar() {
   const { cart } = useCart();
 
   useEffect(() => {
+
+    const fetchUserProfile = async () => {
+      const token = localStorage.getItem('token'); // Obtener el token del localStorage
+      
+      try {
+        const response = await fetch('http://localhost:8081/auth/profile', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Enviar el token en el encabezado de autorización
+          }
+        });
+        if (response.ok) {
+          const userProfile = await response.json(); // Procesar la respuesta
+          console.log('User Profile:', userProfile.id); // Aquí puedes manejar la información del perfil
+          // Puedes almacenar esta información en el estado o hacer algo con ella
+        } else {
+          console.error('Error fetching profile:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error during fetch:', error);
+      }
+    };
+
     const checkIfLoggedIn = async () => {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -17,7 +41,9 @@ function NavBar() {
       }
 
       try {
-        const response = await fetch(`http://localhost:8081/auth/validate-token?jwt=${token}`);
+
+        const response = await fetch(`http://localhost:8081/auth/validate-token?jwt=${token}`);    
+        console.log(response);
         if (response.ok) {
           const isAuthenticated = await response.json(); // Esperamos un booleano
           setIsLoggedIn(isAuthenticated);
@@ -30,7 +56,7 @@ function NavBar() {
       }
     };
 
-    checkIfLoggedIn();
+    checkIfLoggedIn(), fetchUserProfile();
   }, []);
 
   const toggleMenu = () => setMenuVisible(!isMenuVisible);

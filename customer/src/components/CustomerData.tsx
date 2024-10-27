@@ -23,15 +23,19 @@ export function CustomerData({ user, onUserUpdate }: CustomerDataProps) {
         </button>
       </div>
       <div className="grid grid-cols-2 gap-4">
-        <p><strong>Name:</strong> {user.name} {user.lastname}</p>
+        <p><strong>id:</strong> {user.id}</p>
+        <p><strong>Name:</strong> {user.name}</p>
+        <p><strong>Last Name:</strong> {user.lastname}</p>
         <p><strong>Username:</strong> {user.username}</p>
-        <p><strong>Password:</strong> {user.password}</p>
       </div>
     </div>
   );
 
   const UserEdit = () => {
-    const [editedUser, setEditedUser] = useState(user);
+    const [editedUser, setEditedUser] = useState<Pick<UserInfo, 'name' | 'lastname'>>({
+      name: user.name,
+      lastname: user.lastname,
+    });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setEditedUser({ ...editedUser, [e.target.name]: e.target.value });
@@ -40,12 +44,17 @@ export function CustomerData({ user, onUserUpdate }: CustomerDataProps) {
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       try {
-        // Test URL - Replace with your actual API endpoint
-        const response = await fetch(`https://jsonplaceholder.typicode.com/users/${user.id}`, {
+        // Asegúrate de usar la URL correcta para tu API
+        const response = await fetch(`http://localhost:8081/api/Person/${user.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(editedUser),
         });
+
+        if (!response.ok) {
+          throw new Error('Failed to update user');
+        }
+
         const updatedUser = await response.json();
         onUserUpdate(updatedUser);
         setIsEditing(false);
@@ -74,6 +83,7 @@ export function CustomerData({ user, onUserUpdate }: CustomerDataProps) {
             onChange={handleChange}
             className="border p-2 rounded"
             placeholder="Name"
+            required
           />
           <input
             type="text"
@@ -82,22 +92,7 @@ export function CustomerData({ user, onUserUpdate }: CustomerDataProps) {
             onChange={handleChange}
             className="border p-2 rounded"
             placeholder="Last Name"
-          />
-          <input
-            type="text"
-            name="username"
-            value={editedUser.username}
-            onChange={handleChange}
-            className="border p-2 rounded"
-            placeholder="Username"
-          />
-          <input
-            type="password"
-            name="password"
-            value={editedUser.password}
-            onChange={handleChange}
-            className="border p-2 rounded"
-            placeholder="Password"
+            required
           />
         </div>
         <button

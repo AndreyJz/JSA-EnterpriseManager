@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.enterprisemanager.backend.application.services.IEmailService;
 import com.enterprisemanager.backend.domain.entities.Email;
+import com.enterprisemanager.backend.domain.entities.Phone;
 
 import jakarta.validation.Valid;
 
@@ -41,6 +42,11 @@ public class EmailController {
             return ResponseEntity.ok(emailOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/person/{id}")
+    public List<Email> list(@PathVariable String id){
+        return emailService.findAllByCustomerId(id);
     }
 
     @PostMapping

@@ -4,6 +4,8 @@
     import { EmailList } from './EmailList';
     import { ServiceList } from './ServiceList';
     import { UserInfo, ContactInfo, ServiceStatus } from '../types';
+import { Link } from 'react-router-dom';
+import { User } from 'lucide-react';
 
     export default function Customer() {
     const [user, setUser] = useState<UserInfo | null>(null);
@@ -11,6 +13,7 @@
     const [emails, setEmails] = useState<ContactInfo[]>([]);
     const [services, setServices] = useState<ServiceStatus[]>([]);
     const [loading, setLoading] = useState(true);
+    const [userId, setuserid] = useState();
     const [error, setError] = useState<string | null>(null);
 
     const LogOut = async () => {
@@ -29,7 +32,9 @@
             const data = await response.json(); // Procesar la respuesta del backend
             console.log(data.message); // Mostramos el mensaje de cierre exitoso en consola o actualizar el estado
             localStorage.removeItem('token'); // Eliminar el token del almacenamiento si el logout es exitoso
-            // Aquí puedes redirigir al usuario o actualizar el estado de autenticación
+            <Link to="/login" className="hover:text-gray-300">
+            <User className="h-6 w-6" />
+            </Link>
         } else {
             console.error('Error in logout:', response.statusText);
         }
@@ -38,22 +43,45 @@
         }
     };
     
-    
+    useEffect(() => {
 
-    const userId = 1; // In a real app, this would come from authentication
+        const fetchUserProfile = async () => {
+            const token = localStorage.getItem('token'); // Obtener el token del localStorage
+            
+            try {
+            const response = await fetch('http://localhost:8081/auth/profile', {
+                method: 'GET',
+                headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Enviar el token en el encabezado de autorización
+                }
+            });
+            if (response.ok) {
+                const userProfile = await response.json(); // Procesar la respuesta
+                console.log('User Profile:', userProfile);
+                setuserid(userProfile.id); 
+                setUser(userProfile);
+            } else {
+                console.error('Error fetching profile:', response.statusText);
+            }
+            } catch (error) {
+            console.error('Error during fetch:', error);
+            }
+        };
+
+        fetchUserProfile();
+        }, []);
 
     useEffect(() => {
         const fetchData = async () => {
         try {
             // Test URLs - Replace with your actual API endpoints
-            const [userData, phonesData, emailsData, servicesData] = await Promise.all([
-            fetch(`http://localhost:8081/api/Person/${userId}`).then(res => res.json()),
-            fetch(`http://localhost:8081/api/Phone/${userId}`).then(res => res.json()),
-            fetch(`http://localhost:8081/api/Email/${userId}`).then(res => res.json()),
+            const [phonesData, emailsData, servicesData] = await Promise.all([
+            fetch(`http://localhost:8081/api/Phone/person/${userId}`).then(res => res.json()),
+            fetch(`http://localhost:8081/api/Email/person${userId}`).then(res => res.json()),
             fetch(`http://localhost:8081/api/Service_Approval/${userId}`).then(res => res.json())
             ]);
 
-            setUser(userData);
             setPhones(phonesData || []); // Fallback for test API
             setEmails(emailsData || []); // Fallback for test API
             setServices(servicesData || []); // Fallback for test API
