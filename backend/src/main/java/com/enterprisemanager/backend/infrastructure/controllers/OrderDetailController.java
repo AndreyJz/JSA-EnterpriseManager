@@ -24,7 +24,7 @@ import com.enterprisemanager.backend.domain.entities.OrderDetail;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/Order Details")
+@RequestMapping("/api/Order_Details")
 public class OrderDetailController {
     @Autowired
     private IOrderDetailService orderDetailService;
@@ -32,6 +32,11 @@ public class OrderDetailController {
     @GetMapping
     public List<OrderDetail> list() {
         return orderDetailService.findAll();
+    }
+
+    @GetMapping("/ServiceOrder_{id}")
+    public List<OrderDetail> listByServiceOrder(@PathVariable Long id) {
+        return orderDetailService.findAllByServiceOrder(id);
     }
 
     @GetMapping("/{id}")

@@ -10,6 +10,7 @@ import Cart from './components/Cart';
 import ContactUs from './components/ContactUs';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
+import Customer from './components/Customer';
 import { CartProvider } from './context/CartContext';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
               <Route path="/contact" element={<ContactUs />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
+              <Route path="/customer" element={<Customer />} />
             </Routes>
           </main>
           <Footer />

@@ -1,9 +1,43 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface CartItem {
-  id: number;
-  title: string;
-  price: number;
+		"id": {
+			"branchId": number,
+			"serviceId": number
+		},
+		"service": {
+			"id": number,
+			"name": string,
+			"requiresSupply": boolean
+		},
+		"branch": {
+			"id": number,
+			"name": string,
+			"nit": string,
+			"creationDate": string,
+			"city": {
+				"id": number,
+				"name": string,
+				"region": {
+					"id": number,
+					"name": string,
+					"country": {
+						"id": number,
+						"name": string
+					}
+				}
+			},
+			"company": {
+				"id": number,
+				"name": string,
+				"companyType": {
+					"id": number,
+					"description": string
+				}
+			}
+		},
+		"serviceValue":number
+	
   quantity: number;
 }
 
@@ -22,10 +56,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const addToCart = (item: Omit<CartItem, 'quantity'>) => {
     setCart(prevCart => {
-      const existingItem = prevCart.find(cartItem => cartItem.id === item.id);
+      const existingItem = prevCart.find(cartItem => cartItem.service.id === item.service.id);
       if (existingItem) {
         return prevCart.map(cartItem =>
-          cartItem.id === item.id
+          cartItem.service.id === item.service.id
             ? { ...cartItem, quantity: cartItem.quantity + 1 }
             : cartItem
         );
@@ -35,7 +69,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const removeFromCart = (id: number) => {
-    setCart(prevCart => prevCart.filter(item => item.id !== id));
+    setCart(prevCart => prevCart.filter(item => item.service.id !== id));
   };
 
   const clearCart = () => {
@@ -45,7 +79,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const updateQuantity = (id: number, quantity: number) => {
     setCart(prevCart =>
       prevCart.map(item =>
-        item.id === id ? { ...item, quantity: Math.max(0, quantity) } : item
+        item.service.id === id ? { ...item, quantity: Math.max(0, quantity) } : item
       ).filter(item => item.quantity > 0)
     );
   };

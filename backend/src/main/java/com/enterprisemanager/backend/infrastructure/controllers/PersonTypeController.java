@@ -24,7 +24,7 @@ import jakarta.validation.Valid;
 
 
 @RestController
-@RequestMapping("api/Person Type")
+@RequestMapping("api/Person_Type")
 public class PersonTypeController {
     @Autowired
     private IPersonTypeService personTypeService;

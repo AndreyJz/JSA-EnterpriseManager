@@ -24,7 +24,7 @@ import com.enterprisemanager.backend.domain.entities.ServiceApproval;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/Service Approval")
+@RequestMapping("/api/Service_Approval")
 public class ServiceApprovalController {
     @Autowired
     private IServiceApprovalService serviceApprovalService;
@@ -49,6 +49,18 @@ public class ServiceApprovalController {
             return validation(result);
             }
         return ResponseEntity.status(HttpStatus.CREATED).body(serviceApprovalService.save(serviceApproval));
+    }
+
+    @PutMapping("/Status_{id}")
+    public ResponseEntity<?> updateStatus(@PathVariable Long id, @Valid @RequestBody ServiceApproval serviceApproval, BindingResult result){
+        if (result.hasFieldErrors()) {
+            return validation(result);
+        }
+        Optional<ServiceApproval> serviceApprovalOptional = serviceApprovalService.updateStatus(id, serviceApproval);
+        if(serviceApprovalOptional.isPresent()){
+            return ResponseEntity.status(HttpStatus.CREATED).body(serviceApprovalOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{id}")

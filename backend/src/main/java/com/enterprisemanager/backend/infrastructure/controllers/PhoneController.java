@@ -36,6 +36,11 @@ public class PhoneController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/person/{id}")
+    public List<Phone> list(@PathVariable String id){
+        return phoneService.findAllByCustomerId(id);
+    }
+
     @PostMapping
     public ResponseEntity<?> create (@Valid @RequestBody Phone phone, BindingResult result){
         if (result.hasFieldErrors()) {

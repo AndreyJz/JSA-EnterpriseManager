@@ -9,6 +9,7 @@ public interface IOrderDetailService {
     OrderDetail save(OrderDetail orderDetail);
     Optional<OrderDetail> findById(Long id);
     List<OrderDetail> findAll();
+    List<OrderDetail> findAllByServiceOrder(Long id);
     Optional<OrderDetail> update(Long id, OrderDetail orderDetail);
     Optional<OrderDetail> delete(Long id);
 }

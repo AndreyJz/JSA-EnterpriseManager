@@ -9,6 +9,7 @@ public interface IServiceService {
     Service save(Service country);
     Optional<Service> findById(Long id);
     List<Service> findAll();
+    List<Service> findWithoutBranch();
     Service update(Long id, Service country);
     void delete(Long id);
 }

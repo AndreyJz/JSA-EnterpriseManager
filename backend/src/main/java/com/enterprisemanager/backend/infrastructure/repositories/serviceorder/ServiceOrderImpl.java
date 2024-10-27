@@ -3,6 +3,7 @@ package com.enterprisemanager.backend.infrastructure.repositories.serviceorder;
 import java.util.List;
 import java.util.Optional;
 
+import com.enterprisemanager.backend.domain.entities.ServiceApproval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +37,18 @@ public class ServiceOrderImpl implements IServiceOrderService {
     public ServiceOrder save(ServiceOrder serviceOrder) {
         serviceOrder.setOrderDate(LocalDateTime.now());
         return serviceOrderRepository.save(serviceOrder);
+    }
+
+    @Transactional
+    @Override
+    public List<ServiceOrder> findAllByEmployeeId(String id) {
+        return serviceOrderRepository.findAllByEmployeeId(id);
+    }
+
+    @Transactional
+    @Override
+    public List<ServiceOrder> findAllByCustomerId(String id) {
+        return serviceOrderRepository.findAllByCustomerId(id);
     }
 
     @Transactional

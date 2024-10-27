@@ -101,9 +101,8 @@ public class Person implements UserDetails {
     private PersonType personType;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true)
     private Branch branch;
-
 //    public Person() {
 //        roles = new HashSet<>();
 //    }

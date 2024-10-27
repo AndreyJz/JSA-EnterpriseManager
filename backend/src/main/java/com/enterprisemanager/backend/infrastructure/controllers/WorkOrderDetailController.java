@@ -24,7 +24,7 @@ import com.enterprisemanager.backend.domain.entities.WorkOrderDetail;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/Work Order Detail")
+@RequestMapping("/api/Work_Order_Detail")
 public class WorkOrderDetailController {
     @Autowired
     private IWorkOrderDetailService workOrderDetailService;
@@ -41,6 +41,11 @@ public class WorkOrderDetailController {
             return ResponseEntity.ok(workOrderDetailOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/Employee_{id}")
+    public List<WorkOrderDetail> listByEmployee(@PathVariable String id){
+        return workOrderDetailService.findByEmployeeId(id);
     }
 
     @PostMapping

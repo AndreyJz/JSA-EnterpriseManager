@@ -24,9 +24,9 @@ public class ServiceApproval {
     @NotNull(message = "You have to add a Work order")
     private WorkOrder workOrder;
     
-     @ManyToOne
+    @ManyToOne
     @NotNull(message = "You have to add a Service Branch")
-     private ServiceBranch serviceBranch;
+    private ServiceBranch serviceBranch;
 
     @Column(length = 200, nullable = true)
     private String report;

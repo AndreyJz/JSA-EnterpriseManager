@@ -25,6 +25,12 @@ public class OrderDetailImpl implements IOrderDetailService {
 
     @Transactional(readOnly = true)
     @Override
+    public List<OrderDetail> findAllByServiceOrder(Long id) {
+        return orderDetailRepository.findAllByServiceOrderId(id);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public Optional<OrderDetail> findById(Long id) {
         return orderDetailRepository.findById(id);
     }
