@@ -10,6 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ServiceApprovalRepository extends CrudRepository<ServiceApproval, Long>{
-    @Query("UPDATE ServiceApproval sa SET sa.approvalStatus.id = :id, sa.report = :report, sa.solution = :solution WHERE sa.approvalStatus.name = 'Pending'")
-    Optional<ServiceApproval> updateServiceApprovalStatus(@Param("id") Long id, @Param("report") String report, @Param("solution") String solution);
+    @Query("UPDATE ServiceApproval sa SET sa.approvalStatus.id = :status, sa.report = :report, sa.solution = :solution WHERE sa.approvalStatus.name = 'Pending' and sa.id = :id")
+    Optional<ServiceApproval> updateServiceApprovalStatus(@Param("status") Long status, @Param("report") String report, @Param("solution") String solution, @Param("id") Long id);
 }

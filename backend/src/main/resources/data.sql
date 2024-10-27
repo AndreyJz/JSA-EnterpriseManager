@@ -189,14 +189,19 @@ INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES (
 
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_WORK_ORDER_DETAILS_BY_EMPLOYEE', '/Employee_[0-9]*', 'GET', false, 23);
 
-INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_SERVICE_APPROVALS_BY_EMPLOYEE','/Employee_[0-9]*', 'GET', false, 9);
-INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_SERVICE_APPROVALS_BY_CUSTOMER','/Customer_[0-9]*', 'GET', false, 9);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_SERVICE_ORDERS_BY_EMPLOYEE','/Employee_[0-9]*', 'GET', false, 21);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_SERVICE_ORDERS_BY_CUSTOMER','/Customer_[0-9]*', 'GET', false, 21);
 
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_SERVICES_WITHOUT_BRANCH','/Without_Branch', 'GET', false, 7);
 
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_PERSON_PHONES','/person/{id}', 'GET', false, 14);
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_PERSON_EMAILS','/person/{id}', 'GET', false, 15);
 
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('UPDATE_STATUS','/Status_[0-9]*', 'PUT', false, 9);
+
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ORDER_DETAILS_BY_SERVICE_ORDER', '/ServiceOrder_[0-9]*', 'GET', false, 19);
+
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('AUTHENTICATE','/logout', 'POST', true, 26);
 
 -- CREACIÓN DE ROLES
 INSERT INTO roles (name) VALUES ('CUSTOMER');
@@ -214,9 +219,9 @@ INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 138); -- UPDA
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 69); -- UPDATE Email
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 137); -- UPDATE Phone
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 79); -- UPDATE Phone
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 135); -- Service Approval person where id
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 42);
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 44);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 135); -- Service ORDER person where id
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 140); -- ORDER DETAIL BY SERVICE ORDER
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 139); -- update APPROVAL STATUS
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 103); -- Service Order
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 121); -- Approval status
 
@@ -345,19 +350,34 @@ INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 122);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 123);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 124);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 125);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 126);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 127);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 128);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 129);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 130);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 131);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 132);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 133);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 134);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 135);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 136);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 137);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 138);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 139);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 140);
 
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 134); -- Service Approval employee where id
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 42);
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 44);
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 101); -- Service Order
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 121); -- Approval status
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 134); -- ORDER SERVICE employee where id
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 140); -- ORDER DETAILS BY SERVICE ORDER
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 139); -- update APPROVAL STATUS
+-- INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 101); -- Service Order
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 103); -- Create Service Order
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 111); -- WorkOrderDetail Cambiar por JOIN employee where id
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 121); -- Approval status
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 133); -- WorkOrderDetail employee where id
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 112);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 114);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 116);
 
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (4, 56); -- ALL P
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (4, 131); -- ALL P
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (4, 57); -- ONE P
 
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (5, 86); -- ALL P_S
