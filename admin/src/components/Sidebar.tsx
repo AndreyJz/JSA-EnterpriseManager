@@ -66,12 +66,12 @@ const LinkText = styled.span`
 `;
 
 const entities = [
-  'Approval Status', 'Branches', 'Cities', 'Companies', 'Company Type',
-  'Countries', 'Email', 'Email Type', 'Order Details', 'Order Status',
-  'Person', 'Person Supply', 'Person Type', 'Phone', 'Phone Type',
-  'Regions', 'Service Approval', 'Service Branches', 'Service Order',
-  'Services', 'Supply', 'Supply Service','Work Orders', 'Work Order Detail',
-  'Work Detail Status'
+  'Approval_Status', 'Branches', 'Cities', 'Companies', 'Company_Type',
+  'Countries', 'Email', 'Email_Type', 'Order_Details', 'Order_Status',
+  'Person', 'Person_Supply', 'Person_Type', 'Phone', 'Phone_Type',
+  'Regions', 'Service_Approval', 'Service_Branches', 'Service_Order',
+  'Services', 'Supply', 'Supply_Service','Work_Orders', 'Work_Order_Detail',
+  'Work_Detail_Status'
 ];
 
 const Sidebar: React.FC = () => {
@@ -84,7 +84,7 @@ const Sidebar: React.FC = () => {
               <IconWrapper>
                 <ion-icon name="folder-outline"></ion-icon>
               </IconWrapper>
-              <LinkText>{entity.replace('_', ' ')}</LinkText>
+              <LinkText>{(entity.replace('_', ' ')).replace('_',' ')}</LinkText>
             </SidebarLink>
           </SidebarItem>
         ))}
