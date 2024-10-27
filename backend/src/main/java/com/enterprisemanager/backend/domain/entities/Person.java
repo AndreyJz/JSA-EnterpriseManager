@@ -41,7 +41,7 @@ public class Person implements UserDetails {
 //    @NotEmpty(message = "la fecha de registro no puede ser nula")
     private LocalDateTime date;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(length = 500, nullable = false)

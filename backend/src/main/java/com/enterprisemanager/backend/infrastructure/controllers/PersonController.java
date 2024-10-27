@@ -65,7 +65,6 @@ public class PersonController {
         if (result.hasFieldErrors()) {
             return validation(result);
         }
-        RegisterUser registeredUser = authenticationService.registerOneCustomer(person);
         return ResponseEntity.status(HttpStatus.CREATED).body(personService.save(person));
     }
 

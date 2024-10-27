@@ -5,7 +5,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import CheckoutForm from './CheckoutForm';
 
-const stripePromise = loadStripe('your_stripe_publishable_key');
+const stripePromise = loadStripe('pk_test_51QEHZiLNN21xADSgOxFbVEwsKq38GtbmclI5Nw2sTaxxvVMZsR75VewPA0mm7pNs9LooIw1AKXDBCoPDwcAOBdvY00rZh8A5K7');
 
 function Cart() {
   const { cart, removeFromCart, clearCart, updateQuantity } = useCart();

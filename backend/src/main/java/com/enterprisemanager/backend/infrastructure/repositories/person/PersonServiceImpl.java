@@ -72,10 +72,8 @@ public class PersonServiceImpl implements IPersonService{
         user.setLastname(newUser.getLastname());
         user.setDate(LocalDateTime.now());
         user.setPersonType(newUser.getPersonType());
-        user.setBranch(branchRepository.findById(4L).get());
-        Role defualtRole = roleService.findDefaultRole()
-                .orElseThrow(() -> new ObjectNotFoundException("Default role not found"));
-        user.setRole(defualtRole);
+        user.setBranch(newUser.getBranch());
+        user.setRole(newUser.getRole());
         return personRepository.save(user);
     }
 
