@@ -43,6 +43,11 @@ public class WorkOrderDetailController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/Employee_{id}")
+    public List<WorkOrderDetail> listByEmployee(@PathVariable String id){
+        return workOrderDetailService.findByEmployeeId(id);
+    }
+
     @PostMapping
     public ResponseEntity<?> create (@Valid @RequestBody WorkOrderDetail workOrderDetail, BindingResult result){
         if (result.hasFieldErrors()) {

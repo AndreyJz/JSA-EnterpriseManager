@@ -32,6 +32,11 @@ public class ServiceController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/Without_Branch")
+    public ResponseEntity<?> getWithoutBranch() {
+        return ResponseEntity.ok(serviceService.findWithoutBranch());
+    }
+
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody Service service, BindingResult result) {
         if (result.hasFieldErrors()) {

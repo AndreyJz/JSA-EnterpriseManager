@@ -9,6 +9,7 @@ public interface IWorkOrderDetailService {
     WorkOrderDetail save(WorkOrderDetail workOrderDetail);
     Optional<WorkOrderDetail> findById(Long id);
     List<WorkOrderDetail> findAll();
+    List<WorkOrderDetail> findByEmployeeId(String id);
     Optional<WorkOrderDetail> update(Long id, WorkOrderDetail workOrderDetail);
     Optional<WorkOrderDetail> delete(Long id);
 }

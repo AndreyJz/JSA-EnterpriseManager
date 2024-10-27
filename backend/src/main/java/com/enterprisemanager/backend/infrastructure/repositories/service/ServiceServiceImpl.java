@@ -36,6 +36,11 @@ public class ServiceServiceImpl implements IServiceService {
     }
 
     @Override
+    public List<com.enterprisemanager.backend.domain.entities.Service> findWithoutBranch() {
+        return (List<com.enterprisemanager.backend.domain.entities.Service>) serviceRepository.findWithoutBranch();
+    }
+
+    @Override
     public com.enterprisemanager.backend.domain.entities.Service update(Long id, com.enterprisemanager.backend.domain.entities.Service service) {
         Optional<com.enterprisemanager.backend.domain.entities.Service> serviceOptional = serviceRepository.findById(id);
         if (serviceOptional.isPresent()) {

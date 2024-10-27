@@ -51,6 +51,18 @@ public class ServiceApprovalController {
         return ResponseEntity.status(HttpStatus.CREATED).body(serviceApprovalService.save(serviceApproval));
     }
 
+    @PutMapping("/Status_{id}")
+    public ResponseEntity<?> updateStatus(@PathVariable Long id, @Valid @RequestBody ServiceApproval serviceApproval, BindingResult result){
+        if (result.hasFieldErrors()) {
+            return validation(result);
+        }
+        Optional<ServiceApproval> serviceApprovalOptional = serviceApprovalService.updateStatus(id, serviceApproval);
+        if(serviceApprovalOptional.isPresent()){
+            return ResponseEntity.status(HttpStatus.CREATED).body(serviceApprovalOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@Valid @RequestBody ServiceApproval serviceApproval, @PathVariable Long id, BindingResult result) {
         if (result.hasFieldErrors()) {

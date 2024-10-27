@@ -23,6 +23,11 @@ public class WorkOrderDetailImpl implements IWorkOrderDetailService {
         return (List<WorkOrderDetail>) workOrderDetailRepository.findAll();
     }
 
+    @Override
+    public List<WorkOrderDetail> findByEmployeeId(String id) {
+        return (List<WorkOrderDetail>) workOrderDetailRepository.findByEmployeeId(id);
+    }
+
     @Transactional(readOnly = true)
     @Override
     public Optional<WorkOrderDetail> findById(Long id) {
