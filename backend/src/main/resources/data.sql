@@ -26,6 +26,7 @@ INSERT INTO modules (name, base_path) VALUES ('WORK_ORDER_DETAIL_STATUS', '/api/
 INSERT INTO modules (name, base_path) VALUES ('APPROVAL_STATUS', '/api/Approval_Status');
 INSERT INTO modules (name, base_path) VALUES ('AUTH', '/auth');
 INSERT INTO modules (name, base_path) VALUES ('ROLE', '/api/Roles');
+INSERT INTO modules (name, base_path) VALUES ('PAYMENT', '/api/Payment');
 
 -- CREACIÓN DE OPERACIONES
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ALL_COUNTRIES','', 'GET', false, 1);
@@ -206,6 +207,8 @@ INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES (
 
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ROLES','', 'GET', true, 27);
 
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('CREATE_PAYMENT_INTENT','/create-payment-intent', 'POST', false, 28);
+
 -- CREACIÓN DE ROLES
 INSERT INTO roles (name) VALUES ('CUSTOMER');
 INSERT INTO roles (name) VALUES ('ADMINISTRATOR');
@@ -227,6 +230,7 @@ INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 140); -- ORDE
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 139); -- update APPROVAL STATUS
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 103); -- Service Order
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 121); -- Approval status
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 143); -- Purchase Intent
 
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 1);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 2);
