@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import lombok.Data;
 
 @Entity
@@ -23,8 +24,9 @@ public class ServiceOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "timestamp")
-    private String orderDate;
+    @Column(length = 20, nullable = false)
+//    @NotNull(message = "You have to add a date")
+    private LocalDateTime orderDate;
 
     @ManyToOne
     @NotNull(message = "You have to add a Customer")

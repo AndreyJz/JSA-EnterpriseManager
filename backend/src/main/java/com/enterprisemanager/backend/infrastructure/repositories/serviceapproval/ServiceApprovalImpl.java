@@ -28,7 +28,7 @@ public class ServiceApprovalImpl implements IServiceApprovalService {
     public Optional<ServiceApproval> updateStatus(Long id, ServiceApproval serviceApproval) {
         Optional<ServiceApproval> serviceApprovalOld = serviceApprovalRepository.findById(id);
         if(serviceApprovalOld.isPresent()){
-            return serviceApprovalRepository.updateServiceApprovalStatus(id, serviceApproval.getReport(), serviceApproval.getSolution());
+            return serviceApprovalRepository.updateServiceApprovalStatus(serviceApproval.getApprovalStatus().getId(), serviceApproval.getReport(), serviceApproval.getSolution(), id);
         }
         return Optional.empty();
     }
