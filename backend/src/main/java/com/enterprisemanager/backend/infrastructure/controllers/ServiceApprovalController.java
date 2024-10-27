@@ -43,22 +43,24 @@ public class ServiceApprovalController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/Employee_{id}")
-    public List<ServiceApproval> listByEmployee(@PathVariable String id){
-        return serviceApprovalService.findAllByEmployeeId(id);
-    }
-
-    @GetMapping("/Customer_{id}")
-    public List<ServiceApproval> listByCustomer(@PathVariable String id){
-        return serviceApprovalService.findAllByCustomerId(id);
-    }
-
     @PostMapping
     public ResponseEntity<?> create (@Valid @RequestBody ServiceApproval serviceApproval, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
             }
         return ResponseEntity.status(HttpStatus.CREATED).body(serviceApprovalService.save(serviceApproval));
+    }
+
+    @PutMapping("/Status_{id}")
+    public ResponseEntity<?> updateStatus(@PathVariable Long id, @Valid @RequestBody ServiceApproval serviceApproval, BindingResult result){
+        if (result.hasFieldErrors()) {
+            return validation(result);
+        }
+        Optional<ServiceApproval> serviceApprovalOptional = serviceApprovalService.updateStatus(id, serviceApproval);
+        if(serviceApprovalOptional.isPresent()){
+            return ResponseEntity.status(HttpStatus.CREATED).body(serviceApprovalOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{id}")

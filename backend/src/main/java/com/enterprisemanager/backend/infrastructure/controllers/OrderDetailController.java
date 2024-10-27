@@ -34,6 +34,11 @@ public class OrderDetailController {
         return orderDetailService.findAll();
     }
 
+    @GetMapping("/ServiceOrder_{id}")
+    public List<OrderDetail> listByServiceOrder(@PathVariable Long id) {
+        return orderDetailService.findAllByServiceOrder(id);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> view(@PathVariable Long id){
         Optional<OrderDetail> orderDetailOptional = orderDetailService.findById(id);

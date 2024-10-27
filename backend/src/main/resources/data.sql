@@ -534,3 +534,4 @@ INSERT INTO order_details (service_value, id, service_branch_branch_id, service_
                                                                                                                          (50.00, 1, 1, 1, 1),
                                                                                                                          (75.00, 2, 2, 2, 2),
                                                                                                                          (100.00, 3, 3, 3, 3);
+

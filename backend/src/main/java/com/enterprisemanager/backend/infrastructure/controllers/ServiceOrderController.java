@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.enterprisemanager.backend.domain.entities.ServiceApproval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +42,16 @@ public class ServiceOrderController {
             return ResponseEntity.ok(serviceOrderOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/Employee_{id}")
+    public List<ServiceOrder> listByEmployee(@PathVariable String id){
+        return serviceOrderService.findAllByEmployeeId(id);
+    }
+
+    @GetMapping("/Customer_{id}")
+    public List<ServiceOrder> listByCustomer(@PathVariable String id){
+        return serviceOrderService.findAllByCustomerId(id);
     }
 
     @PostMapping
