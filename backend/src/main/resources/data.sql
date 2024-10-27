@@ -194,6 +194,10 @@ INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES (
 
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_SERVICES_WITHOUT_BRANCH','/Without_Branch', 'GET', false, 7);
 
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_PERSON_PHONES','/person/{id}', 'GET', false, 14);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_PERSON_EMAILS','/person/{id}', 'GET', false, 15);
+
+
 -- CREACIÓN DE ROLES
 INSERT INTO roles (name) VALUES ('CUSTOMER');
 INSERT INTO roles (name) VALUES ('ADMINISTRATOR');
@@ -206,7 +210,9 @@ INSERT INTO roles (name) VALUES ('STORAGE´S ADMIN');
 
 -- CREACIÓN DE PERMISOS
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 59); -- UPDATE Person
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 138); -- UPDATE Email
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 69); -- UPDATE Email
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 137); -- UPDATE Phone
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 79); -- UPDATE Phone
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 135); -- Service Approval person where id
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 42);
