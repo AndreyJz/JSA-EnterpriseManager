@@ -13,6 +13,33 @@
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    const LogOut = async () => {
+        const token = localStorage.getItem('token');
+        
+        try {
+        const response = await fetch('http://localhost:8081/logout', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+            }
+        });
+    
+        if (response.ok) {
+            const data = await response.json(); // Procesar la respuesta del backend
+            console.log(data.message); // Mostramos el mensaje de cierre exitoso en consola o actualizar el estado
+            localStorage.removeItem('token'); // Eliminar el token del almacenamiento si el logout es exitoso
+            // Aquí puedes redirigir al usuario o actualizar el estado de autenticación
+        } else {
+            console.error('Error in logout:', response.statusText);
+        }
+        } catch (error) {
+        console.error('Error during logout:', error);
+        }
+    };
+    
+    
+
     const userId = 1; // In a real app, this would come from authentication
 
     useEffect(() => {
@@ -20,10 +47,10 @@
         try {
             // Test URLs - Replace with your actual API endpoints
             const [userData, phonesData, emailsData, servicesData] = await Promise.all([
-            fetch(`https://jsonplaceholder.typicode.com/users/${userId}`).then(res => res.json()),
-            fetch(`https://jsonplaceholder.typicode.com/users/${userId}/phones`).then(res => res.json()),
-            fetch(`https://jsonplaceholder.typicode.com/users/${userId}/emails`).then(res => res.json()),
-            fetch(`https://jsonplaceholder.typicode.com/users/${userId}/services`).then(res => res.json())
+            fetch(`http://localhost:8081/api/Person/${userId}`).then(res => res.json()),
+            fetch(`http://localhost:8081/api/Phone/${userId}`).then(res => res.json()),
+            fetch(`http://localhost:8081/api/Email/${userId}`).then(res => res.json()),
+            fetch(`http://localhost:8081/api/Service_Approval/${userId}`).then(res => res.json())
             ]);
 
             setUser(userData);
@@ -82,6 +109,8 @@
             userId={userId}
             services={services}
         />
+
+        <button onClick={LogOut} className="text-blue-600 hover:underline"> Log Out</button>
         </div>
     );
     }

@@ -35,7 +35,9 @@ function Login() {
       if (response.ok) {
         const data = await response.json();
         console.log('Login successful:', data);
+        localStorage.setItem("token",data.jwt);
         // aqui debo poner otro condicional y mirar el rol, dependiendo de eso lo mando a la interfaz de simon
+        console.log(localStorage.getItem("token"));
       } else {
         // Si esta mal no puede entrar
         console.log('Login failed');

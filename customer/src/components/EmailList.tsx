@@ -17,7 +17,7 @@ export function EmailList({ userId, emails, onEmailsUpdate }: EmailListProps) {
 
     try {
       // Test URL - Replace with your actual API endpoint
-      const response = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}/emails`, {
+      const response = await fetch(`http://localhost:8081/api/Email/${userId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ value: newEmail }),

@@ -5,17 +5,22 @@ import { useCart } from '../context/CartContext';
 
 function NavBar() {
   const [isMenuVisible, setMenuVisible] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Verifica si está logueado
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { cart } = useCart();
 
-  // Función para verificar si el usuario está logueado
   useEffect(() => {
     const checkIfLoggedIn = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setIsLoggedIn(false);
+        return;
+      }
+
       try {
-        const response = await fetch('http://localhost:8081/auth/validate-token');
+        const response = await fetch(`http://localhost:8081/auth/validate-token?jwt=${token}`);
         if (response.ok) {
-          const data = await response.json();
-          setIsLoggedIn(data.isAuthenticated); // Suponiendo que el backend tiene este campo
+          const isAuthenticated = await response.json(); // Esperamos un booleano
+          setIsLoggedIn(isAuthenticated);
         } else {
           setIsLoggedIn(false);
         }

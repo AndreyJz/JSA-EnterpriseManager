@@ -26,9 +26,9 @@ export default function Component() {
     const fetchOptions = async () => {
       try {
         const [emailRes, phoneRes, personTypeRes] = await Promise.all([
-          fetch('http://localhost:8081/api/Email Type'),
-          fetch('http://localhost:8081/api/Phone Type'),
-          fetch('http://localhost:8081/api/Person Type')
+          fetch('http://localhost:8081/api/Email_Type'),
+          fetch('http://localhost:8081/api/Phone_Type'),
+          fetch('http://localhost:8081/api/Person_Type')
         ]);
 
         const [emailData, phoneData, personTypeData] = await Promise.all([

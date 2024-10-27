@@ -19,7 +19,7 @@ function Home() {
 
   const getData = async () => {
     try {
-      const response = await axios.get<any[]>("http://localhost:8081/api/Service Branches");
+      const response = await axios.get<any[]>("http://localhost:8081/api/Service_Branches");
       setData(response.data);
     } catch (err) {
       if (axios.isAxiosError(err)) {
