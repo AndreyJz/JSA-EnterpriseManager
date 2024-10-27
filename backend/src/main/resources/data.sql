@@ -25,6 +25,7 @@ INSERT INTO modules (name, base_path) VALUES ('WORK_ORDER_DETAIL', '/api/Work Or
 INSERT INTO modules (name, base_path) VALUES ('WORK_ORDER_DETAIL_STATUS', '/api/Work_Detail_Status');
 INSERT INTO modules (name, base_path) VALUES ('APPROVAL_STATUS', '/api/Approval_Status');
 INSERT INTO modules (name, base_path) VALUES ('AUTH', '/auth');
+INSERT INTO modules (name, base_path) VALUES ('ROLE', '/api/Roles');
 
 -- CREACIÓN DE OPERACIONES
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ALL_COUNTRIES','', 'GET', false, 1);
@@ -202,6 +203,8 @@ INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES (
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ORDER_DETAILS_BY_SERVICE_ORDER', '/ServiceOrder_[0-9]*', 'GET', false, 19);
 
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('AUTHENTICATE','/logout', 'POST', true, 26);
+
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ROLES','', 'GET', true, 27);
 
 -- CREACIÓN DE ROLES
 INSERT INTO roles (name) VALUES ('CUSTOMER');
