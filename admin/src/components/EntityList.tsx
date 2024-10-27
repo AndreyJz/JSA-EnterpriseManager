@@ -103,7 +103,7 @@ interface EntityField {
 }
 
 const entityFields: { [key: string]: EntityField[] } = {
-  "Approval Status": [
+  "Approval_Status": [
     { name: 'Name', type: 'text' },
   ],
   Branches: [
@@ -120,7 +120,7 @@ const entityFields: { [key: string]: EntityField[] } = {
     { name: 'Name', type: 'text' },
     { name: 'CompanyType', type: 'number' },
   ],
-  "Company Type": [
+  "Company_Type": [
     { name: 'Description', type: 'text' },
   ],
   Countries: [
@@ -131,16 +131,16 @@ const entityFields: { [key: string]: EntityField[] } = {
     { name: 'EmailType', type: 'number' },
     { name: 'PersonId', type: 'text' },
   ],
-  "Email Type": [
+  "Email_Type": [
     { name: 'Name', type: 'text' },
   ],
-  "Order Details": [
+  "Order_Details": [
     { name: 'Value', type: 'number' },
     { name: 'Branch', type: 'number' },
     { name: 'Service', type: 'number' },
     { name: 'ServiceOrder', type: 'number' },
   ],
-  "Order Status": [
+  "Order_Status": [
     { name: 'Name', type: 'text' },
   ],
   Person: [
@@ -153,12 +153,12 @@ const entityFields: { [key: string]: EntityField[] } = {
     { name: 'Branch', type: 'number' },
     { name: 'PersonType', type: 'number' },
   ],
-  "Person Supply": [
+  "Person_Supply": [
     { name: 'Quantity', type: 'number' },
     { name: 'Supply', type: 'number' },
     { name: 'PersonId', type: 'text' },
   ],
-  "Person Type": [
+  "Person_Type": [
     { name: 'Name', type: 'text' },
   ],
   Phone: [
@@ -166,14 +166,14 @@ const entityFields: { [key: string]: EntityField[] } = {
     { name: 'PhoneType', type: 'number' },
     { name: 'PersonId', type: 'text' },
   ],
-  "Phone Type": [
+  "Phone_Type": [
     { name: 'Name', type: 'text' },
   ],
   Regions: [
     { name: 'Name', type: 'text' },
     { name: 'Country', type: 'number' },
   ],
-  "Service Approval": [
+  "Service_Approval": [
     { name: 'Report', type: 'text' },
     { name: 'Solution', type: 'text' },
     { name: 'ApprovalStatus', type: 'number' },
@@ -181,12 +181,12 @@ const entityFields: { [key: string]: EntityField[] } = {
     { name: 'Service', type: 'number' },
     { name: 'WorkOrder', type: 'number' },
   ],
-  "Service Branches": [
+  "Service_Branches": [
     { name: 'Value', type: 'number' },
     { name: 'Branch', type: 'number' },
     { name: 'Service', type: 'number' },
   ],
-  "Service Order": [
+  "Service_Order": [
     { name: 'OrderStatus', type: 'number' },
     { name: 'CustomerId', type: 'text' },
     { name: 'EmployeeId', type: 'text' },
@@ -203,23 +203,23 @@ const entityFields: { [key: string]: EntityField[] } = {
     { name: 'Max-Stock', type: 'number' },
     { name: 'Min-Stock', type: 'number' },
   ],
-  "Supply Service": [
+  "Supply_Service": [
     { name: 'Quantity', type: 'number' },
     { name: 'Branch', type: 'number' },
     { name: 'Service', type: 'number' },
     { name: 'Supply', type: 'number' },
   ],
-  "Work Order Detail": [
+  "Work_Order_Detail": [
     { name: 'Branch', type: 'number' },
     { name: 'Service', type: 'number' },
     { name: 'DetailStatus', type: 'number' },
     { name: 'WorkOrder', type: 'number' },
     { name: 'EmployeeId', type: 'text' },
   ],
-  "Work Detail Status": [
+  "Work_Detail_Status": [
     { name: 'Name', type: 'text' },
   ],
-  "Work Orders": [
+  "Work_Orders": [
     { name: 'OrderNumber', type: 'text' },
     { name: 'ServiceOrder', type: 'number' },
   ],
@@ -235,12 +235,12 @@ const transformFormDataToApiFormat = (entity: string, formData: { [key: string]:
           id: parseInt(formData.Country)
         }
       };
-    case 'Approval Status':
-    case 'Work Detail Status':
-    case 'Phone Type':
-    case 'Person Type':
-    case 'Order Status':
-    case 'Email Type':
+    case 'Approval_Status':
+    case 'Work_Detail_Status':
+    case 'Phone_Type':
+    case 'Person_Type':
+    case 'Order_Status':
+    case 'Email_Type':
     case 'Countries':
       return {
         name: formData.Name
@@ -295,7 +295,7 @@ const transformFormDataToApiFormat = (entity: string, formData: { [key: string]:
           id: formData.PersonId
         }
       };
-    case 'Order Details':
+    case 'Order_Details':
       return {
         value: parseInt(formData.Value),
         branch: {
@@ -308,7 +308,7 @@ const transformFormDataToApiFormat = (entity: string, formData: { [key: string]:
           id: parseInt(formData.ServiceOrder)
         }
       };
-    case 'Person Supply':
+    case 'Person_Supply':
       return {
         quantity: parseInt(formData.Quantity),
         supply: {
@@ -328,7 +328,7 @@ const transformFormDataToApiFormat = (entity: string, formData: { [key: string]:
           id: formData.PersonId
         }
       };
-    case 'Service Approval':
+    case 'Service_Approval':
       return {
         report: formData.Report,
         solution: formData.Solution,
@@ -345,7 +345,7 @@ const transformFormDataToApiFormat = (entity: string, formData: { [key: string]:
           id: parseInt(formData.WorkOrder)
         }
       };
-    case 'Service Branches':
+    case 'Service_Branches':
       return {
         value: parseInt(formData.Value),
         branch: {
@@ -355,7 +355,7 @@ const transformFormDataToApiFormat = (entity: string, formData: { [key: string]:
           id: parseInt(formData.Service)
         }
       };
-    case 'Service Order':
+    case 'Service_Order':
       return {
         orderStatus: {
           id: parseInt(formData.OrderStatus)
@@ -377,7 +377,7 @@ const transformFormDataToApiFormat = (entity: string, formData: { [key: string]:
         maxStock: parseInt(formData['Max-Stock']),
         minStock: parseInt(formData['Min-Stock'])
       };
-    case 'Supply Service':
+    case 'Supply_Service':
       return {
         quantity: parseInt(formData.Quantity),
         branch: {
@@ -390,7 +390,7 @@ const transformFormDataToApiFormat = (entity: string, formData: { [key: string]:
           id: parseInt(formData.Supply)
         }
       };
-    case 'Work Order Detail':
+    case 'Work_Order_Detail':
       return {
         branch: {
           id: parseInt(formData.Branch)
@@ -406,7 +406,7 @@ const transformFormDataToApiFormat = (entity: string, formData: { [key: string]:
         },
         employeeId: formData.EmployeeId
       };
-    case 'Work Orders':
+    case 'Work_Orders':
       return {
         orderNumber: formData.OrderNumber,
         serviceOrder: {
@@ -463,13 +463,13 @@ const EntityList: React.FC = () => {
     if (!item) return false;
     
     switch (entity) {
-      case "Work Order Detail":
+      case "Work_Order_Detail":
         return item.id !== undefined && item.id !== null;
-      case "Supply Service":
+      case "Supply_Service":
         return item.serviceBranch?.branch && item.serviceBranch?.service && item.supply;
-      case "Service Branches":
+      case "Service_Branches":
         return item.branch && item.service;
-      case "Person Supply":
+      case "Person_Supply":
         return item.person && item.supply;
       default:
         return true;
@@ -482,15 +482,15 @@ const EntityList: React.FC = () => {
 
     try {
       switch (entity) {
-        case "Work Order Detail":
+        case "Work_Order_Detail":
           return item.id?.toString();
-        case "Person Supply":
+        case "Person_Supply":
           return `${item.person?.id || 'na'}-${item.supply?.id || 'na'}`;
-        case "Service Branches":
+        case "Service_Branches":
           return `${item.branch?.id || 'na'}-${item.service?.id || 'na'}`;
-        case "Supply Service":
+        case "Supply_Service":
           return `${item.serviceBranch?.branch?.id || 'na'}-${item.serviceBranch?.service?.id || 'na'}-${item.supply?.id || 'na'}`;
-        case "Service Approval":
+        case "Service_Approval":
           return `${item.id || 'na'}`;
 
         default:
@@ -513,7 +513,7 @@ const EntityList: React.FC = () => {
 
     try {
       switch (entity) {
-        case "Work Order Detail":
+        case "Work_Order_Detail":
           return (
             <div>
               {item.id !== undefined 
@@ -526,38 +526,38 @@ const EntityList: React.FC = () => {
                 : 'Invalid Work Order Detail'}
             </div>
           );
-        case "Company Type":
+        case "Company_Type":
           return item.description || 'N/A';
         case "Email":
           return item.mail || 'N/A';
-        case "Work Orders":
+        case "Work_Orders":
           return item.workOrderNum || 'N/A';
-        case "Order Details":
+        case "Order_Details":
         case "Person":
-        case "Service Order":
+        case "Service_Order":
           return `${item.id?.toString() || 'N/A'}`;
-        case "Person Supply":
+        case "Person_Supply":
           return (
             <>
               Person: {item.person?.id || 'N/A'} <br />
               Supply: {item.supply?.barcode || 'N/A'}
             </>
           );
-        case "Service Branches":
+        case "Service_Branches":
           return (
             <>
               Branch: {item.branch?.id || 'N/A'} <br />
               Service: {item.service?.id || 'N/A'}
             </>
           );
-        case "Service Approval":
+        case "Service_Approval":
           return (
             <>
               Id: {item.id || 'N/A'} <br />
               WorkOrder: {item.workOrder?.id || 'N/A'}
             </>
           );
-        case "Supply Service":
+        case "Supply_Service":
           return (
             <>
               Branch: {item.serviceBranch?.branch?.name || 'N/A'} <br/>
@@ -586,20 +586,20 @@ const EntityList: React.FC = () => {
     
     const searchTermLower = searchTerm.toLowerCase();
     switch (entity) {
-      case "Work Order Detail":
+      case "Work_Order_Detail":
         return (
           item.id?.toString().toLowerCase().includes(searchTermLower)||
           item.workOrder.workOrderNum.toString().toLowerCase().includes(searchTermLower)
         );
-      case "Order Details":
+      case "Order_Details":
       case "Person":
-      case "Service Order":
+      case "Service_Order":
         return item.id?.toString().toLowerCase().includes(searchTermLower);
       case "Email":
         return item.mail?.toLowerCase().includes(searchTermLower);
-      case "Company Type":
+      case "Company_Type":
         return item.description?.toLowerCase().includes(searchTermLower);
-      case "Person Supply":
+      case "Person_Supply":
         return (
           item.person?.id?.toString().toLowerCase().includes(searchTermLower) ||
           item.supply?.barcode?.toLowerCase().includes(searchTermLower)
@@ -609,20 +609,20 @@ const EntityList: React.FC = () => {
           item.name?.toString().toLowerCase().includes(searchTermLower) ||
           item.barcode?.toLowerCase().includes(searchTermLower)
         );
-      case "Supply Service":
+      case "Supply_Service":
         return (
           item.serviceBranch?.service?.name?.toString().toLowerCase().includes(searchTermLower) 
         );
-      case "Service Branches":
+      case "Service_Branches":
         return (
           item.branch?.id?.toString().toLowerCase().includes(searchTermLower) ||
           item.service?.id?.toString().toLowerCase().includes(searchTermLower)
         );
-      case "Service Approval":
+      case "Service_Approval":
         return item.workOrder?.id?.toString().toLowerCase().includes(searchTermLower);
       case "Phone":
         return item.number?.toLowerCase().includes(searchTermLower);
-      case "Work Orders":
+      case "Work_Orders":
         return item.workOrderNum?.toLowerCase().includes(searchTermLower);
       default:
         return item.name?.toLowerCase().includes(searchTermLower);
@@ -748,7 +748,7 @@ const EntityList: React.FC = () => {
 
   return (
     <div>
-      <h2>{entity}</h2>
+      <h2>{(entity.replace('_', ' ')).replace('_',' ')}</h2>
       <SearchBar
         type="text"
         placeholder="Search..."
