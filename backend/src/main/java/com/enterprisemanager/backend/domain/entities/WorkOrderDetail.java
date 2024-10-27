@@ -10,6 +10,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import java.time.LocalDateTime;
+
 
 @Entity
 @Table(name = "work_order_detail")
@@ -27,8 +29,9 @@ public class WorkOrderDetail {
      @JoinColumn(name = "employee_id")
      private Person person;
     
-    @Column(columnDefinition = "datetime")
-    private String date;
+     @Column(length = 20, nullable = false)
+     //    @NotNull(message = "You have to add a date")
+         private LocalDateTime date;
 
     @ManyToOne
     @NotNull(message = "You have to add a Work order Detail status")

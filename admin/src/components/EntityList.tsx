@@ -106,145 +106,122 @@ const entityFields: { [key: string]: EntityField[] } = {
   "Approval Status": [
     { name: 'Name', type: 'text' },
   ],
-  branches: [
-    { name: 'name', type: 'text' },
-    { name: 'nit', type: 'text' },
-    { name: 'creation_date', type: 'datetime' },
-    { name: 'city_id', type: 'number' },
-    { name: 'company_id', type: 'number' },
+  Branches: [
+    { name: 'Name', type: 'text' },
+    { name: 'Nit', type: 'text' },
+    { name: 'City', type: 'number' },
+    { name: 'Company', type: 'number' },
   ],
-  cities: [
-    { name: 'id', type: 'number' },
-    { name: 'name', type: 'text' },
-    { name: 'region_id', type: 'number' },
+  Cities: [
+    { name: 'Name', type: 'text' },
+    { name: 'Region', type: 'number' },
   ],
-  companies: [
-    { name: 'id', type: 'number' },
-    { name: 'name', type: 'text' },
-    { name: 'company_type_id', type: 'number' },
+  Companies: [
+    { name: 'Name', type: 'text' },
+    { name: 'CompanyType', type: 'number' },
   ],
-  company_types: [
-    { name: 'id', type: 'number' },
-    { name: 'description', type: 'text' },
+  "Company Type": [
+    { name: 'Description', type: 'text' },
   ],
-  countries: [
-    { name: 'id', type: 'number' },
-    { name: 'name', type: 'text' },
+  Countries: [
+    { name: 'Name', type: 'text' },
   ],
-  email: [
-    { name: 'id', type: 'number' },
-    { name: 'mail', type: 'text' },
-    { name: 'email_type_id', type: 'number' },
-    { name: 'person_id', type: 'text' },
+  Email: [
+    { name: 'Mail', type: 'text' },
+    { name: 'EmailType', type: 'number' },
+    { name: 'PersonId', type: 'text' },
   ],
-  email_type: [
-    { name: 'id', type: 'number' },
-    { name: 'name', type: 'text' },
+  "Email Type": [
+    { name: 'Name', type: 'text' },
   ],
-  order_details: [
-    { name: 'id', type: 'number' },
-    { name: 'service_value', type: 'number' },
-    { name: 'service_branch_branch_id', type: 'number' },
-    { name: 'service_branch_service_id', type: 'number' },
-    { name: 'service_order_id', type: 'number' },
+  "Order Details": [
+    { name: 'Value', type: 'number' },
+    { name: 'Branch', type: 'number' },
+    { name: 'Service', type: 'number' },
+    { name: 'ServiceOrder', type: 'number' },
   ],
-  order_status: [
-    { name: 'id', type: 'number' },
-    { name: 'name', type: 'text' },
+  "Order Status": [
+    { name: 'Name', type: 'text' },
   ],
   Person: [
-    { name: 'id', type: 'text' },
-    { name: 'name', type: 'text' },
-    { name: 'lastname', type: 'text' },
-    { name: 'password', type: 'text' },
-    { name: 'date', type: 'datetime' },
-    { name: 'username', type: 'text' },
-    { name: 'role', type: 'select' },
-    { name: 'branch_id', type: 'number' },
-    { name: 'person_type_id', type: 'number' },
+    { name: 'Id', type: 'text' },
+    { name: 'Name', type: 'text' },
+    { name: 'Lastname', type: 'text' },
+    { name: 'Username', type: 'text' },
+    { name: 'Password', type: 'text' },
+    { name: 'Role', type: 'select' },
+    { name: 'Branch', type: 'number' },
+    { name: 'PersonType', type: 'number' },
   ],
-  person_supply: [
-    { name: 'quantity', type: 'number' },
-    { name: 'supply_id', type: 'number' },
-    { name: 'person_id', type: 'text' },
+  "Person Supply": [
+    { name: 'Quantity', type: 'number' },
+    { name: 'Supply', type: 'number' },
+    { name: 'PersonId', type: 'text' },
   ],
-  person_type: [
-    { name: 'id', type: 'number' },
-    { name: 'name', type: 'text' },
+  "Person Type": [
+    { name: 'Name', type: 'text' },
   ],
-  phone: [
-    { name: 'id', type: 'number' },
-    { name: 'number', type: 'text' },
-    { name: 'phone_type_id', type: 'number' },
-    { name: 'person_id', type: 'text' },
+  Phone: [
+    { name: 'Number', type: 'text' },
+    { name: 'PhoneType', type: 'number' },
+    { name: 'PersonId', type: 'text' },
   ],
-  phone_type: [
-    { name: 'id', type: 'number' },
-    { name: 'name', type: 'text' },
+  "Phone Type": [
+    { name: 'Name', type: 'text' },
   ],
   Regions: [
     { name: 'Name', type: 'text' },
     { name: 'Country', type: 'number' },
   ],
-  service_approval: [
-    { name: 'id', type: 'number' },
-    { name: 'report', type: 'text' },
-    { name: 'solution', type: 'text' },
-    { name: 'approval_status_id', type: 'number' },
-    { name: 'service_branch_branch_id', type: 'number' },
-    { name: 'service_branch_service_id', type: 'number' },
-    { name: 'work_order_id', type: 'number' },
+  "Service Approval": [
+    { name: 'Report', type: 'text' },
+    { name: 'Solution', type: 'text' },
+    { name: 'ApprovalStatus', type: 'number' },
+    { name: 'Branch', type: 'number' },
+    { name: 'Service', type: 'number' },
+    { name: 'WorkOrder', type: 'number' },
   ],
-  service_branches: [
-    { name: 'service_value', type: 'number' },
-    { name: 'branch_id', type: 'number' },
-    { name: 'service_id', type: 'number' },
+  "Service Branches": [
+    { name: 'Value', type: 'number' },
+    { name: 'Branch', type: 'number' },
+    { name: 'Service', type: 'number' },
   ],
-  service_order: [
-    { name: 'id', type: 'number' },
-    { name: 'order_date', type: 'datetime' },
-    { name: 'order_status_id', type: 'number' },
-    { name: 'customer_id', type: 'text' },
-    { name: 'employee_id', type: 'text' },
+  "Service Order": [
+    { name: 'OrderStatus', type: 'number' },
+    { name: 'CustomerId', type: 'text' },
+    { name: 'EmployeeId', type: 'text' },
   ],
-  services: [
-    { name: 'id', type: 'number' },
-    { name: 'name', type: 'text' },
-    { name: 'requires_supply', type: 'boolean' },
+  Services: [
+    { name: 'Name', type: 'text' },
+    { name: 'NeedSupply', type: 'boolean' },
   ],
-  supply: [
-    { name: 'id', type: 'number' },
-    { name: 'name', type: 'text' },
-    { name: 'barcode', type: 'text' },
-    { name: 'price', type: 'number' },
-    { name: 'stock', type: 'number' },
-    { name: 'stock_max', type: 'number' },
-    { name: 'stock_min', type: 'number' },
+  Supply: [
+    { name: 'Name', type: 'text' },
+    { name: 'Barcode', type: 'text' },
+    { name: 'Price', type: 'number' },
+    { name: 'Stock', type: 'number' },
+    { name: 'Max-Stock', type: 'number' },
+    { name: 'Min-Stock', type: 'number' },
   ],
-  supply_service: [
-    { name: 'quantity', type: 'number' },
-    { name: 'service_branches_branch_id', type: 'number' },
-    { name: 'service_branches_service_id', type: 'number' },
-    { name: 'supply_id', type: 'number' },
+  "Supply Service": [
+    { name: 'Quantity', type: 'number' },
+    { name: 'Branch', type: 'number' },
+    { name: 'Service', type: 'number' },
+    { name: 'Supply', type: 'number' },
   ],
-  work_order_detail: [
-    { name: 'id', type: 'number' },
-    { name: 'date', type: 'datetime' },
-    { name: 'service_branch_branch_id', type: 'number' },
-    { name: 'service_branch_service_id', type: 'number' },
-    { name: 'work_order_detail_status_id', type: 'number' },
-    { name: 'work_order_id', type: 'number' },
-    { name: 'employee_id', type: 'text' },
+  "Work Order Detail": [
+    { name: 'Branch', type: 'number' },
+    { name: 'Service', type: 'number' },
+    { name: 'DetailStatus', type: 'number' },
+    { name: 'WorkOrder', type: 'number' },
+    { name: 'EmployeeId', type: 'text' },
   ],
-  work_order_detail_status: [
-    { name: 'id', type: 'number' },
-    { name: 'name', type: 'text' },
+  "Work Detail Status": [
+    { name: 'Name', type: 'text' },
   ],
-  work_orders: [
-    { name: 'id', type: 'number' },
-    { name: 'work_order_num', type: 'text' },
-    { name: 'assign_date', type: 'datetime' },
-    { name: 'service_order_id', type: 'number' },
+  "Work Orders": [
+    { name: 'OrderNumber', type: 'text' },
+    { name: 'ServiceOrder', type: 'number' },
   ],
 };
 
@@ -259,54 +236,184 @@ const transformFormDataToApiFormat = (entity: string, formData: { [key: string]:
         }
       };
     case 'Approval Status':
+    case 'Work Detail Status':
+    case 'Phone Type':
+    case 'Person Type':
+    case 'Order Status':
+    case 'Email Type':
+    case 'Countries':
       return {
         name: formData.Name
       };
-    case 'cities':
+    case 'Cities':
       return {
-        name: formData.name,
+        name: formData.Name,
         region: {
-          id: parseInt(formData.region_id)
+          id: parseInt(formData.Region)
         }
       };
-    case 'branches':
+    case 'Branches':
       return {
-        name: formData.name,
-        nit: formData.nit,
-        creationDate: formData.creation_date,
+        name: formData.Name,
+        nit: formData.Nit,
         city: {
-          id: parseInt(formData.city_id)
+          id: parseInt(formData.City)
         },
         company: {
-          id: parseInt(formData.company_id)
+          id: parseInt(formData.Company)
         }
       };
-    case 'companies':
+    case 'Companies':
       return {
-        name: formData.name,
+        name: formData.Name,
         companyType: {
-          id: parseInt(formData.company_type_id)
+          id: parseInt(formData.CompanyType)
         }
       };
-    case 'person':
+    case 'Person':
       return {
-        id: formData.id,
-        name: formData.name,
-        lastname: formData.lastname,
-        password: formData.password,
-        date: formData.date,
-        username: formData.username,
-        role: formData.role,
+        id: formData.Id,
+        name: formData.Name,
+        lastname: formData.Lastname,
+        username: formData.Username,
+        password: formData.Password,
+        role: formData.Role,
         branch: {
-          id: parseInt(formData.branch_id)
+          id: parseInt(formData.Branch)
         },
         personType: {
-          id: parseInt(formData.person_type_id)
+          id: parseInt(formData.PersonType)
         }
       };
-    // Add more cases for other entities as needed
+    case 'Email':
+      return {
+        mail: formData.Mail,
+        emailType: {
+          id: parseInt(formData.EmailType)
+        },
+        person: {
+          id: formData.PersonId
+        }
+      };
+    case 'Order Details':
+      return {
+        value: parseInt(formData.Value),
+        branch: {
+          id: parseInt(formData.Branch)
+        },
+        service: {
+          id: parseInt(formData.Service)
+        },
+        serviceOrder: {
+          id: parseInt(formData.ServiceOrder)
+        }
+      };
+    case 'Person Supply':
+      return {
+        quantity: parseInt(formData.Quantity),
+        supply: {
+          id: parseInt(formData.Supply)
+        },
+        person: {
+          id: formData.PersonId
+        }
+      };
+    case 'Phone':
+      return {
+        number: formData.Number,
+        phoneType: {
+          id: parseInt(formData.PhoneType)
+        },
+        person: {
+          id: formData.PersonId
+        }
+      };
+    case 'Service Approval':
+      return {
+        report: formData.Report,
+        solution: formData.Solution,
+        approvalStatus: {
+          id: parseInt(formData.ApprovalStatus)
+        },
+        branch: {
+          id: parseInt(formData.Branch)
+        },
+        service: {
+          id: parseInt(formData.Service)
+        },
+        workOrder: {
+          id: parseInt(formData.WorkOrder)
+        }
+      };
+    case 'Service Branches':
+      return {
+        value: parseInt(formData.Value),
+        branch: {
+          id: parseInt(formData.Branch)
+        },
+        service: {
+          id: parseInt(formData.Service)
+        }
+      };
+    case 'Service Order':
+      return {
+        orderStatus: {
+          id: parseInt(formData.OrderStatus)
+        },
+        customerId: formData.CustomerId,
+        employeeId: formData.EmployeeId
+      };
+    case 'Services':
+      return {
+        name: formData.Name,
+        needSupply: formData.NeedSupply === 'true'
+      };
+    case 'Supply':
+      return {
+        name: formData.Name,
+        barcode: formData.Barcode,
+        price: parseFloat(formData.Price),
+        stock: parseInt(formData.Stock),
+        maxStock: parseInt(formData['Max-Stock']),
+        minStock: parseInt(formData['Min-Stock'])
+      };
+    case 'Supply Service':
+      return {
+        quantity: parseInt(formData.Quantity),
+        branch: {
+          id: parseInt(formData.Branch)
+        },
+        service: {
+          id: parseInt(formData.Service)
+        },
+        supply: {
+          id: parseInt(formData.Supply)
+        }
+      };
+    case 'Work Order Detail':
+      return {
+        branch: {
+          id: parseInt(formData.Branch)
+        },
+        service: {
+          id: parseInt(formData.Service)
+        },
+        detailStatus: {
+          id: parseInt(formData.DetailStatus)
+        },
+        workOrder: {
+          id: parseInt(formData.WorkOrder)
+        },
+        employeeId: formData.EmployeeId
+      };
+    case 'Work Orders':
+      return {
+        orderNumber: formData.OrderNumber,
+        serviceOrder: {
+          id: parseInt(formData.ServiceOrder)
+        }
+      };
     default:
-      // For simple entities that don't need transformation
       return formData;
   }
 };
@@ -496,6 +603,11 @@ const EntityList: React.FC = () => {
         return (
           item.person?.id?.toString().toLowerCase().includes(searchTermLower) ||
           item.supply?.barcode?.toLowerCase().includes(searchTermLower)
+        );
+      case "Supply":
+        return (
+          item.name?.toString().toLowerCase().includes(searchTermLower) ||
+          item.barcode?.toLowerCase().includes(searchTermLower)
         );
       case "Supply Service":
         return (

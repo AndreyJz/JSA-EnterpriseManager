@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.enterprisemanager.backend.application.services.IWorkOrderService;
 import com.enterprisemanager.backend.domain.entities.WorkOrder;
+import java.time.LocalDateTime;
+
 
 
 @Service
@@ -32,6 +34,7 @@ public class WorkOrderImpl implements IWorkOrderService {
     @Transactional
     @Override
     public WorkOrder save(WorkOrder workOrder) {
+        workOrder.setAssignDate(LocalDateTime.now());
         return workOrderRepository.save(workOrder);
     }
 

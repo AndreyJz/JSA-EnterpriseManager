@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.enterprisemanager.backend.application.services.IWorkOrderDetailService;
 import com.enterprisemanager.backend.domain.entities.WorkOrderDetail;
+import java.time.LocalDateTime;
+
 
 
 @Service
@@ -32,6 +34,7 @@ public class WorkOrderDetailImpl implements IWorkOrderDetailService {
     @Transactional
     @Override
     public WorkOrderDetail save(WorkOrderDetail workOrderDetail) {
+        workOrderDetail.setDate(LocalDateTime.now());
         return workOrderDetailRepository.save(workOrderDetail);
     }
 

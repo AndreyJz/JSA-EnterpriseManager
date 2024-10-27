@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.enterprisemanager.backend.application.services.IServiceOrderService;
 import com.enterprisemanager.backend.domain.entities.ServiceOrder;
+import java.time.LocalDateTime;
+
 
 
 @Service
@@ -32,6 +34,7 @@ public class ServiceOrderImpl implements IServiceOrderService {
     @Transactional
     @Override
     public ServiceOrder save(ServiceOrder serviceOrder) {
+        serviceOrder.setOrderDate(LocalDateTime.now());
         return serviceOrderRepository.save(serviceOrder);
     }
 
