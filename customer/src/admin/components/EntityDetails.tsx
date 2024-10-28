@@ -272,7 +272,7 @@ const EntityDetails: React.FC = () => {
         }
       });
 
-      navigate(`/${entity}`);
+      navigate(`/admin/${entity}`);
     } catch (err: any) {
       setError(err.response?.data?.message || 'Error deleting item');
     }
