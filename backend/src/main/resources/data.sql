@@ -189,15 +189,15 @@ INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES (
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ALL_CUSTOMERS', '/Customers', 'GET', false, 12);
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ALL_EMPLOYEES', '/Employees', 'GET', false, 12);
 
-INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_WORK_ORDER_DETAILS_BY_EMPLOYEE', '/Employee_[0-9]*', 'GET', false, 23);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_WORK_ORDER_DETAILS_BY_EMPLOYEE', '/Employee_.*', 'GET', false, 23);
 
-INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_SERVICE_ORDERS_BY_EMPLOYEE','/Employee_[0-9]*', 'GET', false, 21);
-INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_SERVICE_ORDERS_BY_CUSTOMER','/Customer_[0-9]*', 'GET', false, 21);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_SERVICE_ORDERS_BY_EMPLOYEE','/Employee_.*', 'GET', false, 21);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_SERVICE_ORDERS_BY_CUSTOMER','/Customer_.*', 'GET', false, 21);
 
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_SERVICES_WITHOUT_BRANCH','/Without_Branch', 'GET', false, 7);
 
-INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_PERSON_PHONES','/person/{id}', 'GET', false, 14);
-INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_PERSON_EMAILS','/person/{id}', 'GET', false, 15);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_PERSON_PHONES','/person/.*', 'GET', false, 14);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_PERSON_EMAILS','/person/.*', 'GET', false, 15);
 
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('UPDATE_STATUS','/Status_[0-9]*', 'PUT', false, 9);
 
