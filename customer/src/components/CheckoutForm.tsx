@@ -17,43 +17,58 @@ function CheckoutForm({ amount }: CheckoutFormProps) {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!stripe || !elements) return;
+    if (!stripe || !elements) {
+      return;
+    }
 
     setProcessing(true);
     const cardElement = elements.getElement(CardElement);
 
-    try {
-      // Request clientSecret from backend
-      const response = await fetch('http://localhost:8081/api/payment/create-payment-intent', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: amount * 100 }), // Stripe expects amount in cents
-      });
-
-      const { clientSecret } = await response.json();
-
-      if (cardElement && clientSecret) {
-        // Confirm the payment with the clientSecret
-        const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-          payment_method: { card: cardElement },
+    if (cardElement) {
+      try {
+        const { error, paymentMethod } = await stripe.createPaymentMethod({
+          type: 'card',
+          card: cardElement,
         });
 
         if (error) {
           setError(error.message || 'An error occurred');
           setProcessing(false);
-        } else if (paymentIntent && paymentIntent.status === 'succeeded') {
+        } else {
+          const token = localStorage.getItem('token');
+
+          const response = await fetch('http://localhost:8081/api/Payment/create-payment-intent', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ amount: amount * 100 }), // convert amount to cents
+          });
+
+          if (!response.ok) {
+            const errorData = await response.text();
+            console.error(`Failed to create payment intent: ${response.status} - ${errorData}`);
+            throw new Error(`Failed to create payment intent: ${response.statusText}`);
+          }
+
+          const data = await response.json();
+          const clientSecret = data.clientSecret;
+
+          console.log('Payment Intent created:', clientSecret);
           setSucceeded(true);
           setError(null);
           clearCart();
         }
+      } catch (err) {
+        console.error('Payment error:', err);
+        setError('An unexpected error occurred. Please try again.');
+      } finally {
+        setProcessing(false);
       }
-    } catch (err) {
-      console.error('Payment error:', err);
-      setError('An unexpected error occurred. Please try again.');
-    } finally {
-      setProcessing(false);
     }
   };
+
 
   if (succeeded) {
     return (

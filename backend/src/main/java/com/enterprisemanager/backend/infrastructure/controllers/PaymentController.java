@@ -11,6 +11,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/Payment")
+@CrossOrigin(origins = "http://localhost:5173")
 public class PaymentController {
 
     public PaymentController(@Value("${stripe.api.secret.key}") String secretKey) {
@@ -25,7 +26,10 @@ public class PaymentController {
         params.put("currency", "usd");
         params.put("automatic_payment_methods", Map.of("enabled", true));
 
+        System.out.println("Received request to create payment intent with amount: " + amount);
         PaymentIntent paymentIntent = PaymentIntent.create(params);
+        System.out.println("Payment Intent created with clientSecret: " + paymentIntent.getClientSecret());
+
         Map<String, String> response = new HashMap<>();
         response.put("clientSecret", paymentIntent.getClientSecret());
 

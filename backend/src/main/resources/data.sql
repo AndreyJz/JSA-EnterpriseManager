@@ -228,7 +228,13 @@ INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 79); -- UPDAT
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 135); -- Service ORDER person where id
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 140); -- ORDER DETAIL BY SERVICE ORDER
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 139); -- update APPROVAL STATUS
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 103); -- Service Order
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 93); -- CREATE Order Detail
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 96); -- READ Order Detail STATUS
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 103); -- CREATE Service Order
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 108); -- CREATE Work Order
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 113); -- CREATE Work Order Detail
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 116); -- READ Work Order Detail Status
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 43); -- CREATE Service_Approval
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 121); -- Approval status
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 143); -- Purchase Intent
 
@@ -372,6 +378,7 @@ INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 137);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 138);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 139);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 140);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 143);
 
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 134); -- ORDER SERVICE employee where id
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 140); -- ORDER DETAILS BY SERVICE ORDER
@@ -382,7 +389,13 @@ INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 121); -- Appr
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 133); -- WorkOrderDetail employee where id
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 112);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 114);
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 116);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 93); -- CREATE Order Detail
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 96); -- READ Order Detail STATUS
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 103); -- CREATE Service Order
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 108); -- CREATE Work Order
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 113); -- CREATE Work Order Detail
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 116); -- READ Work Order Detail Status
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 43); -- CREATE Service_Approval
 
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (4, 131); -- ALL P
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (4, 57); -- ONE P
