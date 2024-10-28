@@ -72,13 +72,18 @@ useEffect(() => {
     try {
         const [phonesData, emailsData, servicesData] = await Promise.all([
         fetch(`http://localhost:8081/api/Phone/person/${userId}`, {
-            headers: { 'Authorization': `Bearer ${token}` },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` },
         }).then(res => res.json()),
         fetch(`http://localhost:8081/api/Email/person/${userId}`, {
-            headers: { 'Authorization': `Bearer ${token}` },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` },
         }).then(res => res.json()),
         fetch(`http://localhost:8081/api/Service_Approval/${userId}`, {
-            headers: { 'Authorization': `Bearer ${token}` },
+            headers: { 'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` },
         }).then(res => res.json())
         ]);
 

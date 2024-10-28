@@ -114,7 +114,7 @@
             onChange={(e) => setSelectedPhoneType(Number(e.target.value))}
             className="border p-2 rounded w-2/10"
         >
-            <option value="" disabled>Select phone type</option>
+            <option value="">Select phone type</option>
             {phoneTypes.map(type => (
             <option key={type.id} value={type.id}>
                 {type.name}
