@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Edit } from 'lucide-react';
-import { UserInfo } from '../types';
+import { UserUpdate } from '../types';
 
 interface CustomerDataProps {
-  user: UserInfo;
-  onUserUpdate: (user: UserInfo) => void;
+  user: UserUpdate;
+  onUserUpdate: (user: UserUpdate) => void;
 }
 
 export function CustomerData({ user, onUserUpdate }: CustomerDataProps) {
@@ -32,7 +32,7 @@ export function CustomerData({ user, onUserUpdate }: CustomerDataProps) {
   );
 
   const UserEdit = () => {
-    const [editedUser, setEditedUser] = useState<Pick<UserInfo, 'name' | 'lastname'>>({
+    const [editedUser, setEditedUser] = useState<Pick<UserUpdate, 'name' | 'lastname'>>({
       name: user.name,
       lastname: user.lastname,
     });
@@ -44,11 +44,29 @@ export function CustomerData({ user, onUserUpdate }: CustomerDataProps) {
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       try {
-        // Asegúrate de usar la URL correcta para tu API
         const response = await fetch(`http://localhost:8081/api/Person/${user.id}`, {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(editedUser),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+          body: JSON.stringify({
+            name: editedUser.name,
+            lastname: editedUser.lastname,
+            date: user.date,
+            username: user.username,
+            password: user.password,
+            repeatedPassword: user.repeatedPassword,
+            role: {
+              id: user.role.id
+            },
+            personType: {
+              id: user.personType.id
+            },
+            branch: {
+              id: user.branch.id
+            }
+          }),
         });
 
         if (!response.ok) {

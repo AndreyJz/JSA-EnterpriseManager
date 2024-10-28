@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Importa useNavigate
+import { UserUpdate } from '../types';
+import { User } from 'lucide-react';
 
 function Login() {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
   });
+  const [userInfo, setUser] = useState<UserUpdate | null>(null);
+  const navigate = useNavigate(); 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -19,7 +23,7 @@ function Login() {
     e.preventDefault();
   
     try {
-      // mando el post para el log in
+      // POST para el log in
       const response = await fetch('http://localhost:8081/auth/login', {
         method: 'POST',
         headers: {
@@ -31,15 +35,40 @@ function Login() {
         }),
       });
   
-      // si es correcto el log in
+      // Si el login es exitoso
       if (response.ok) {
         const data = await response.json();
         console.log('Login successful:', data);
-        localStorage.setItem("token",data.jwt);
-        // aqui debo poner otro condicional y mirar el rol, dependiendo de eso lo mando a la interfaz de simon
-        console.log(localStorage.getItem("token"));
+        localStorage.setItem("token", data.jwt);
+        const token = localStorage.getItem('token');
+      
+        try {
+          const profileResponse = await fetch('http://localhost:8081/auth/profile', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          if (profileResponse.ok) {
+            const userProfile = await profileResponse.json();
+            console.log('User Profile:', userProfile.id);
+            setUser(userProfile);
+            
+            // Verifica el rol y redirige si es necesario
+            
+            if (userProfile.role.id === 1) {
+              navigate('/customer', { replace: true }); 
+            }else if (userProfile.role.id === 2){
+              navigate('/admin', { replace: true });
+            }
+          } else {
+            console.error('Error fetching profile:', profileResponse.statusText);
+          }
+        } catch (error) {
+          console.error('Error during profile fetch:', error);
+        }
       } else {
-        // Si esta mal no puede entrar
         console.log('Login failed');
         alert('Email or password is incorrect');
       }
