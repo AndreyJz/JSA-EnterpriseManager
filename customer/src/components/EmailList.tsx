@@ -12,7 +12,7 @@ export function EmailList({userId, emails, onEmailsUpdate }: EmailListProps) {
   const [newEmail, setNewEmail] = useState('');
   const [selectedEmailType, setSelectedEmailType] = useState<number | undefined>(undefined);
   const [emailTypes, setEmailTypes] = useState<OptionType[]>([]);
-
+  const token = localStorage.getItem('token');
   useEffect(() => {
     const fetchEmailTypes = async () => {
       try {
@@ -39,7 +39,7 @@ export function EmailList({userId, emails, onEmailsUpdate }: EmailListProps) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({
           mail: newEmail,
@@ -66,7 +66,7 @@ export function EmailList({userId, emails, onEmailsUpdate }: EmailListProps) {
       const response = await fetch(`http://localhost:8081/api/Email/${emailId}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Authorization': `Bearer ${token}`,
         },
       });
 
@@ -112,7 +112,7 @@ export function EmailList({userId, emails, onEmailsUpdate }: EmailListProps) {
           onChange={(e) => setSelectedEmailType(Number(e.target.value))}
           className="border p-2 rounded ml-2"
         >
-          <option value="" disabled>Select email type</option>
+          <option value="">Select email type</option>
           {emailTypes.map(type => (
             <option key={type.id} value={type.id}>
               {type.name}
