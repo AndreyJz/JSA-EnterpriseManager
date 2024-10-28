@@ -1,65 +1,44 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, User, Menu, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 function NavBar() {
   const [isMenuVisible, setMenuVisible] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { cart } = useCart();
-
-  useEffect(() => {
-
-    const fetchUserProfile = async () => {
-      const token = localStorage.getItem('token'); // Obtener el token del localStorage
-      
-      try {
-        const response = await fetch('http://localhost:8081/auth/profile', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` // Enviar el token en el encabezado de autorización
-          }
-        });
-        if (response.ok) {
-          const userProfile = await response.json(); // Procesar la respuesta
-          console.log('User Profile:', userProfile.id); // Aquí puedes manejar la información del perfil
-          // Puedes almacenar esta información en el estado o hacer algo con ella
-        } else {
-          console.error('Error fetching profile:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error during fetch:', error);
-      }
-    };
-
-    const checkIfLoggedIn = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        setIsLoggedIn(false);
-        return;
-      }
-
-      try {
-
-        const response = await fetch(`http://localhost:8081/auth/validate-token?jwt=${token}`);    
-        console.log(response);
-        if (response.ok) {
-          const isAuthenticated = await response.json(); // Esperamos un booleano
-          setIsLoggedIn(isAuthenticated);
-        } else {
-          setIsLoggedIn(false);
-        }
-      } catch (error) {
-        console.error('Error fetching login status:', error);
-        setIsLoggedIn(false);
-      }
-    };
-
-    checkIfLoggedIn(), fetchUserProfile();
-  }, []);
+  const navigate = useNavigate();
 
   const toggleMenu = () => setMenuVisible(!isMenuVisible);
+
+  const handleUserNavigation = async () => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      navigate('/login');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:8081/auth/profile', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const userProfile = await response.json();
+        console.log('User Profile:', userProfile.id);
+        navigate('/customer'); // Usuario autenticado, redirigir a /customer
+      } else {
+        navigate('/login'); // Token no válido, redirigir a /login
+      }
+    } catch (error) {
+      console.error('Error during fetch:', error);
+      navigate('/login'); // Error en la petición, redirigir a /login
+    }
+  };
 
   return (
     <nav className="bg-black text-white p-4">
@@ -82,15 +61,9 @@ function NavBar() {
             )}
           </Link>
 
-          {isLoggedIn ? (
-            <Link to="/customer" className="hover:text-gray-300">
-              <User className="h-6 w-6" />
-            </Link>
-          ) : (
-            <Link to="/login" className="hover:text-gray-300">
-              <User className="h-6 w-6" />
-            </Link>
-          )}
+          <button onClick={handleUserNavigation} className="hover:text-gray-300">
+            <User className="h-6 w-6" />
+          </button>
 
           <button onClick={toggleMenu} className="md:hidden">
             {isMenuVisible ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}

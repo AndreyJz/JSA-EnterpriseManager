@@ -1,30 +1,61 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Mail, Plus, Trash2 } from 'lucide-react';
-import { ContactInfo } from '../types';
+import { EmailInfo, OptionType } from '../types';
 
 interface EmailListProps {
-  userId: number;
-  emails: ContactInfo[];
-  onEmailsUpdate: (emails: ContactInfo[]) => void;
+  userId: string | undefined;
+  emails: EmailInfo[];
+  onEmailsUpdate: (emails: EmailInfo[]) => void;
 }
 
-export function EmailList({ userId, emails, onEmailsUpdate }: EmailListProps) {
+export function EmailList({userId, emails, onEmailsUpdate }: EmailListProps) {
   const [newEmail, setNewEmail] = useState('');
+  const [selectedEmailType, setSelectedEmailType] = useState<number | undefined>(undefined);
+  const [emailTypes, setEmailTypes] = useState<OptionType[]>([]);
+
+  useEffect(() => {
+    const fetchEmailTypes = async () => {
+      try {
+        const response = await fetch('http://localhost:8081/api/Email_Type');
+        if (response.ok) {
+          const data = await response.json();
+          setEmailTypes(data);
+        } else {
+          console.error('Error fetching email types:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching email types:', error);
+      }
+    };
+    fetchEmailTypes();
+  }, []);
 
   const handleAddEmail = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newEmail) return;
+    if (!newEmail || selectedEmailType === undefined) return;
 
     try {
-      // Test URL - Replace with your actual API endpoint
-      const response = await fetch(`http://localhost:8081/api/Email/${userId}`, {
+      const response = await fetch(`http://localhost:8081/api/Email`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ value: newEmail }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({
+          mail: newEmail,
+          emailType: { id: selectedEmailType },
+          person: { id: userId },
+        }),
       });
-      const addedEmail = await response.json();
-      onEmailsUpdate([...emails, addedEmail]);
-      setNewEmail('');
+
+      if (response.ok) {
+        const addedEmail = await response.json();
+        onEmailsUpdate([...emails, addedEmail]);
+        setNewEmail('');
+        setSelectedEmailType(undefined);
+      } else {
+        console.error('Error adding email:', response.statusText);
+      }
     } catch (error) {
       console.error('Error adding email:', error);
     }
@@ -32,11 +63,18 @@ export function EmailList({ userId, emails, onEmailsUpdate }: EmailListProps) {
 
   const handleRemoveEmail = async (emailId: number) => {
     try {
-      // Test URL - Replace with your actual API endpoint
-      await fetch(`https://jsonplaceholder.typicode.com/users/${userId}/emails/${emailId}`, {
+      const response = await fetch(`http://localhost:8081/api/Email/${emailId}`, {
         method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
       });
-      onEmailsUpdate(emails.filter(email => email.id !== emailId));
+
+      if (response.ok) {
+        onEmailsUpdate(emails.filter(email => email.id !== emailId));
+      } else {
+        console.error('Error removing email:', response.statusText);
+      }
     } catch (error) {
       console.error('Error removing email:', error);
     }
@@ -50,7 +88,7 @@ export function EmailList({ userId, emails, onEmailsUpdate }: EmailListProps) {
           <li key={email.id} className="flex items-center justify-between mb-2">
             <span className="flex items-center">
               <Mail size={18} />
-              <span className="ml-2">{email.value}</span>
+              <span className="ml-2">{email.mail}</span>
             </span>
             <button
               onClick={() => handleRemoveEmail(email.id)}
@@ -69,6 +107,18 @@ export function EmailList({ userId, emails, onEmailsUpdate }: EmailListProps) {
           className="border p-2 rounded flex-grow"
           placeholder="Add new email address"
         />
+        <select
+          value={selectedEmailType}
+          onChange={(e) => setSelectedEmailType(Number(e.target.value))}
+          className="border p-2 rounded ml-2"
+        >
+          <option value="" disabled>Select email type</option>
+          {emailTypes.map(type => (
+            <option key={type.id} value={type.id}>
+              {type.name}
+            </option>
+          ))}
+        </select>
         <button
           type="submit"
           className="bg-black text-white px-4 py-2 rounded ml-2 hover:bg-blue-600 transition-colors"
