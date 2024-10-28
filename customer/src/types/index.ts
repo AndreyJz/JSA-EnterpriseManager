@@ -12,11 +12,48 @@ export type UserInfo = {
 		"id": number
 	}
 }
+export type UserUpdate = {
+	"id": string,
+	"name": string,
+	"lastname": string,
+	"username": string,
+	"date":string
+	"password": string,
+	"repeatedPassword": string,
+	"role": {
+		"id": number
+	},
+	"personType": {
+		"id": number
+	},
+	"branch": {
+		"id": number
+	}
+}
 
 export type ContactInfo = {
-	id: number;
-	value: string;
-};
+	
+		"id": number,
+		"number": string,
+		"phoneType": {
+			"id": number,
+			"name": string
+		},
+		"person": {
+			"id": string,
+	}
+}
+export type EmailInfo = {
+		"id": number,
+		"mail": string,
+		"emailType": {
+			"id": number,
+			"name": string
+		},
+		"person": {
+			"id": string,
+		}
+}
 
 export type ServiceStatus = {
 	id: number;
