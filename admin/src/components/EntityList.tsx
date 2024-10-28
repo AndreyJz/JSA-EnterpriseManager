@@ -289,7 +289,6 @@ const transformFormDataToApiFormat = (entity: string, formData: { [key: string]:
         }
       };
     case 'Person':
-      console.log(formData)
       return {
         id: formData.Id,
         name: formData.Name,
@@ -308,6 +307,7 @@ const transformFormDataToApiFormat = (entity: string, formData: { [key: string]:
         }
       };
     case 'Email':
+      
       return {
         mail: formData.Mail,
         emailType: {
@@ -318,13 +318,14 @@ const transformFormDataToApiFormat = (entity: string, formData: { [key: string]:
         }
       };
     case 'Order_Details':
+      console.log(formData)
       return {
         value: parseInt(formData.Value),
-        branch: {
-          id: parseInt(formData.Branch)
-        },
-        service: {
-          id: parseInt(formData.Service)
+        serviceBranch: {
+          id: {
+            branchId: parseInt(formData.Branch),
+            serviceId: parseInt(formData.Service)
+          }
         },
         serviceOrder: {
           id: parseInt(formData.ServiceOrder)
@@ -333,11 +334,9 @@ const transformFormDataToApiFormat = (entity: string, formData: { [key: string]:
     case 'Person_Supply':
       return {
         quantity: parseInt(formData.Quantity),
-        supply: {
-          id: parseInt(formData.Supply)
-        },
-        person: {
-          id: formData.PersonId
+        id: {
+          personId: formData.PersonId,
+          supplyId: parseInt(formData.Supply)
         }
       };
     case 'Phone':
@@ -357,11 +356,11 @@ const transformFormDataToApiFormat = (entity: string, formData: { [key: string]:
         approvalStatus: {
           id: parseInt(formData.ApprovalStatus)
         },
-        branch: {
-          id: parseInt(formData.Branch)
-        },
-        service: {
-          id: parseInt(formData.Service)
+        serviceBranch: {
+          id: {
+            branchId: parseInt(formData.Branch),
+            serviceId: parseInt(formData.Service)
+          }
         },
         workOrder: {
           id: parseInt(formData.WorkOrder)
@@ -369,7 +368,11 @@ const transformFormDataToApiFormat = (entity: string, formData: { [key: string]:
       };
     case 'Service_Branches':
       return {
-        value: parseInt(formData.Value),
+        serviceValue: parseInt(formData.Value),
+        id: {
+          branchId: parseInt(formData.Branch),
+          serviceId: parseInt(formData.Service)
+        },
         branch: {
           id: parseInt(formData.Branch)
         },
@@ -382,15 +385,20 @@ const transformFormDataToApiFormat = (entity: string, formData: { [key: string]:
         orderStatus: {
           id: parseInt(formData.OrderStatus)
         },
-        customerId: formData.CustomerId,
-        employeeId: formData.EmployeeId
+        customer: {
+          id: formData.CustomerId
+        },
+        employee: {
+          id: formData.EmployeeId
+        }
       };
     case 'Services':
+      console.log(formData)
       return {
         name: formData.Name,
-        needSupply: formData.NeedSupply === 'true'
+        requiresSupply: formData.NeedSupply
       };
-    case 'Supply':
+    case 'Supply': 
       return {
         name: formData.Name,
         barcode: formData.Barcode,
@@ -401,36 +409,36 @@ const transformFormDataToApiFormat = (entity: string, formData: { [key: string]:
       };
     case 'Supply_Service':
       return {
+        id: {
+          branchId:parseInt(formData.Branch),
+          serviceId:parseInt(formData.Service),
+          supplyId:parseInt(formData.Supply)
+
+        },
         quantity: parseInt(formData.Quantity),
-        branch: {
-          id: parseInt(formData.Branch)
-        },
-        service: {
-          id: parseInt(formData.Service)
-        },
-        supply: {
-          id: parseInt(formData.Supply)
-        }
+
       };
     case 'Work_Order_Detail':
       return {
-        branch: {
-          id: parseInt(formData.Branch)
+        serviceBranch: {
+          id: {
+            branchId: parseInt(formData.Branch),
+            serviceId: parseInt(formData.Service)
+          }
         },
-        service: {
-          id: parseInt(formData.Service)
-        },
-        detailStatus: {
+        workOrderDetailStatus: {
           id: parseInt(formData.DetailStatus)
         },
         workOrder: {
           id: parseInt(formData.WorkOrder)
         },
-        employeeId: formData.EmployeeId
+        person: {
+          id: formData.EmployeeId
+        }
       };
     case 'Work_Orders':
       return {
-        orderNumber: formData.OrderNumber,
+        workOrderNum: formData.OrderNumber,
         serviceOrder: {
           id: parseInt(formData.ServiceOrder)
         }
@@ -456,6 +464,8 @@ const dynamicSelectConfig: { [key: string]: { endpoint: string; valueField: stri
   OrderStatus: { endpoint: 'Order_Status', valueField: 'name' },
   ApprovalStatus: { endpoint: 'Approval_Status', valueField: 'name' },
   Service: { endpoint: 'Services', valueField: 'name' },
+  ServiceOrder: { endpoint: 'Service_Order', valueField: 'id' },
+  WorkOrder: { endpoint: 'Work_Orders', valueField: 'workOrderNum' },
   Supply: { endpoint: 'Supply', valueField: 'name' }
 };
 
@@ -793,7 +803,7 @@ const EntityList: React.FC = () => {
             value={newEntityData[field.name] || ''}
             onChange={handleInputChange}
           >
-            <option value="">Select...</option>
+            <option value="">NeedSupply...</option>
             <option value="true">Yes</option>
             <option value="false">No</option>
           </Select>
