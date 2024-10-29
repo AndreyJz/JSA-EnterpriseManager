@@ -135,7 +135,6 @@ const Sidebar: React.FC = () => {
       <SidebarList>
         {entities.map((entity) => (
           <SidebarItem key={entity}>
-            {console.log(entity)}
             <SidebarLink to={`/admin/${entity}`}>
               <IconWrapper>
                 <ion-icon name="folder-outline"></ion-icon>
