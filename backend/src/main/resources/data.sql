@@ -381,34 +381,69 @@ INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 138);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 139);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 140);
 
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 59); -- UPDATE Person
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 138); -- UPDATE Email
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 70); -- UPDATE Email
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 68); -- CREATE Email
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 137); -- UPDATE Phone
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 80); -- UPDATE Phone
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 78); -- CREATE Phone
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 134); -- ORDER SERVICE employee where id
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 140); -- ORDER DETAILS BY SERVICE ORDER
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 139); -- update APPROVAL STATUS
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 139); -- update APPROVAL STATUS
 -- INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 101); -- Service Order
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 103); -- Create Service Order
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 121); -- Approval status
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 133); -- WorkOrderDetail employee where id
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 112);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 114);
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 93); -- CREATE Order Detail
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 96); -- READ Order Detail STATUS
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 103); -- CREATE Service Order
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 108); -- CREATE Work Order
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 113); -- CREATE Work Order Detail
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 116); -- READ Work Order Detail Status
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 43); -- CREATE Service_Approval
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 93); -- CREATE Order Detail
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 96); -- READ Order Detail STATUS
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 103); -- CREATE Service Order
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 108); -- CREATE Work Order
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 113); -- CREATE Work Order Detail
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 116); -- READ Work Order Detail Status
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 43); -- CREATE Service_Approval
 
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (4, 131); -- ALL P
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (4, 59); -- UPDATE Person
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (4, 138); -- UPDATE Email
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (4, 70); -- UPDATE Email
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (4, 68); -- CREATE Email
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (4, 137); -- UPDATE Phone
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (4, 80); -- UPDATE Phone
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (4, 78); -- CREATE Phone
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (4, 131); -- ALL Customers
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (4, 57); -- ONE P
 
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (5, 59); -- UPDATE Person
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (5, 138); -- UPDATE Email
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (5, 70); -- UPDATE Email
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (5, 68); -- CREATE Email
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (5, 137); -- UPDATE Phone
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (5, 80); -- UPDATE Phone
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (5, 78); -- CREATE Phone
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (5, 86); -- ALL P_S
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (5, 87); -- ONE P_S
 -- Hipotético Person-Supply-Status
 
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (6, 59); -- UPDATE Person
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (6, 138); -- UPDATE Email
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (6, 70); -- UPDATE Email
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (6, 68); -- CREATE Email
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (6, 137); -- UPDATE Phone
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (6, 80); -- UPDATE Phone
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (6, 78); -- CREATE Phone
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (6, 136); -- Services without branch
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (6, 32);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (6, 34);
 
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 59); -- UPDATE Person
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 138); -- UPDATE Email
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 70); -- UPDATE Email
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 68); -- CREATE Email
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 137); -- UPDATE Phone
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 80); -- UPDATE Phone
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 78); -- CREATE Phone
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 132); -- ALL Of Employees
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 57);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 58);
@@ -417,7 +452,17 @@ INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 60);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 101); -- Service Order
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 102);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 104);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 111); -- CREATE Work Order Detail
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 112);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 114);
 
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 59); -- UPDATE Person
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 138); -- UPDATE Email
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 70); -- UPDATE Email
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 68); -- CREATE Email
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 137); -- UPDATE Phone
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 80); -- UPDATE Phone
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 78); -- CREATE Phone
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 86); -- Person Supply
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 87); -- Person Supply
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 88); -- Person Supply

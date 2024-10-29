@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import {UserUpdate} from "../../types";
 
 const SidebarContainer = styled.nav`
   top: 0;
@@ -65,21 +66,76 @@ const LinkText = styled.span`
   }
 `;
 
-const entities = [
-  'Approval_Status', 'Branches', 'Cities', 'Companies', 'Company_Type',
-  'Countries', 'Email', 'Email_Type', 'Order_Details', 'Order_Status',
-  'Person', 'Person_Supply', 'Person_Type', 'Phone', 'Phone_Type',
-  'Regions', 'Service_Approval', 'Service_Branches', 'Service_Order',
-  'Services', 'Supply', 'Supply_Service','Work_Orders', 'Work_Order_Detail',
-  'Work_Detail_Status'
-];
-
 const Sidebar: React.FC = () => {
+  // const [entities, setEntities] = useState<String[]>([]);
+  const [user, setUser] = useState<UserUpdate | null>(null);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await fetch('http://localhost:8081/auth/profile', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        if (response.ok) {
+          const userProfile = await response.json();
+          setUser(userProfile);
+        } else {
+          console.error('Error fetching profile:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error during fetch:', error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
+  let entities;
+
+  switch (user?.role.id) {
+    default:
+      entities = [
+        'Approval_Status', 'Brances', 'Cities', 'Companies', 'Company_Type',
+        'Countries', 'Email', 'Email_Type', 'Order_Details', 'Order_Status',
+        'Person', 'Person_Supply', 'Person_Type', 'Phone', 'Phone_Type',
+        'Regions', 'Service_Approval', 'Service_Branches', 'Service_Order',
+        'Services', 'Supply', 'Supply_Service','Work_Orders', 'Work_Order_Detail',
+        'Work_Detail_Status'
+      ];
+      break;
+    case 3:
+      entities = [
+        `Service_Order`, 'Work_Order_Detail',
+      ];
+      break;
+    case 4:
+      entities = ['Person'];
+      break;
+    case 5:
+      entities = ['Person_Supply'];
+      break;
+    case 6:
+      entities = ['Services_Without_Branch'];
+      break;
+    case 7:
+      entities = ['Person', 'Service_Order', 'Work_Order_Detail'];
+      break;
+    case 8:
+      entities = ['Person', 'Person_Supply', 'Service_Order'];
+      break;
+  }
+
   return (
     <SidebarContainer>
       <SidebarList>
-        {entities.map((entity) => ( 
+        {entities.map((entity) => (
           <SidebarItem key={entity}>
+            {console.log(entity)}
             <SidebarLink to={`/admin/${entity}`}>
               <IconWrapper>
                 <ion-icon name="folder-outline"></ion-icon>
