@@ -50,13 +50,7 @@ const Navbar = () => {
         Admin Dashboard
       </Link>
       
-      <div className="flex items-center gap-5">
-        <Link 
-          to="/admin/tasks" 
-          className="text-white hover:text-gray-300 transition-colors"
-        >
-          Tasks
-        </Link>
+
 
         <div className="relative" ref={menuRef}>
           <div 
@@ -91,7 +85,6 @@ const Navbar = () => {
             </div>
           )}
         </div>
-      </div>
     </nav>
   );
 };
