@@ -88,6 +88,13 @@ const Select = styled.select`
   padding: 10px;
   margin-bottom: 10px;
   border-radius:5px;
+
+`;
+
+const H2 = styled.h2`
+  font-size:2.5em;
+  font-weight:600;
+
 `;
 
 const Button = styled.button`
@@ -289,23 +296,23 @@ const transformFormDataToApiFormat = (entity: string, formData: { [key: string]:
         }
       };
     case 'Person':
-      return {
-        id: formData.Id,
-        name: formData.Name,
-        lastname: formData.Lastname,
-        username: formData.Username,
-        password: formData.Password,
-        repeatedPassword: formData.Password,
-        role: {
-          id: parseInt(formData.Role)
-        } ,
-        branch: {
-          id: parseInt(formData.Branch)
-        },
-        personType: {
-          id: parseInt(formData.PersonType)
-        }
-      };
+        return {
+          id: formData.Id,
+          name: formData.Name,
+          lastname: formData.Lastname,
+          username: formData.Username,
+          password: formData.Password,
+          repeatedPassword: formData.Password,
+          role: {
+            id: parseInt(formData.Role)
+          } ,
+          branch: {
+            id: parseInt(formData.Branch)
+          },
+          personType: {
+            id: parseInt(formData.PersonType)
+          }
+        };
     case 'Email':
 
       return {
@@ -876,7 +883,7 @@ const EntityList: React.FC = () => {
 
   return (
       <div>
-        <h2>{(entity.replace('_', ' ')).replace('_',' ')}</h2>
+        <H2>{(entity.replace('_', ' ')).replace('_',' ')}</H2>
         <SearchBar
             type="text"
             placeholder="Search..."
@@ -907,7 +914,7 @@ const EntityList: React.FC = () => {
         {isModalOpen && (
             <Modal onClick={(e) => e.target === e.currentTarget && setIsModalOpen(false)}>
               <ModalContent>
-                <h3>Add New {(entity?.replace('_', ' ')).replace('_',' ')}</h3>
+                <h3 className="font-bold">Add New {entity?.replaceAll('_', ' ')}</h3>
                 {submitError && <ErrorMessage>{submitError}</ErrorMessage>}
                 {loadingOptions ? (
                     <p>Loading form options...</p>
@@ -915,7 +922,7 @@ const EntityList: React.FC = () => {
                     entityFields[entity || '']?.map((field) => renderInput(field))
                 )}
                 <Button onClick={handleAddEntity}>
-                  Add {(entity?.replace('_', ' ')).replace('_',' ')}
+                  Add {(entity?.replaceAll('_', ' '))}
                 </Button>
               </ModalContent>
             </Modal>
