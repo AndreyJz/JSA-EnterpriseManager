@@ -17,6 +17,11 @@ const AttributeRow = styled.div`
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 `;
+const H2 = styled.h2`
+  font-size:2.5em;
+  font-weight:600;
+
+`;
 
 const AttributeLabel = styled.div`
   font-weight: bold;
@@ -226,37 +231,131 @@ const entityFields: { [key: string]: entityField[] } = {
   ],
 };
 
+const NON_EDITABLE_FIELDS = ['id', 'creationDate', 'date', 'orderDate', 'assignDate','serviceBranch', 'password'];
+
+const SELECT_FIELD_MAPPINGS: { [key: string]: { endpoint: string, labelKey: string } } = {
+  emailType: { endpoint: 'Email_Type', labelKey: 'name' },
+  phoneType: { endpoint: 'Phone_Type', labelKey: 'name' },
+  personType: { endpoint: 'Person_Type', labelKey: 'name' },
+  branch: { endpoint: 'Branches', labelKey: 'name' },
+  city: { endpoint: 'Cities', labelKey: 'name' },
+  company: { endpoint: 'Companies', labelKey: 'name' },
+  region: { endpoint: 'Regions', labelKey: 'name' },
+  companyType: { endpoint: 'Company_Type', labelKey: 'description' },
+  serviceOrder: { endpoint: 'Service_Order', labelKey: 'id' },
+  workOrder: { endpoint: 'Work_Orders', labelKey: 'workOrderNum' },
+  approvalStatus: { endpoint: 'Approval_Status', labelKey: 'name' },
+  person: { endpoint: 'Person', labelKey: 'id' },
+  employee: { endpoint: 'Person', labelKey: 'id' },
+  customer: { endpoint: 'Person', labelKey: 'id' },
+  orderStatus: { endpoint: 'Order_Status', labelKey: 'name' },
+  role: { endpoint: 'Roles', labelKey: 'name' },
+  service: { endpoint: 'Services', labelKey: 'name' },
+  workOrderDetailStatus: { endpoint: 'Work_Detail_Status', labelKey: 'name' },
+  supply: { endpoint: 'Supply', labelKey: 'name' }
+  // Add more mappings as needed
+};
 
 const EntityDetails: React.FC = () => {
   const { entity, id } = useParams<{ entity: string; id: string }>();
   const navigate = useNavigate();
   const [details, setDetails] = useState<any>(null);
+  const [editedDetails, setEditedDetails] = useState<any>(null);
+  const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectOptions, setSelectOptions] = useState<{ [key: string]: any[] }>({});
 
   useEffect(() => {
-    const fetchDetails = async () => {
-      try {
-        setLoading(true);
-        const token = localStorage.getItem('token'); // Obtén el token desde localStorage
-
-        const response = await axios.get(`http://localhost:8081/api/${entity}/${id?.replaceAll('-', '/')}`, {
-          headers: {
-            Authorization: `Bearer ${token}` // Agrega el token en el encabezado
-          }
-        });
-
-        setDetails(response.data);
-        setError(null);
-      } catch (err: any) {
-        setError(err.response?.data?.message || 'Error fetching details');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchDetails();
   }, [entity, id]);
+
+  useEffect(() => {
+    if (isEditing) {
+      fetchSelectOptions();
+    }
+  }, [isEditing]);
+
+  const fetchSelectOptions = async () => {
+    const token = localStorage.getItem('token');
+    const fields = entityFields[entity || ''] || [];
+    
+    const optionsPromises = fields.map(async (field) => {
+      const mapping = SELECT_FIELD_MAPPINGS[field.name];
+      if (mapping) {
+        try {
+          const response = await axios.get(`http://localhost:8081/api/${mapping.endpoint}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          return { [field.name]: response.data };
+        } catch (error) {
+          console.error(`Error fetching options for ${field.name}:`, error);
+          return { [field.name]: [] };
+        }
+      }
+      return null;
+    });
+
+    const resolvedOptions = await Promise.all(optionsPromises);
+    const combinedOptions = resolvedOptions.reduce((acc, curr) => ({
+      ...acc,
+      ...(curr || {})
+    }), {});
+
+    setSelectOptions(combinedOptions);
+  };
+
+  const fetchDetails = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('token');
+      const response = await axios.get(
+        `http://localhost:8081/api/${entity}/${id?.replaceAll('-', '/')}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setDetails(response.data);
+      setEditedDetails(response.data);
+      setError(null);
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Error fetching details');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const prepareUpdateData = () => {
+    const updateData: any = { ...editedDetails };
+    
+    // Procesar campos select para asegurar que solo se envíe el ID
+    Object.keys(SELECT_FIELD_MAPPINGS).forEach(fieldName => {
+      if (updateData[fieldName] && typeof updateData[fieldName] === 'object') {
+        updateData[fieldName] = { id: updateData[fieldName].id };
+      }
+    });
+
+    // Casos especiales por entidad
+    if (entity === 'Email') {
+      if (updateData.person && typeof updateData.person === 'object') {
+        updateData.person = { id: updateData.person.id };
+      }
+      if (updateData.emailType && typeof updateData.emailType === 'object') {
+        updateData.emailType = { id: updateData.emailType.id };
+      }
+    }
+
+    if (entity === 'Phone') {
+      if (updateData.person && typeof updateData.person === 'object') {
+        updateData.person = { id: updateData.person.id };
+      }
+      if (updateData.phoneType && typeof updateData.phoneType === 'object') {
+        updateData.phoneType = { id: updateData.phoneType.id };
+      }
+    }
+
+    // Agregar más casos especiales según sea necesario
+
+    return updateData;
+  };
 
   const handleDelete = async () => {
     if (!window.confirm('Are you sure you want to delete this item?')) {
@@ -264,32 +363,109 @@ const EntityDetails: React.FC = () => {
     }
 
     try {
-      const token = localStorage.getItem('token'); // Obtén el token desde localStorage
-
-      await axios.delete(`http://localhost:8081/api/${entity}/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}` // Agrega el token en el encabezado
-        }
+      const token = localStorage.getItem('token');
+      await axios.delete(`http://localhost:8081/api/${entity}/${id?.replaceAll('-', '/')}`, {
+        headers: { Authorization: `Bearer ${token}` }
       });
-
       navigate(`/admin/${entity}`);
     } catch (err: any) {
       setError(err.response?.data?.message || 'Error deleting item');
     }
   };
+  const handleUpdate = async () => {
+    if (!isEditing) {
+      setIsEditing(true);
+      return;
+    }
 
-  const handleUpdate = () => {
-    // Navigation to update page can be implemented here
-    console.log('Update functionality to be implemented');
-  };
-
-  const getNestedValue = (obj: any, path: string) => {
     try {
-      return path.split('.').reduce((current, key) => current[key], obj);
-    } catch (error) {
-      return null;
+      const token = localStorage.getItem('token');
+      const updateData = prepareUpdateData();
+      
+      await axios.put(
+        `http://localhost:8081/api/${entity}/${id}`,
+        updateData,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setIsEditing(false);
+      fetchDetails();
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Error updating item');
     }
   };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditedDetails(details);
+  };
+
+  const handleInputChange = (fieldName: string, value: any) => {
+    setEditedDetails((prev: any) => ({
+      ...prev,
+      [fieldName]: value
+    }));
+  };
+
+  const renderField = (field: entityField) => {
+    const value = isEditing ? editedDetails[field.name] : details[field.name];
+    const isReadOnly = NON_EDITABLE_FIELDS.includes(field.name);
+
+    if (!isEditing || isReadOnly) {
+      return formatValue(details[field.name], field.type, field.name);
+    }
+
+    // Handle select fields
+    if (SELECT_FIELD_MAPPINGS[field.name]) {
+      const options = selectOptions[field.name] || [];
+      const mapping = SELECT_FIELD_MAPPINGS[field.name];
+      return (
+        <select
+          value={value?.id || value || ''}
+          onChange={(e) => handleInputChange(field.name, { id: e.target.value })}
+          className="w-full p-2 border rounded"
+        >
+          <option value="">Select {field.name}</option>
+          {options.map((option: any) => (
+            <option key={option.id} value={option.id}>
+              {option[mapping.labelKey]}
+            </option>
+          ))}
+        </select>
+      );
+    }
+
+    // Handle other editable fields
+    switch (field.type) {
+      case 'boolean':
+        return (
+          <input
+            type="checkbox"
+            checked={value}
+            onChange={(e) => handleInputChange(field.name, e.target.checked)}
+            className="w-4 h-4"
+          />
+        );
+      case 'number':
+        return (
+          <input
+            type="number"
+            value={value || ''}
+            onChange={(e) => handleInputChange(field.name, e.target.value)}
+            className="w-full p-2 border rounded"
+          />
+        );
+      default:
+        return (
+          <input
+            type="text"
+            value={value || ''}
+            onChange={(e) => handleInputChange(field.name, e.target.value)}
+            className="w-full p-2 border rounded"
+          />
+        );
+    }
+  };
+
 
   const formatValue = (value: any, type: string, fieldName?: string): string => {
     if (value === null || value === undefined) return 'N/A';
@@ -331,7 +507,6 @@ const EntityDetails: React.FC = () => {
       }
     }
 
-    console.log(details)
     // Handle nested objects
     if (typeof value === 'object') {
       // Solo intentar casos especiales si fieldName está definido
@@ -341,6 +516,9 @@ const EntityDetails: React.FC = () => {
         // Casos especiales para Email
         if (normalizedFieldName === 'emailtype' && value.name) {
           return value.name;
+        }
+        if (normalizedFieldName === 'workorder') {
+          return value.workOrderNum;
         }
 
         if (normalizedFieldName === 'person' && value.id) {
@@ -387,31 +565,42 @@ const EntityDetails: React.FC = () => {
   };
 
   return (
-      <DetailsContainer>
-        <h2>{entity?.replace(/_/g, ' ')} Details</h2>
+    <DetailsContainer>
+      <H2>{entity?.replace(/_/g, ' ')} Details</H2>
 
-        {details && entityFields[entity || '']?.map((field) => (
-            <AttributeRow key={field.name}>
-              <AttributeLabel>{getDisplayName(field.name)}:</AttributeLabel>
-              <AttributeValue>
-                {formatValue(details[field.name], field.type,field.name)}
-              </AttributeValue>
-            </AttributeRow>
-        ))}
+      {details && entityFields[entity || '']?.map((field) => (
+        <AttributeRow key={field.name}>
+          <AttributeLabel>{getDisplayName(field.name)}:</AttributeLabel>
+          <AttributeValue>
+            {renderField(field)}
+          </AttributeValue>
+        </AttributeRow>
+      ))}
 
-        <ButtonContainer>
-          <Button onClick={handleUpdate}>
-            Update
-          </Button>
+      <ButtonContainer>
+        <Button onClick={handleUpdate}>
+          {isEditing ? 'Confirm' : 'Update'}
+        </Button>
+        {isEditing && (
           <Button
-              onClick={handleDelete}
-              color="#d32f2f"
-              hoverColor="#b71c1c"
+            onClick={handleCancel}
+            color="#808080"
+            hoverColor="#666666"
+          >
+            Cancel
+          </Button>
+        )}
+        {!isEditing && (
+          <Button
+            onClick={handleDelete}
+            color="#d32f2f"
+            hoverColor="#b71c1c"
           >
             Delete
           </Button>
-        </ButtonContainer>
-      </DetailsContainer>
+        )}
+      </ButtonContainer>
+    </DetailsContainer>
   );
 };
 

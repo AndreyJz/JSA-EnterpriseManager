@@ -90,6 +90,12 @@ const Select = styled.select`
   border-radius:5px;
 `;
 
+const H2 = styled.h2`
+  font-size:2.5em;
+  font-weight:600;
+
+`;
+
 const Button = styled.button`
   padding: 10px;
   background-color: #4CAF50;
@@ -876,7 +882,7 @@ const EntityList: React.FC = () => {
 
   return (
       <div>
-        <h2>{(entity.replace('_', ' ')).replace('_',' ')}</h2>
+        <H2>{(entity.replace('_', ' ')).replace('_',' ')}</H2>
         <SearchBar
             type="text"
             placeholder="Search..."
