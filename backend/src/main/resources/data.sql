@@ -72,10 +72,10 @@ INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES (
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('DISABLE_ONE_SERVICE','/[0-9]*', 'DELETE', false, 7);
 
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ALL_SERVICE_BRANCHES','', 'GET', true, 8);
-INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ONE_SERVICE_BRANCH','/[0-9]*', 'GET', false, 8);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ONE_SERVICE_BRANCH','/[0-9]*/[0-9]*', 'GET', false, 8);
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('CREATE_ONE_SERVICE_BRANCH','', 'POST', false, 8);
-INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('UPDATE_ONE_SERVICE_BRANCH','/[0-9]*', 'PUT', false, 8);
-INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('DISABLE_ONE_SERVICE_BRANCH','/[0-9]*', 'DELETE', false, 8);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('UPDATE_ONE_SERVICE_BRANCH','/[0-9]*/[0-9]*', 'PUT', false, 8);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('DISABLE_ONE_SERVICE_BRANCH','/[0-9]*/[0-9]*', 'DELETE', false, 8);
 
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ALL_SERVICE_APPROVALS','', 'GET', false, 9);
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ONE_SERVICE_APPROVAL','/[0-9]*', 'GET', false, 9);
@@ -90,10 +90,10 @@ INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES (
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('DISABLE_ONE_SUPPLY','/[0-9]*', 'DELETE', false, 10);
 
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ALL_SUPPLY_SERVICES','', 'GET', true, 11);
-INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ONE_SUPPLY_SERVICE','/[0-9]*', 'GET', false, 11);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ONE_SUPPLY_SERVICE','/[0-9]*/[0-9]*/[0-9]*', 'GET', false, 11);
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('CREATE_ONE_SUPPLY_SERVICE','', 'POST', false, 11);
-INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('UPDATE_ONE_SUPPLY_SERVICE','/[0-9]*', 'PUT', false, 11);
-INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('DISABLE_ONE_SUPPLY_SERVICE','/[0-9]*', 'DELETE', false, 11);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('UPDATE_ONE_SUPPLY_SERVICE','/[0-9]*/[0-9]*/[0-9]*', 'PUT', false, 11);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('DISABLE_ONE_SUPPLY_SERVICE','/[0-9]*/[0-9]*/[0-9]*', 'DELETE', false, 11);
 
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ALL_PEOPLE','', 'GET', false, 12);
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ONE_PERSON','/.*', 'GET', false, 12);
@@ -132,10 +132,10 @@ INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES (
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('DISABLE_ONE_EMAIL_TYPE','/[0-9]*', 'DELETE', false, 17);
 
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ALL_PERSON_SUPPLIES','', 'GET', false, 18);
-INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ONE_PERSON_SUPPLY','/[0-9]*', 'GET', false, 18);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ONE_PERSON_SUPPLY','/.*/[0-9]*', 'GET', false, 18);
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('CREATE_ONE_PERSON_SUPPLY','', 'POST', false, 18);
-INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('UPDATE_ONE_PERSON_SUPPLY','/[0-9]*', 'PUT', false, 18);
-INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('DISABLE_ONE_PERSON_SUPPLY','/[0-9]*', 'DELETE', false, 18);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('UPDATE_ONE_PERSON_SUPPLY','/.*/[0-9]*', 'PUT', false, 18);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('DISABLE_ONE_PERSON_SUPPLY','/.*/[0-9]*', 'DELETE', false, 18);
 
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ALL_ORDER_DETAILS','', 'GET', false, 19);
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ONE_ORDER_DETAIL','/[0-9]*', 'GET', false, 19);

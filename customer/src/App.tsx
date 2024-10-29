@@ -18,6 +18,7 @@ import Sidebar from "./admin/components/Sidebar.tsx";
 import Tasks from "./admin/components/Tasks.tsx";
 import EntityList from "./admin/components/EntityList.tsx";
 import EntityDetails from "./admin/components/EntityDetails.tsx";
+import FooterAdmin from './admin/components/FooterAdmin.tsx';
 
 const AppContainer = styled.div`
   display: flex;
@@ -36,53 +37,58 @@ const MainContent = styled.main`
   padding: 20px;
 `;
 
+const Title = styled.h1`
+  font-size: 4em;
+  font-weight: bold;
+`;
+
 function App() {
   return (
-      <Router>
-        <Routes>
-          {/* Rutas del sitio principal */}
-          <Route path="/*" element={
-            <CartProvider>
-              <div className="flex flex-col min-h-screen">
-                <NavBar />
-                <main className="flex-grow">
-                  <Routes>
-                    <Route index element={<Home />} />
-                    <Route path="services" element={<Services />} />
-                    <Route path="companies" element={<Companies />} />
-                    <Route path="about" element={<AboutUs />} />
-                    <Route path="cart" element={<Cart />} />
-                    <Route path="contact" element={<ContactUs />} />
-                    <Route path="login" element={<Login />} />
-                    <Route path="signup" element={<SignUp />} />
-                    <Route path="customer" element={<Customer />} />
-                  </Routes>
-                </main>
-                <Footer />
-              </div>
-            </CartProvider>
-          } />
-
-          {/* Rutas del Dashboard de Admin */}
-          <Route path="/admin/*" element={
-            <AppContainer>
-              <Navbar />
-              <ContentWrapper>
-                <Sidebar />
-                <MainContent>
-                  <Routes>
-                    <Route index element={<h1>Welcome to Admin Dashboard</h1>} />
-                    <Route path="/tasks" element={<Tasks />} />
-                    <Route path="/:entity" element={<EntityList />} />
-                    <Route path="/:entity/:id" element={<EntityDetails />} />
-                  </Routes>
-                </MainContent>
-              </ContentWrapper>
+    <Router>
+      <Routes>
+        {/* Rutas del sitio principal */}
+        <Route path="/*" element={
+          <CartProvider>
+            <div className="flex flex-col min-h-screen">
+              <NavBar />
+              <main className="flex-grow">
+                <Routes>
+                  <Route index element={<Home />} />
+                  <Route path="services" element={<Services />} />
+                  <Route path="companies" element={<Companies />} />
+                  <Route path="about" element={<AboutUs />} />
+                  <Route path="cart" element={<Cart />} />
+                  <Route path="contact" element={<ContactUs />} />
+                  <Route path="login" element={<Login />} />
+                  <Route path="signup" element={<SignUp />} />
+                  <Route path="customer" element={<Customer />} />
+                </Routes>
+              </main>
               <Footer />
-            </AppContainer>
-          } />
-        </Routes>
-      </Router>
+            </div>
+          </CartProvider>
+        } />
+
+        {/* Rutas del Dashboard de Admin */}
+        <Route path="/admin/*" element={
+          <AppContainer>
+            <Navbar />
+            <ContentWrapper>
+              <Sidebar />
+              <MainContent>
+                <Routes>
+                  <Route index element={<Title>Welcome to Admin Dashboard</Title>} />
+                  <Route path="/tasks" element={<Tasks />} />
+                  <Route path="/:entity" element={<EntityList />} />
+                  <Route path="/:entity/:id" element={<EntityDetails />} />
+                </Routes>
+              </MainContent>
+            </ContentWrapper>
+            <FooterAdmin />
+          </AppContainer>
+        } />
+      </Routes>
+    </Router>
   );
 }
 

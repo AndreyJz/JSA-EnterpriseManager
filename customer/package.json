@@ -11,11 +11,13 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
+    "@radix-ui/react-dialog": "^1.1.2",
     "@stripe/react-stripe-js": "^2.5.0",
     "@stripe/stripe-js": "^3.0.3",
     "axios": "^1.7.7",
     "email-js": "^2.0.3",
     "emailjs-com": "^3.2.0",
+    "jsa-services": "file:",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",

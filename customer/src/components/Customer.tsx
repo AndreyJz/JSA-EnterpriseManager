@@ -5,7 +5,6 @@ import { EmailList } from './EmailList';
 import { ServiceList } from './ServiceList';
 import { UserUpdate, ContactInfo, ServiceStatus, EmailInfo } from '../types';
 import { Link, useNavigate } from 'react-router-dom';
-import { User } from 'lucide-react';
 
 export default function Customer() {
 const [user, setUser] = useState<UserUpdate | null>(null);
@@ -81,7 +80,7 @@ useEffect(() => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}` },
         }).then(res => res.json()),
-        fetch(`http://localhost:8081/api/Service_Approval/${userId}`, {
+        fetch(`http://localhost:8081/api/Service_Order/Customer_${userId}`, {
             headers: { 'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}` },
         }).then(res => res.json())
@@ -126,8 +125,8 @@ return (
     <PhoneList userId={userId} phones={phones} onPhonesUpdate={setPhones} />
 
     <EmailList userId={userId} emails={emails} onEmailsUpdate={setEmails} />
-{/* 
-    <ServiceList userId={userId} services={services} /> */}
+
+    <ServiceList  services={services} />
 
     <button onClick={LogOut} className="text-blue-600 hover:underline">Log Out</button>
     </div>

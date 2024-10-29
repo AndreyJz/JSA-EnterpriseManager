@@ -55,18 +55,6 @@ export type EmailInfo = {
 		}
 }
 
-export type ServiceStatus = {
-	id: number;
-	title: string;
-	status: 'active' | 'pending' | 'inactive';
-};
-
-export type ServiceDetails = {
-	id: number;
-	description: string;
-	startDate: string;
-	endDate: string;
-};
 export type ServiceData ={ 
 	"id": {
 			"branchId": number,
@@ -129,4 +117,39 @@ export type FormDataType=  {
 	repeatedPassword: string;
 	personType: string;
 	phones: { phone: string; phoneType: string }[];
+  }
+
+  export interface ServiceStatus {
+	id: number;
+	orderDate: string;
+  }
+  
+  export interface ServiceOrderDetail {
+	service: {
+	  name: string;
+	  
+	};
+	branch: {
+	  name: string;
+	};
+	serviceValue: number
+  }
+  
+  export interface ServiceDetails {
+	items: ServiceOrderDetail[];
+  }
+  export interface OrderDetail {
+	id: number;
+	serviceBranch: {
+	  service: {
+		name: string;
+	  };
+	  branch: {
+		name: string;
+	  };
+	  serviceValue: number;
+	};
+	serviceOrder: {
+	  orderDate: string;
+	};
   }

@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Facebook, Instagram, Twitter } from 'lucide-react';
 
 const FooterContainer = styled.footer`
-  background-color: #222;
+  background-color: #111111;
   color: #ccc;
   padding: 20px 0;
 `;
@@ -104,9 +105,9 @@ const Footer: React.FC = () => {
         <FooterSection>
           <FooterTitle>Follow Us</FooterTitle>
           <SocialIcons>
-            <FooterLink href="#"><i className="fab fa-facebook-f"></i></FooterLink>
-            <FooterLink href="#"><i className="fab fa-instagram"></i></FooterLink>
-            <FooterLink href="#"><i className="fab fa-twitter"></i></FooterLink>
+            <FooterLink href="#"><i className="fab fa-facebook-f"><Facebook size={24} /></i></FooterLink>
+            <FooterLink href="#"><i className="fab fa-instagram"><Instagram size={24} /></i></FooterLink>
+            <FooterLink href="#"><i className="fab fa-twitter"><Twitter size={24} /></i></FooterLink>
           </SocialIcons>
         </FooterSection>
       </FooterContent>
