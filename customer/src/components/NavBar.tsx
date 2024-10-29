@@ -41,7 +41,7 @@ function NavBar() {
   };
 
   return (
-    <nav className="bg-black text-white p-4">
+    <nav style={{backgroundColor: '#111111'}} className=" text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="text-2xl font-bold">JSA Services</Link>
 
