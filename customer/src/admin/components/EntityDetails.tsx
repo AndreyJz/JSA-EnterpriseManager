@@ -231,7 +231,7 @@ const entityFields: { [key: string]: entityField[] } = {
   ],
 };
 
-const NON_EDITABLE_FIELDS = ['id', 'creationDate', 'date', 'orderDate', 'assignDate','serviceBranch', 'password'];
+const NON_EDITABLE_FIELDS = ['id', 'creationDate', 'date', 'orderDate', 'assignDate','serviceBranch', 'password','username'];
 
 const SELECT_FIELD_MAPPINGS: { [key: string]: { endpoint: string, labelKey: string } } = {
   emailType: { endpoint: 'Email_Type', labelKey: 'name' },
@@ -252,7 +252,8 @@ const SELECT_FIELD_MAPPINGS: { [key: string]: { endpoint: string, labelKey: stri
   role: { endpoint: 'Roles', labelKey: 'name' },
   service: { endpoint: 'Services', labelKey: 'name' },
   workOrderDetailStatus: { endpoint: 'Work_Detail_Status', labelKey: 'name' },
-  supply: { endpoint: 'Supply', labelKey: 'name' }
+  supply: { endpoint: 'Supply', labelKey: 'name' },
+  country: { endpoint: 'Countries', labelKey: 'name' }
   // Add more mappings as needed
 };
 
@@ -325,6 +326,20 @@ const EntityDetails: React.FC = () => {
 
   const prepareUpdateData = () => {
     const updateData: any = { ...editedDetails };
+
+    if (entity === 'Person') {
+      return {
+        id: updateData.id,
+        name: updateData.name,
+        lastname: updateData.lastname,
+        username: updateData.username,
+        password: updateData.password,
+        date: updateData.date,
+        branch: updateData.branch && typeof updateData.branch === 'object' ? { id: updateData.branch.id } : updateData.branch,
+        personType: updateData.personType && typeof updateData.personType === 'object' ? { id: updateData.personType.id } : updateData.personType,
+        role: updateData.role
+      };
+    }
     
     // Procesar campos select para asegurar que solo se envíe el ID
     Object.keys(SELECT_FIELD_MAPPINGS).forEach(fieldName => {
@@ -350,6 +365,18 @@ const EntityDetails: React.FC = () => {
       if (updateData.phoneType && typeof updateData.phoneType === 'object') {
         updateData.phoneType = { id: updateData.phoneType.id };
       }
+    }
+
+    if (entity === 'Person') {
+      updateData.branch = { id: editedDetails.branch.id };
+      updateData.lastname = editedDetails.lastname;
+      updateData.name = editedDetails.name;
+      updateData.date = editedDetails.date;
+      updateData.password = editedDetails.password;
+      updateData.personType = { id: editedDetails.personType.id };
+      updateData.repeatedPassword = editedDetails.repeatedPassword; // Asumido, puede ser cambiado según tu lógica
+      updateData.role = { id: editedDetails.role.id };
+      updateData.username = editedDetails.username;
     }
 
     // Agregar más casos especiales según sea necesario
@@ -381,9 +408,9 @@ const EntityDetails: React.FC = () => {
     try {
       const token = localStorage.getItem('token');
       const updateData = prepareUpdateData();
-      
+      console.log(updateData);
       await axios.put(
-        `http://localhost:8081/api/${entity}/${id}`,
+        `http://localhost:8081/api/${entity}/${id?.replaceAll('-', '/')}`,
         updateData,
         { headers: { Authorization: `Bearer ${token}` } }
       );

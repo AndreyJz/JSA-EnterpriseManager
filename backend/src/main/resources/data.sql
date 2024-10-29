@@ -74,8 +74,8 @@ INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES (
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ALL_SERVICE_BRANCHES','', 'GET', true, 8);
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ONE_SERVICE_BRANCH','/[0-9]*/[0-9]*', 'GET', false, 8);
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('CREATE_ONE_SERVICE_BRANCH','', 'POST', false, 8);
-INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('UPDATE_ONE_SERVICE_BRANCH','/[0-9]*[0-9]*', 'PUT', false, 8);
-INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('DISABLE_ONE_SERVICE_BRANCH','/[0-9]*[0-9]*', 'DELETE', false, 8);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('UPDATE_ONE_SERVICE_BRANCH','/[0-9]*/[0-9]*', 'PUT', false, 8);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('DISABLE_ONE_SERVICE_BRANCH','/[0-9]*/[0-9]*', 'DELETE', false, 8);
 
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ALL_SERVICE_APPROVALS','', 'GET', false, 9);
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ONE_SERVICE_APPROVAL','/[0-9]*', 'GET', false, 9);
