@@ -4,9 +4,12 @@ import { useCart } from '../context/CartContext';
 
 interface CheckoutFormProps {
   amount: number;
+  userId: string;
+  cart: any[];
 }
 
-function CheckoutForm({ amount }: CheckoutFormProps) {
+function CheckoutForm({ amount, userId, cart }: CheckoutFormProps) {
+  console.log(cart);
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState<string | null>(null);
@@ -14,6 +17,116 @@ function CheckoutForm({ amount }: CheckoutFormProps) {
   const [succeeded, setSucceeded] = useState(false);
   const { clearCart } = useCart();
 
+  // Función para insertar una orden de servicio
+  const insertServiceOrder = async (token: string | null, userId: string) => {
+    const response = await fetch('http://localhost:8081/api/Service_Order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ 
+        
+        orderDate: new Date().toISOString(),
+        customer: {
+          id: userId
+        },
+        employee: {
+          id: "P001"
+        },
+        orderStatus: {
+          id: 1
+        }
+      })
+    });
+    if (!response.ok) throw new Error(`Failed to create Service Order: ${response.statusText}`);
+    return await response.json();
+  };
+
+  //detalles de la orden de servicio
+  const insertOrderDetails = async (token: string | null, serviceOrderId: number, cart: any[]) => {
+    for (const item of cart) {
+      console.log(item)
+      const response = await fetch('http://localhost:8081/api/Order_Details', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          
+            serviceBranch: {
+              id: {
+                branchId: item.id.branchid,
+                serviceId: item.id.serviceid
+              },
+              service: {
+                id: item.id.serviceid
+              },
+              branch: {
+                id: item.id.branchid
+            }},
+            serviceOrder: {
+              id: serviceOrderId},
+            serviceValue: item.serviceValue
+        })
+      });
+      if (!response.ok) throw new Error(`Failed to insert Order Detail: ${response.statusText}`);
+    }
+  };
+
+  //orden de trabajo
+  const insertWorkOrder = async (token: string | null, serviceOrderId: number) => {
+    const response = await fetch('http://localhost:8081/api/Work_Order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ serviceOrder: { id: serviceOrderId } })
+    });
+    if (!response.ok) throw new Error(`Failed to create Work Order: ${response.statusText}`);
+    return await response.json();
+  };
+
+  //detalles orden de trabajo
+  const insertWorkOrderDetails = async (token: string | null, workOrderId: number, cart: any[]) => {
+    for (const item of cart) {
+      const response = await fetch('http://localhost:8081/api/Work_Order_Details', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          workOrder: { id: workOrderId },
+          service: { id: item.serviceId },
+          quantity: item.quantity
+        })
+      });
+      if (!response.ok) throw new Error(`Failed to insert Work Order Detail: ${response.statusText}`);
+    }
+  };
+
+  //aprobaciones de servicio
+  const insertServiceApprovals = async (token: string | null, workOrderId: number, cart: any[]) => {
+    for (const item of cart) {
+      const response = await fetch('http://localhost:8081/api/Service_Approval', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          workOrder: { id: workOrderId },
+          service: { id: item.serviceId }
+        })
+      });
+      if (!response.ok) throw new Error(`Failed to insert Service Approval: ${response.statusText}`);
+    }
+  };
+
+  // Manejador de envío del formulario
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -43,7 +156,7 @@ function CheckoutForm({ amount }: CheckoutFormProps) {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ amount: amount * 100 }), // convert amount to cents
+            body: JSON.stringify({ amount: amount * 100 }) // convertir el monto a centavos
           });
 
           if (!response.ok) {
@@ -56,6 +169,17 @@ function CheckoutForm({ amount }: CheckoutFormProps) {
           const clientSecret = data.clientSecret;
 
           console.log('Payment Intent created:', clientSecret);
+
+          // Inserción en la base de datos
+          const serviceOrderData = await insertServiceOrder(token, userId);
+          await insertOrderDetails(token, serviceOrderData.id, cart);
+
+          const workOrderData = await insertWorkOrder(token, serviceOrderData.id);
+          await insertWorkOrderDetails(token, workOrderData.id, cart);
+
+          await insertServiceApprovals(token, workOrderData.id, cart);
+
+          // Marcar como exitoso y limpiar el carrito
           setSucceeded(true);
           setError(null);
           clearCart();
@@ -68,7 +192,6 @@ function CheckoutForm({ amount }: CheckoutFormProps) {
       }
     }
   };
-
 
   if (succeeded) {
     return (

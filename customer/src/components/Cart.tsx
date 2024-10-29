@@ -10,6 +10,7 @@ const stripePromise = loadStripe('pk_test_51QEHZiLNN21xADSgOxFbVEwsKq38GtbmclI5N
 function Cart() {
   const { cart, removeFromCart, clearCart, updateQuantity } = useCart();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setuserid] = useState<string>("");
   const [showPopup, setShowPopup] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showCheckoutPopup, setShowCheckoutPopup] = useState(false);
@@ -31,7 +32,7 @@ function Cart() {
         if (response.ok) {
           const userProfile = await response.json(); // Procesar la respuesta
           console.log('User Profile:', userProfile.id); // Aquí puedes manejar la información del perfil
-          // Puedes almacenar esta información en el estado o hacer algo con ella
+          setuserid(userProfile.id);// Puedes almacenar esta información en el estado o hacer algo con ella
         } else {
           console.error('Error fetching profile:', response.statusText);
         }
@@ -158,16 +159,19 @@ function Cart() {
 
       {showCheckoutPopup && (
         <div onClick={(e) => handleOutsideClick(e, setShowCheckoutPopup)} className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-8 rounded shadow-md max-w-md w-full">
-            <h2 className="text-xl font-bold mb-4 text-center">Complete your Payment</h2>
-            <Elements stripe={stripePromise}>
-              <CheckoutForm amount={total} />
-            </Elements>
-            <button onClick={() => setShowCheckoutPopup(false)} className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition duration-300 w-full">
-              Cancel
-            </button>
-          </div>
+        <div className="bg-white p-8 rounded shadow-md max-w-md w-full">
+          <h2 className="text-xl font-bold mb-4 text-center">Complete your Payment</h2>
+          <Elements stripe={stripePromise}>
+            <CheckoutForm amount={total} userId={userId} cart={cart}/>
+          </Elements>
+          <button onClick={() => setShowCheckoutPopup(false)} className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition duration-300 w-full">
+            Cancel
+          </button>
         </div>
+
+
+        
+      </div>
       )}
     </div>
   );
