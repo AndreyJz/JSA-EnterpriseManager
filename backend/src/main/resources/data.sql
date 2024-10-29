@@ -21,7 +21,7 @@ INSERT INTO modules (name, base_path) VALUES ('ORDER_DETAIL', '/api/Order_Detail
 INSERT INTO modules (name, base_path) VALUES ('ORDER_STATUS', '/api/Order_Status');
 INSERT INTO modules (name, base_path) VALUES ('SERVICE_ORDER', '/api/Service_Order');
 INSERT INTO modules (name, base_path) VALUES ('WORK_ORDER', '/api/Work_Orders');
-INSERT INTO modules (name, base_path) VALUES ('WORK_ORDER_DETAIL', '/api/Work Order_Detail');
+INSERT INTO modules (name, base_path) VALUES ('WORK_ORDER_DETAIL', '/api/Work_Order_Detail');
 INSERT INTO modules (name, base_path) VALUES ('WORK_ORDER_DETAIL_STATUS', '/api/Work_Detail_Status');
 INSERT INTO modules (name, base_path) VALUES ('APPROVAL_STATUS', '/api/Approval_Status');
 INSERT INTO modules (name, base_path) VALUES ('AUTH', '/auth');
@@ -189,10 +189,10 @@ INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES (
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ALL_CUSTOMERS', '/Customers', 'GET', false, 12);
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ALL_EMPLOYEES', '/Employees', 'GET', false, 12);
 
-INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_WORK_ORDER_DETAILS_BY_EMPLOYEE', '/Employee_[0-9]*', 'GET', false, 23);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_WORK_ORDER_DETAILS_BY_EMPLOYEE', '/Employee_.*', 'GET', false, 23);
 
-INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_SERVICE_ORDERS_BY_EMPLOYEE','/Employee_[0-9]*', 'GET', false, 21);
-INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_SERVICE_ORDERS_BY_CUSTOMER','/Customer_[0-9]*', 'GET', false, 21);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_SERVICE_ORDERS_BY_EMPLOYEE','/Employee_.*', 'GET', false, 21);
+INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_SERVICE_ORDERS_BY_CUSTOMER','/Customer_.*', 'GET', false, 21);
 
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_SERVICES_WITHOUT_BRANCH','/Without_Branch', 'GET', false, 7);
 
@@ -230,7 +230,13 @@ INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 78); -- CREAT
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 135); -- Service ORDER person where id
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 140); -- ORDER DETAIL BY SERVICE ORDER
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 139); -- update APPROVAL STATUS
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 103); -- Service Order
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 103); -- CREATE Service Order
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 108); -- CREATE Work Order
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 93); -- CREATE Order Detail
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 96); -- READ Order Detail STATUS
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 113); -- CREATE Work Order Detail
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 116); -- READ Work Order Detail Status
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 43); -- CREATE Service_Approval
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 121); -- Approval status
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 143); -- Purchase Intent
 
@@ -384,7 +390,13 @@ INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 121); -- Appr
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 133); -- WorkOrderDetail employee where id
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 112);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 114);
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 116);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 93); -- CREATE Order Detail
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 96); -- READ Order Detail STATUS
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 103); -- CREATE Service Order
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 108); -- CREATE Work Order
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 113); -- CREATE Work Order Detail
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 116); -- READ Work Order Detail Status
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 43); -- CREATE Service_Approval
 
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (4, 131); -- ALL P
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (4, 57); -- ONE P
