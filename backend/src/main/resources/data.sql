@@ -238,7 +238,7 @@ INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 113); -- CREA
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 116); -- READ Work Order Detail Status
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 43); -- CREATE Service_Approval
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 121); -- Approval status
-INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 143); -- Purchase Intent
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 143); -- Purchase Intenta
 
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 1);
 INSERT INTO granted_permissions (role_id, operation_id) VALUES (2, 2);
