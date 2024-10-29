@@ -59,7 +59,7 @@ function Login() {
             
             if (userProfile.role.id === 1) {
               navigate('/customer', { replace: true }); 
-            }else if (userProfile.role.id === 2){
+            }else {
               navigate('/admin', { replace: true });
             }
           } else {
