@@ -13,7 +13,7 @@ function NavBar() {
 
   // Efecto para cerrar el menú al hacer clic fuera
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: { target: any; }) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsUserMenuOpen(false);
       }

@@ -90,7 +90,7 @@
             <li key={phone.id} className="flex items-center justify-between mb-2">
             <span className="flex items-center">
                 <Phone size={18} />
-                <span className="ml-2">{phone.number} ({phone.phoneType.name})</span>
+                <span className="ml-2">{phone.number}</span>
             </span>
             <button
                 onClick={() => handleRemovePhone(phone.id)}
@@ -101,18 +101,18 @@
             </li>
         ))}
         </ul>
-        <form onSubmit={handleAddPhone} className="flex flex-row space-y-2 gap-5 ">
+        <form onSubmit={handleAddPhone} className="flex ">
         <input
             type="tel"
             value={newPhone}
             onChange={(e) => setNewPhone(e.target.value)}
-            className="border p-2 rounded w-3/4"
+            className="border p-2 rounded flex-grow"
             placeholder="Add new phone number"
         />
         <select
             value={selectedPhoneType}
             onChange={(e) => setSelectedPhoneType(Number(e.target.value))}
-            className="border p-2 rounded w-2/10"
+            className="border p-2 rounded ml-2"
         >
             <option value="">Select phone type</option>
             {phoneTypes.map(type => (
@@ -123,7 +123,7 @@
         </select>
         <button
             type="submit"
-            className="bg-black text-white px-4 py-2 rounded mt-2 w-1/10 hover:bg-blue-600 transition-colors"
+            className="bg-black text-white px-4 py-2 rounded ml-2 hover:bg-blue-600 transition-colors"
         >
             <Plus size={18} />
         </button>
